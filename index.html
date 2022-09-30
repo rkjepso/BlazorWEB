@@ -9,6 +9,37 @@
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="BlazorWEB.styles.css" rel="stylesheet" />
+
+    <script>
+        function reset_animation(strId, sec) {
+            var el = document.getElementById(strId);
+            el.style.animation = 'none';
+            el.offsetHeight; /* trigger reflow */
+            el.style.animation = null;
+            el.style.animationDuration = sec;
+        }
+        window.getDimensions = function () {
+            return {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+        };
+
+        function scrollTop() {
+
+            window.scrollTo(0, 0);
+        }
+
+        function scrollElementTop(strId) {
+            var offsetTop = getOffsetTop(document.getElementById(strId));
+            window.scrollTo(0, offsetTop);
+        }
+
+        function Test() {
+            DotNet.invokeMethod("Pugger.Client", "fnFromJS");
+        }
+
+    </script>
 </head>
 
 <body>
