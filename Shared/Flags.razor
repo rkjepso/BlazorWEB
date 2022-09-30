@@ -1,0 +1,40 @@
+﻿@using static BlazorWEB.Functions;
+
+<style>
+    p 
+    {
+         font-size:0.8em;
+         color:var(--TextColorFlag);
+    }
+</style>
+
+<div @onclick="OnSwapLanguage">
+    <span style="white-space: nowrap;">
+        <div style="display: inline-block;border:2px">
+            <img src=@(SwapLang ? GetToLangFlag(Program.BaseDataObj.LangT) : GetFromLangFlag(Program.BaseDataObj.LangT)) width="40" height="25" />
+        </div>
+        <div style="display: inline-block;border:2px">
+            <img src=@(SwapLang ? GetFromLangFlag(Program.BaseDataObj.LangT) : GetToLangFlag(Program.BaseDataObj.LangT)) width="40" height="25" />
+        </div>
+        <div style="display: inline-block; white-space: nowrap;">
+            <p> @( Text )</p>
+        </div>
+    </span>
+
+</div>
+
+@code {
+    [Parameter]
+    public string Text { get; set; } = "";
+
+    [Parameter]
+    public bool SwapLang { get; set; } = false;
+
+    [Parameter]
+    public EventCallback OnSwapEv { get; set; }
+    async void OnSwapLanguage()
+    {
+        await OnSwapEv.InvokeAsync();
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,223 @@
+﻿@page "/LangSetup"
+
+
+@using BlazorWEB.Services;
+@using static BlazorWEB.Functions;
+
+@inject IJSRuntime JS
+
+@inject BrowserService Service
+@inject IStorage IStorage
+
+
+
+
+<Csscontrol></Csscontrol>
+
+
+<style>
+    img {
+        width:40px;
+        height:30px;
+        user-select: none;
+    }
+
+    table.center {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 300px;
+        align-content: center;
+        position: relative;
+    }
+
+    .sel, .unsel {
+        padding: 5px 5px;
+        width: 25%;
+        border-radius: 18px;
+        line-height: 0.5;
+    }
+
+
+    .sel {
+        border: 2px solid red;
+    }
+
+    height img {
+        width: 48%;
+        white-space: nowrap;
+    }
+
+    p {
+        white-space: nowrap;
+    }
+
+    .isa_info2 {
+        white-space: pre-line;
+        background-color: #BDE5F8;
+    }
+
+</style>
+
+<div class="coolDiv">
+
+    <table class="center">
+
+        <tr>
+            <td class=@StrClass(LangT.SpanishNorwegian) @onclick="OnSpanishNorwegian">
+                <p>Espaniol</p>
+                <div style="white-space:nowrap">
+                    <img src="Img/spain.jpg"  />
+                    <img src="Img/Norway.jpg"  />
+                </div>
+
+            </td>
+
+            <td class=@StrClass(LangT.FrenchNorwegian) @onclick="OnFrenchNorwegian">
+                <p>Fransk</p>
+                <div style="white-space:nowrap">
+                    <img src="Img/French.png" />
+                    <img src="Img/Norway.jpg"  />
+                </div>
+
+            </td>
+
+            <td class=@StrClass(LangT.GermanNorwegian) @onclick="OnGermanNorwegian">
+                <p>Deutsch</p>
+                <div style="white-space:nowrap">
+                    <img src="Img/Germany.jpg"  />
+                    <img src="Img/Norway.jpg"  />
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<DictionarySelection @ref="_DictionarySelection"></DictionarySelection>
+
+<InfoBox @bind-strError="@StrError" strSuccess="@StrSuccess"></InfoBox>
+<HelpBox StrTitle="Puggeprogram for gloser på ulike vis" StrInfo=@StrInfo EvStateHasChanged="StateHasChanged"></HelpBox>
+
+
+<YesNo @ref="YesNo" Message="Skifte språk ?" ConfirmedChanged="SetLang" />
+@code {
+    private YesNo? YesNo { get; set; }
+
+    private LangT tmp;
+    void QuerySetLanguage(LangT langT)
+    {
+        tmp = langT;
+        // YesNo.ShowPop();
+        SetLang();
+    }
+    void SetLang()
+    {
+        SetLanguage(tmp);
+    }
+}
+
+
+@*<button @onclick="@(()=>StrSuccess=IStorage.Test())">Clic Test</button>*@
+
+@code
+{
+    private DictionarySelection? _DictionarySelection;
+    static string StrError { get; set; } = "";
+    string StrSuccess { get; set; } = "";
+    static string StrInfo { get
+        {
+            string s = 
+@"            Velg språk og ordliste
+
+";
+            s += $"  (Ver : {Program.GetVersionGloser} Dim {Program.WidthHeight().ToString()}:)";
+
+            return s;
+        }
+    }
+
+
+#pragma warning disable 1998,8622,8602
+    static LangSetup? _this = null;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Program.currentStateHasChanged = StateHasChanged;
+
+        // Subscribe to the event
+        base.OnInitialized();
+
+        var dt = DateTime.Now;
+        int ms = await Program.AccountService.Load(Program.BaseDataObj.LangT);
+        if (ms > 10)
+            StrSuccess = $"Orliste lastet ok - {ms} ms";
+        _this = this;
+
+        if (Misc.IsNullOrEmpty(Program.GetSelectedWords()))
+        {
+            Program.CreateStartupData();
+            _DictionarySelection?.DoStateHasChanged();
+        }
+    }
+
+    async Task OnTestText()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("JSAlert");
+        }
+        catch (Exception e)
+        {
+            StrError = e.Message;
+        }
+    }
+
+
+    public static void DoStateHasChanged()
+    {
+        _this.StateHasChanged();
+    }
+
+
+    static string StrClass(LangT lt)
+    {
+        return Program.BaseDataObj.LangT == lt ? "sel" : "unsel";
+    }
+
+
+    void OnSpanishNorwegian()
+    {
+        QuerySetLanguage(LangT.SpanishNorwegian);
+    }
+
+    void OnFrenchNorwegian()
+    {
+        QuerySetLanguage(LangT.FrenchNorwegian);
+    }
+
+    void OnGermanNorwegian()
+    {
+        QuerySetLanguage(LangT.GermanNorwegian);
+    }
+
+    async void SetLanguage(LangT enLang)
+    {
+        try
+        {
+            Program.BaseDataObj.SetData(enLang);
+            int ms = await Program.AccountService.Load(Program.BaseDataObj.LangT);
+            IStorage.LoadParams();
+            await _DictionarySelection.DoStateHasChanged();
+            var lstWords = Program.GetSelectedWords();
+            if (lstWords == null || lstWords.Count == 0)
+               Program.CreateStartupData();
+
+            StrSuccess = $"Skiftet til nytt språk ok - {ms} ms";
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            StrError = "Error changing language : " + e.Message;
+        }
+
+    }
+}

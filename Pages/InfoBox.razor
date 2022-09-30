@@ -1,0 +1,130 @@
+﻿
+
+<style>
+    .isa_info {
+        color: var(--TextColor);    /*#00529B;*/
+        background-color: #BDE5F8;      
+    }
+
+    .isa_success {
+        color: var(--TextColor);    /*#4F8A10;*/
+        background-color: #BDE5F8;
+    }
+
+    .isa_warning {
+        color: var(--TextColor);    /*#9F6000;*/
+        background-color: #9F6000;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFD2D2;
+    }
+
+    .close-icon {
+        float:right;
+        position: sticky;
+        right: 12px;
+        bottom: 2px;
+        width: 12px;
+        height: 12px;
+        white-space: nowrap;
+    }
+    .close-icon:hover {
+        background-color: red;
+    }
+    .close-icon::before, .close-icon::after {
+        position: absolute;
+        left: 5px;
+        content: ' ';
+        height: 15px;
+        width: 3px;
+        background-color: black;
+    }
+    .close-icon:before {
+        transform: rotate(45deg);
+    }
+    .close-icon:after {
+        transform: rotate(-45deg);
+    }
+    .isa_warning, .isa_error, .isa_success, .isa_info {
+        padding: 5px 5px;
+        word-wrap:break-word;
+        color:darkblue;
+        width:100%;
+
+        display: inline-block;
+        white-space: pre-wrap;
+        overflow: hidden; 
+        margin: 0.2em 0px 0px 0px;
+    }
+
+</style>
+
+
+
+<div >
+     @if (strSuccess?.Length > 0 )
+    {
+       <div class="isa_success"  >@strSuccess <div class="close-icon" @onclick="@OnCloseS"></div></div>
+    }
+
+    @if (strInfo?.Length > 0 )
+    {
+        <div class="isa_info"  >@strInfo <div class="close-icon" @onclick="@OnCloseI"></div></div>
+    }
+    @if (strWarn?.Length > 0 )
+    {
+        <div class="isa_warning"  >@strWarn <div class="close-icon" @onclick="@OnCloseW"></div></div>
+       
+    }
+    @if (strError?.Length > 0)
+    {
+        <div class="isa_error" >@strError <div class="close-icon" @onclick="@OnCloseE"></div></div> 
+    }
+
+</div>
+@code {
+    [Parameter]
+    public string strSuccess { get; set; } = "";
+    [Parameter]
+    public EventCallback<string> StrSuccessChanged { get; set; }
+    [Parameter]
+    public string strInfo { get;set;} = "";
+    [Parameter]
+    public EventCallback<string> StrInfoChanged { get; set; }
+    [Parameter]
+    public string strWarn { get; set; } = "";
+    [Parameter]
+    public EventCallback<string> StrWarnChanged { get; set; }
+    [Parameter]
+    public string strError { get; set; } = "";
+    [Parameter]
+    public EventCallback<string> StrErrorChanged { get; set; }
+
+
+    private async Task OnCloseI()
+    {
+        Program.ShowHelp = false;
+        await StrInfoChanged.InvokeAsync(strInfo);
+    }
+    private async void OnCloseW()
+    {
+        strWarn = "";
+        await StrWarnChanged.InvokeAsync(strWarn);
+    }
+    private async void OnCloseS()
+    {
+        strSuccess = "";
+        await StrSuccessChanged.InvokeAsync(strWarn);
+    }
+    private async void OnCloseE()
+    {
+        strError = "";
+        await StrErrorChanged.InvokeAsync(strError);
+    }
+    public void DoStateHasChanged()
+    {
+        StateHasChanged();
+    }
+}

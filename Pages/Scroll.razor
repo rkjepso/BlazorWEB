@@ -1,0 +1,414 @@
+﻿@page "/scroll"
+
+@using static BlazorWEB.Functions;
+@inject NavigationManager NavigationManager
+@using BlazorWEB.Services;
+
+@inject IJSRuntime JS
+@implements IDisposable
+@inject NavigationManager NavigationManager
+@inject IStorage IStorage
+
+
+<Csscontrol></Csscontrol>
+<Flags Text=@(StrFlag) SwapLang="@SwapWord" OnSwapEv="@OnSwapLanguage"></Flags>
+
+
+<style>
+    .fromWord, .toWord {
+        width: 100%;
+        font-size: 2em;
+        display: inline-block;
+        margin: 3px 0px 10px;
+        color: black;
+    }
+
+    .toWord {
+        animation-iteration-count: infinite;
+        animation-duration: @StrMsPugg;
+        display: normal;
+        animation-name: pugging0;
+        align-content: center;
+    }
+
+    .td {
+    }
+
+    .coolDiv {
+        user-select: none;
+        line-height: 0.8;
+        width: 100%;
+        margin: 6px 2px 10px 0px;
+        border-radius: 0;
+        text-align: center;
+    }
+
+    .sentences {
+        color: red;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .ps {
+        color: blue;
+        display: inline-block;
+    }
+
+
+    .coolSpan, p {
+        white-space: nowrap;
+        margin: 4px 2px 4px 0px;
+    }
+
+    .wordinfo {
+        text-align: left;
+        color: var(--FromWord);
+    }
+
+    .level {
+        color: var(--FromWord);
+    }
+
+    .engButton, .engButtonGray {
+        border-radius: 0.3em;
+        height: 27px;
+        width: 45px;
+        margin: 0em 0.3em;
+        background: url('Img/uk.jpg');
+        background-size: cover;
+    }
+
+    .engImageGray {
+        filter: grayscale(1);
+    }
+
+    .engButton:hover, .engButtonGray:hover {
+        border: 0.15em solid red;
+        margin: 0.05em 0.3em;
+    }
+
+</style>
+
+<span class="coolSpan">
+    <button class="coolButton" @onclick="@(()=>OnRestart())"> ⟳ </button>
+    @*    <button class="coolButton" @onclick="@(()=>OnEnglish())">
+    </button>*@
+
+    @*  <img class=@ClsEngImage() src='Img/uk.jpg' />*@
+
+    <img class="imgSmileyButton" @onclick="@(()=>OnChangeSmiley())" src=@Smileys[SmileyIndex]>
+</span>
+
+<span class="coolSpan">
+    @{
+        foreach (var ms in new int[] { 1000, 2000, 3000, 4000, 5000 })
+        {
+            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))">@((double)ms / 1000)s</button>
+        }
+    }
+</span>
+<span class="coolSpan">
+    @* <button class="engButton"></button>*@
+    <button class=@Csscontrol.BoolStyle(UseEnglish) @onclick="@OnEnglish">Eng</button>
+
+</span>
+
+
+@{
+
+    int i = 0;
+    TWord w = Word;
+    string _style = "";
+    @if (w != null)
+    {
+        <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRemoveWord())">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:50%"></th>
+                        <th style="width:10%"></th>
+                        <th style="width:40%"></th>
+                        <th style="width:10%"></th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="wordinfo">
+                        @(i == 0 ? StrRest : "")
+                    </td>
+                    <td>
+                        @{
+                            if (w.IsDeleted)
+                            {
+                                <p class="fromWord">&#10004; @FromWordD(w)</p>
+                            }
+                            else
+                            {
+                                <p class="fromWord">@FromWordD(w)</p>
+                            }
+                        }
+                    </td>
+                    <td></td>
+                    <td>
+                        <div class="smiley">
+                            <img class="imgSmileyButton" src=@GetSmiley(NewLevel(w)) />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
+                    </td>
+                    <td></td>
+                    <td class="level">
+                        @NewLevel(w)%
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        //<div class="sentences">
+        //    <p class="fromWord" style="font-size:1.2em">@w.FromSentence </p>
+        //</div>
+    }
+}
+
+@code {
+#pragma warning disable 1998, 8618, 8625, 4014, 8622
+    string FromWordD(TWord w)
+    {
+        string s;
+        s = $"{(SwapWord ? w.ToWord : w.FromWord)}  ";
+        return s;
+    }
+
+    string ClsEngImage() => UseEnglish ? "engImage" : "engImageGray";
+
+    string ToWordD(TWord w)
+    {
+        return (SwapWord ? w.FromWord : w.ToWord) + (UseEnglish ? $"  -  {w.ToWordEnglish}" : "");
+    }
+
+    private bool IsRunning => timerW?.Enabled ?? false;
+
+    async Task OnStopp()
+    {
+        ((IJSInProcessRuntime)JS).InvokeVoid("reset_animation", StrAni(0), 10000);
+        timerW?.Stop();
+        timerW ??= null;
+    }
+
+    string Cls(int i) => $"toWord{i}";
+    string StrAni(int i) => $"animated{i}";
+}
+
+<InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
+<HelpBox StrInfo="@StrInfo" StrTitle="@StrTitle" EvStateHasChanged="StateHasChanged"></HelpBox>
+
+@code {
+    public string StrFlag => IStorage._GetData().Info;
+    private string StrError { get; set; } = "";
+    private string StrWarn { get; set; } = "";
+    private string StrInfo { get; set; } = "";
+    private string StrSuccess { get; set; } = "";
+    private string StrTitle { get; set; } = "";
+    private bool UseEnglish { get; set; } = false;
+    public void OnEnglish()
+    {
+        UseEnglish = !UseEnglish;
+    }
+    public string StrRest
+    {
+        get
+        {
+            int rest = lstWords?.Count ?? 0;
+            return $"({rest} ord)";
+        }
+    }
+    private List<TWord> lstWords = null;
+    private List<TWord> lstWordsSav = null;
+
+    private System.Timers.Timer timerW;
+    //private List<TWord> Word = new();
+    private TWord Word;
+
+    private int Tot() => lstWords?.Count ?? 0;
+
+    public string ShowWord { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        StrTitle = @"Pugg ord i tilfeldig rekkefølge";
+        StrInfo = @"Trykk på ordet for å fjerne.
+Puggelisten blir kortere , smileyen til ordet blidere.
+⟳ ny puggerunde.
+Trykk på flagget - skifte puggeretning.
+Det engelske flagget gir også det engelske ordet.
+Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
+
+
+        try
+        {
+
+
+            lstWords = new();
+            lstWordsSav = new();
+            lstWords = Program.GetSelectedWords();
+            if (Misc.IsNullOrEmpty(lstWords))
+                throw new Exception("Du må velge språk/ord !");
+
+            timerW = null;
+            timerW = new System.Timers.Timer();
+            timerW.Elapsed += new System.Timers.ElapsedEventHandler(OnTimerWord);
+            timerW.Interval = 300;
+
+            MsPugg = Math.Max(500, IStorage._GetData().MsPugg);
+            SmileyIndex = IStorage._GetData().SmileyIndex;
+
+            lstWords = lstWords.Where(w => GetSmileyIndex(w.Level) <= SmileyIndex).ToList();
+            lstWordsSav.AddMany(lstWords);
+
+            timerW.Start();
+            Program.currentStateHasChanged = StateHasChanged;
+        }
+        catch (Exception e)
+        {
+            StrError = e.Message;
+        }
+    }
+
+    private Random r = new Random();
+
+    async void OnTimerWord(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        var lst = lstWords?.FindRandomWords(1) ?? null;
+        if (lst == null || lst.Count == 0)
+            return;
+
+        //await Task.Delay(sleep);
+        Word = lst[0];
+        timerW.Interval = MsPugg;
+
+
+        var i = lstWordsSav.FindIndex(ws => ws.ID == Word.ID);
+        if (i >= 0 && !Word.IsDeleted)
+            lstWordsSav[i].Counter++;
+
+
+        _ = Task.Run(() => OnResetAnimation());
+        StateHasChanged();
+    }
+
+    void OnRemoveWord()
+    {
+        if (Word.IsDeleted)
+            return;
+
+        try
+        {
+            lstWords.Remove(Word);
+            Word.IsDeleted = true;
+            Word.Level += Math.Min(100, Math.Max(1, 5 - Word.Counter));
+            Program.UpdateSelectedWord(Word);
+            if (lstWords.Count == 0)
+            {
+                StrSuccess = "Pugge runden er ferdig. Trykk ⟳ for en ny runde.";
+                timerW?.Stop();
+                timerW = null;
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            StrError = e.Message;
+        }
+        if (lstWords.Count == 0)
+            return;
+    }
+
+    int NewLevel(TWord w) => w.Level;
+
+    async void OnRestart()
+    {
+        StrSuccess = "";
+        timerW?.Dispose();
+
+        await OnInitializedAsync();
+    }
+
+    private bool SwapWord { get; set; } = false;
+    void OnSwapLanguage()
+    {
+        SwapWord = !SwapWord;
+    }
+
+    async Task OnResetAnimation()
+    {
+        try
+        {
+            int sec = MsPugg / 1000;
+            ((IJSInProcessRuntime)JS).InvokeVoid("reset_animation", StrAni(0), sec);
+        }
+        catch (Exception e)
+        {
+            StrError = e.Message;
+        }
+    }
+
+    private int MsPugg { get; set; } = 2000;
+    private string StrMsPugg { get => $"{MsPugg}ms"; }
+    void OnMsInterval(int ms)
+    {
+        MsPugg = ms;
+        SaveData();
+        if (Tot() == 0)
+        {
+            StrWarn = "List is empty. Change Smiley ?";
+            return;
+        }
+
+
+        if (timerW != null)
+            timerW.Interval = ms;
+        _ = Task.Run(() => OnResetAnimation());
+
+    }
+
+
+    void IDisposable.Dispose()
+    {
+        SaveData();
+        timerW?.Dispose();        // because you need it here
+
+    }
+
+    async Task SaveData()
+    {
+        Data data = IStorage._GetData();
+        data.MsPugg = MsPugg;
+        data.SmileyIndex = SmileyIndex;
+        IStorage._SetData(data);
+    }
+    void OnListe()
+    {
+        NavigationManager.NavigateTo("/Gloser");
+    }
+    private int SmileyIndex { get; set; } = 1;
+    async void OnChangeSmiley()
+    {
+        SmileyIndex = SmileyIndex - 1;
+        if (SmileyIndex < 0)
+            SmileyIndex = 5;
+        SaveData();
+        OnRestart();
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+﻿
+
+<style>
+
+    .xtd, .xtdt {
+        background-color:var(--HelpBkColor);
+        padding: 2px 2px;
+        resize:none;
+
+
+        color:var(--TextColorDark);
+        width:100%;
+
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden; 
+        margin: -1px 0px;
+
+        background-image: linear-gradient(to right, lightblue, white);
+    }
+
+
+
+    .comment, .commentH {
+ 
+    
+        padding: 10px;
+        margin: 0px;
+        white-space:normal;
+        background-color: #d0e2bc;
+        font: 1.0em/1.2em cursive;
+        color: #095484;
+        background-image: linear-gradient(to right, lightblue, white);
+    }
+</style>
+
+
+@if (Program.ShowHelp)
+{
+    <div>
+          <p class="commentH" style="font-weight:bold" @onclick="() => OnClose()">@StrTitle (Click=Lukk)</p>
+          <p class="comment" @onclick="() => OnClose()">@StrInfo</p>            
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public List<string> LstStr { get; set; } = new();
+    [Parameter]
+    public string StrInfo { get; set; } = "";
+    [Parameter]
+    public string StrTitle { get; set; } = "";
+    [Parameter] public EventCallback EvStateHasChanged { get; set; }
+
+
+
+    public async Task OnClose()
+    {
+        Program.ShowHelp = false;
+        await EvStateHasChanged.InvokeAsync();
+    }
+}

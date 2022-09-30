@@ -1,0 +1,395 @@
+﻿@page "/SimpleList"
+@using BlazorWEB.Services;
+
+@inject HttpClient Http
+@inject IAccountService AccountService
+@inject NavigationManager NavigationManager
+
+@using static Program;
+@using static BlazorWEB.Functions;
+
+@implements IDisposable
+@inject IStorage IStorage
+
+<Csscontrol></Csscontrol>
+
+<Flags Text="@StrFlag" OnSwapEv="@OnSwap"></Flags>
+
+<style>
+    td {
+        white-space:nowrap;
+    }
+    .coolDiv {
+        white-space:nowrap;
+    }
+
+</style>
+
+
+<div class="coolDiv" >
+    <select class="coolSelect" name="order" id="order" @bind="@SortOrder">
+        <option value=@Order.Alfabetic>Alfabet</option>
+        <option value=@Order.Sequental>Viktige</option>
+        <option value=@Order.Random>Tilfeldig</option>
+    </select>
+
+
+    @if (SortOrder == Order.Alfabetic)
+    {
+        <label for="batch">Ord:</label>
+        <select span class="coolSelect" name="batch" id="batch" @bind="@Letter">
+            @foreach (var x in dictWords)
+            {
+                <option value=@(x.Key)>@x.Key (@x.Value.Count) </option>
+            }
+        </select>
+    }
+    @if (SortOrder == Order.Random)
+    {
+        <label for="batch">Ord:</label>
+        <select span class="coolSelect" name="batch" id="batch" @bind="@SizeGroup">
+            @foreach (var x in new[] { "5", "10", "15", "20", "25", "30", "50" })
+            {
+                <option value=@x>@x</option>
+            }
+        </select>
+        <button class="coolButton" @onclick="SelectWords">Nye</button>
+    }
+    @if (SortOrder == Order.Sequental)
+    {
+        <label for="batch">Ord:</label>
+        <select span class="coolSelect" name="batch" id="batch" @bind="@SizeGroup">
+            @foreach (var x in new[] { "5", "10", "15", "20", "25", "30", "50" })
+            {
+                <option value=@x>@x</option>
+            }
+        </select>
+        <label for="_IMin">Fra:</label>
+        <select span class="coolSelect" name="_IMin" id="_IMin" @bind="@_IMin">
+            @foreach (var x in _listMins)
+            {
+                <option value=@x>@x</option>
+            }
+        </select>
+    }
+     <button class="coolButton" @onclick="OnQueryDelStat">Reset</button>
+</div>
+<InfoBox strError="@StrError" ></InfoBox>
+<HelpBox StrInfo="@StrInfo" StrTitle = "@StrTitle" EvStateHasChanged="StateHasChanged"></HelpBox>
+
+@if (!string.IsNullOrEmpty(StrSuccess))
+{
+    <div  @onclick="@(()=>StrSuccess = string.Empty)">
+        <h6 class="isa_success">&#10004 @StrSuccess </h6>
+    </div>
+}
+<YesNo @ref="YesNo"  Message = "(Re)sette nivået til 0 for ordene ?" ConfirmedChanged="OnDelStat"  />
+
+@if (lstWords == null)
+{
+    <p><em>Laster Gloser ... </em></p>
+}
+else
+{
+    <table class="g_blueTable">
+        <thead>
+            <tr>
+                <th style="width:30%">@StrFromLangN</th>
+                <th style="width:40%">@StrToLangN</th>
+                <th style="width:10%">Nr</th>
+                <th style="width:20%">Nivå</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var w in lstWords)
+            {
+                <tr>
+                    <td>@w.FromWord</td>
+                    <td>@w.ToWord</td>
+                    <td>@w.ID</td>
+                    <td>
+                        <img class="imgSmileyButton" src=@GetSmiley(w.Level)>(@w.Level)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<br />
+
+
+@code {
+    private string StrFlag { get; set; } = "";
+    private string StrError { get; set; } = "";
+    private string StrSuccess { get; set; } = "";
+    private List<TWord> lstWords = new();
+
+    static SimpleList? _this = null;
+
+    public static SimpleList? Obj { get => _this; }
+
+    private YesNo? YesNo { get; set; }
+
+
+    private string FlagText
+    {
+        get => StrFlag;
+    }
+
+
+    int _sizeGroup;
+    public int SizeGroup
+    {
+        get => _sizeGroup;
+        set
+        {
+            _sizeGroup = value;
+            SelectWords();
+        }
+    }
+
+    char _letter = 'A';
+    public char Letter
+    {
+        get => _letter;
+        set
+        {
+            _letter = value;
+            SelectWords();
+        }
+    }
+
+
+    private int _imi = 0;
+    private int _IMin
+    {
+        get => _imi;
+        set
+        {
+            _imi = value;
+            SelectWords();
+        }
+    }
+
+
+    private Order _sortOrder = Order.Sequental;
+    private Order SortOrder
+    {
+        get => _sortOrder;
+        set
+        {
+            _sortOrder = value;
+            SelectWords();
+        }
+    }
+
+
+    void SelectWords()
+    {
+        if (LstDict == null || LstDict.Count == 0)
+            return;
+        lstWords ??= new();
+        lstWords.Clear();
+
+        if (SortOrder == Order.Alfabetic)
+        {
+            lstWords = dictWords[Letter];
+            lstWords = lstWords.OrderBy(w => w.FromWord).ToList();
+        }
+        if (SortOrder == Order.Sequental)
+        {
+            var x = LstDict.Where(w => _IMin < w.ID && w.ID <= _IMax).ToList();
+            lstWords.Add(x);
+            lstWords = lstWords.OrderBy(w => w.ID).ToList();
+
+        }
+        if (SortOrder == Order.Random)
+        {
+            var tmp = LstDict.OrderBy(w => Guid.NewGuid()).ToList();
+            lstWords = tmp.CopyMany(0, SizeGroup - 1);
+        }
+        lstWords.ForEach(w => w.Sort = w.ID);
+
+        SaveData();
+        UpdateStrInfo();
+
+        StrSuccess = "";
+        StateHasChanged();
+    }
+
+    private bool CheckFirstLetter(string s, char ch)
+    {
+        try
+        {
+            if (FirstLetter(s) == ch)
+                return true;
+        }
+        catch (Exception)
+        {
+
+        }
+        return false;
+    }
+
+#pragma warning disable 1998
+    protected async override Task OnInitializedAsync()
+    {
+
+        DoInit();
+        Program.currentStateHasChanged = StateHasChanged;
+    }
+#pragma warning restore 1998
+    static public List<TWord> LstDict { get; set; } = new() ;
+    static public Dictionary<char, List<TWord>> dictWords {get; set;} = new();
+    public void DoInit()
+    {
+        try
+        {
+
+            LstDict = Program.GetDictionary();
+            lstWords = new();
+            dictWords = MakeDictionary;
+
+            var data = IStorage._GetData();
+            _imi = data.IdxStart;
+            _sizeGroup = Math.Max(data.Step, 5);
+            _sortOrder = data.Order;
+            _letter = data.Letter;
+            StrFlag = data.Info;
+
+            lstWords = Program.GetSelectedWords();
+            if (lstWords is null || lstWords.Count < 5)
+                SelectWords();
+
+        }
+        catch (Exception e)
+        {
+            StrError = "Error - unable to connect to the Server : " + e.Message;
+        }
+    }
+
+    public void OnSwap()
+    {
+        return;
+        //Program.BaseDataObj.SwapLanguage();
+        //LstDict = Program.GetDictionary();
+        //lstWords = new();
+        //dictWords = MakeDictionary;
+        //await SelectWords();
+        //UpdateStrInfo();
+        //StateHasChanged();
+    }
+
+    private int _IMax { get => _IMin + SizeGroup; }
+
+    void UpdateStrInfo()
+    {
+        int cWords = IStorage._GetData().TotalWords;
+        string wordlist = $"({cWords} viktigste)";
+
+        string strLang = LangInNorwegian(GetFromLangFromLangT(Program.BaseDataObj.LangT));
+
+
+        StrFlag = SortOrder switch
+        {
+            Order.Alfabetic => string.Format($"{strLang} {Letter}({lstWords.Count}) - {wordlist}"),
+            Order.Sequental => string.Format($"{strLang} Ord {_IMin + 1}-{_IMax}. {wordlist}"),
+            Order.Random => string.Format($"{strLang} {lstWords.Count} tilfeldige. {wordlist}"),
+            _ => ""
+        };
+
+    }
+
+
+
+
+    void OnSave()
+    {
+        SaveData();
+        StrSuccess = $" Lagret ordgruppen : {StrFlag}. ";
+        StrSuccess += "Du kan lære deg de valgte ordene under Pugg meny.";
+        StateHasChanged();
+    }
+    void SaveData()
+    {
+        var data = IStorage._GetData();
+        data.IdxStart = _IMin;
+        data.Step = SizeGroup;
+        data.Order = SortOrder;
+        data.Info = StrFlag;
+        data.Letter = Letter;
+        IStorage._SetData(data);
+        Program.SaveSelectedWords( lstWords);
+    }
+
+    void OnQueryDelStat()
+    {
+        YesNo?.ShowPop();
+    }
+    void OnDelStat()
+    {
+        lstWords.ForEach(w => w.Level = 0);
+        Program.UpdateSelectedWords(lstWords);
+        StateHasChanged();
+    }
+
+    public const string StrTitle = "Her velger du ordene du vil pugge.";
+    public const string StrInfo = @"Trykk på flagget = puggeretning. 
+Du velger de viktigste, fra en bokstav eller et antall tilfeldige.
+Reset nullstiller ALLE ordene i ordlisten. 
+(Ordlister velges i Hjem menyen.)";
+  
+
+    private int[] _listMins
+    {
+        get
+        {
+            List<int> l = new();
+            for (int i = 0; i < LstDict?.Count; i += SizeGroup)
+                l.Add(i);
+            return l.ToArray();
+        }
+    }
+
+    char FirstLetter(string s)
+    {
+        s = s.ToUpper();
+        return s[0];
+    }
+    private Dictionary<char, List<TWord>> MakeDictionary
+    {
+        get
+        {
+            Dictionary<char, List<TWord>> d = new();
+            try
+            {   
+        
+                for (char ch = 'A'; ch < 'Z'; ch++)
+                    d.Add((char)ch, LstDict.Where(w => CompareFirstUpper(w.FromWord, ch)).ToList());
+                return d;
+            }
+            catch (Exception)
+            {
+                StrError = "Error creating alfa dictionary ...";
+            }
+            return d;
+        }
+    }
+
+    static bool CompareFirstUpper(string s, char ch)
+    {
+        if (s==null || s.Length == 0)
+            return false;
+        return s.ToUpper()[0] == ch;
+    }
+
+    void IDisposable.Dispose()
+    {
+        SaveData();
+
+    }
+}
+
+
+

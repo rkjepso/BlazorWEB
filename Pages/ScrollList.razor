@@ -1,0 +1,443 @@
+﻿@page "/ScrollList"
+@using static BlazorWEB.Functions;
+@using System.Timers;
+@using BlazorWEB.Services;
+@inject HttpClient Http
+@inject IAccountService AccountService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@using static Program;
+@implements IDisposable
+@inject IStorage IStorage
+
+
+<Csscontrol></Csscontrol>
+
+<Flags Text="@StrFlag" SwapLang="@SwapWord" OnSwapEv="@OnSwapWord"></Flags>
+
+
+<style>
+    td{
+        white-space:nowrap;
+        color:var(--TextColorDark);
+    }
+
+
+    .coolDiv {
+        white-space:nowrap;
+        vertical-align: middle; 
+        
+    }
+
+    th, coolSelect, coolButtonX, coolSpan {
+        user-select: none;
+    }
+    .toWord  {
+    color:var(--ToWord);
+    }
+
+</style>
+
+
+<div class="coolDiv" >
+
+@*    <span class="coolSpan">*@
+        <button class="coolSelect" @onclick="@(()=>OnReset(true))" >⟳</button> 
+@*    </span>*@
+    <span class="coolSpan">
+        @foreach (var n in new[] { 4,6,8})
+        {
+        <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(n)</button>
+        }
+    </span>
+
+     <span class="coolSpan">
+        @foreach (var _ms in new[] { 1000, 2000, 3000, 5000})
+        {
+            int ms = _ms;
+            <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(BlinkStr(ms))</button>
+        }
+    </span>
+     
+</div>
+
+<InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
+<HelpBox StrTitle="Pugging via Liste" StrInfo="@StrInfo" EvStateHasChanged="StateHasChanged"></HelpBox>
+
+@if (lstWords == null)
+{
+    <p><em>Laster Gloser ... </em></p>
+}
+else
+{
+    <table class="g_blueTable">
+        <thead>
+            <tr>
+                <th style="width:37%;user-select:none;"  >
+                    @StrFromLangD()
+                </th>
+                <th style="width:33%" @onclick="OnShow" >@StrToLangD() </th>
+                <th style="width:20%" @onclick="@(()=>OnChangeSmiley())">
+                    <img  hidden="@IsRunning" class="imgSmileyButton"  src=@Smileys[SmileyIndex]> Max</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var w in lstWords)
+            {
+                counter = (w == lstWords[0]) ? 0 : counter + 1;
+                <tr @onclick="@(()=>OnOk(w))">
+                    @if (w.IsCorrect)
+                    {
+                         <td > &#10004 @FromWordD(w)</td>  
+                    }
+                    else
+                    {
+                          <td >@FromWordD(w)</td>        
+                    }
+                    <td class="toWord" style="@OpaCity(counter)">@ToWordD(w)</td>
+                    <td>
+                        <img class="imgSmileyButton" src=@GetSmiley(w.Level)>@(w.Level)%
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<br />
+
+@code {
+    #pragma warning disable 1998,8622
+    double opacity = 1;
+    private string OpaCity(int i) 
+    {
+        //  opacity = (warmup - (double)(i+2)/(Size*1.4)   ) * (i+5) ;
+        opacity = (warmup - (double)(i+1)/(Size+1)) > 0 ? 1 : 0;
+        opacity = Math.Max(0, opacity);
+        if (Show)
+            opacity = 1;
+
+        return $"opacity:{opacity};";
+    }
+
+    private bool Random { get; set; } = false;
+    private bool IsRunning => timer?.Enabled ?? false;
+
+    private string BlinkStr(int ms)
+    {
+        if (ms >= 1000000)
+            return "\u221E"; 
+        return $"{ms / (double)1000}s";
+    }
+    private int MsWord { get; set; } = 2000;
+    private bool Show = false;
+    void OnBlinkInterval(int ms)
+    {
+        SetTimerInteval(ms);
+        if (ms >= 1000000)
+        {
+            ToggleShow();
+            return;
+        }
+        Show = false;
+        void ToggleShow()
+        {
+            if (Show)
+                NewWords();
+            Show = !Show;
+        }
+    }
+
+    void SetTimerInteval(int msPerWord)
+    {
+        MsWord = msPerWord;
+
+        if (timer!=null) timer.Interval = (Size*msPerWord + 1500)/slot;        
+    }
+
+
+    public int Size { get; set; } = 4;
+    private void OnSize(int n)
+    {
+        Size = n;
+        OnReset(true);
+        //SaveData();
+        //NewWords();
+    }
+    private void NewWords()
+    {
+        warmup = 0;
+
+        lstWords = lstSelected;
+        lstWords = lstWords.Where(w => w.IsCorrect == false).ToList();
+        lstWords = lstWords.FindRandomWords(Size);
+
+        SaveData();
+        if (lstWords.Count == 0)
+        {
+            timer?.Stop();
+            timer = null;
+            StrSuccess = "Pugging er ferdig. Restart ved å trykke på ⟳-knappen ";           
+        }
+        StateHasChanged();       
+    }
+
+    void OnStopp()
+    {
+        timer?.Stop();
+        timer ??= null;
+    }
+
+
+    int counter = 0;
+    static Timer? t2 = null;
+    public static void DoAction(Action f, int ms)
+    {
+        t2 = new Timer(ms);
+        t2.Elapsed += (x, y) => { f(); t2.Dispose(); t2=null;};
+        t2.Start();
+    }
+
+
+    private bool HideAnswer { get; set; } 
+    public string  StrFlag => IStorage._GetData().Info;
+    private string StrError { get; set; } = "";
+    private string StrWarn { get; set; } = "";
+    private string StrSuccess { get; set; } = "";
+
+
+    private List<TWord> lstWords = new();
+    private List<TWord> lstSelected = new();
+
+    static SimpleList? _this = null;
+
+    public static SimpleList? Obj { get => _this; }
+
+
+    static public List<TWord> LstDict { get; set; } = new();
+    static public Dictionary<char, List<TWord>> dictWords {get; set;} = new();
+    protected async override Task OnInitializedAsync()
+    {
+        StrInfo = 
+        @"Dersom du kan ordet trykker du ned og får poeng.
+        Trykk på en av sekundknappene for å starte.    
+        Trykk direkte på ordet for å godkjenne / få poeng.
+        Knappen ∞ betyr manuel visning.
+
+        Trykk på flagget = puggeretning. ";
+
+        DoInit();     
+        Program.currentStateHasChanged = StateHasChanged;
+        StateHasChanged();
+    }
+    // \u21BB 
+    //"Ved uendelig  (\u221E) tid. Trykk på tabellhodet for å vise"+
+    //"\u2714 knappen fjerner så godkjente (\u2714 ) ord."+
+
+    public void DoInit()
+    {
+        try
+        {
+            HideAnswer = true;
+            LstDict = Program.GetDictionary();
+            lstWords = new();
+            var data = IStorage._GetData();
+
+            SmileyIndex = data.SmileyIndex;
+            MsWord = data.MsBlink > 0 ? data.MsBlink : 1000;
+            Size = data.NumBatch;
+            lstWords = Program.GetSelectedWords();
+            lstSelected = lstWords;
+            //SelectWords();
+
+            StrSuccess = "";
+            timer?.Dispose();
+            //if (Start)
+            OnBlinking();
+            UpdateStrInfo();
+
+
+            DoAction(StateHasChanged, 10);
+        }
+        catch (Exception e)
+        {
+            StrError = "Error - unable to connect to the Server : " + e.Message;
+        }
+
+        void UpdateStrInfo()
+        {
+            int cWords = IStorage._GetData().TotalWords;
+            string wordlist = $"({cWords} viktigste)";
+            string strLang = LangInNorwegian(GetFromLangFromLangT(Program.BaseDataObj.LangT));
+        }
+    }
+    void OnSave()
+    {
+        SaveData();
+
+        StrSuccess = $" Lagret ordgruppen : {StrFlag}. ";
+        StrSuccess += "Du kan lære deg de valgte ordene under Pugg meny.";
+        StateHasChanged();
+
+    }
+
+    void SaveData()
+    {
+        var data = IStorage._GetData();
+
+
+        data.SmileyIndex = SmileyIndex;
+        data.MsBlink = MsWord;
+        data.NumBatch = Size;
+
+        IStorage._SetData(data);
+        Program.UpdateSelectedWords( lstWords);
+    }
+
+
+    void OnDelStat()
+    {
+        lstWords.ForEach(w => w.Level = 0);
+        Program.UpdateSelectedWords(lstWords);
+        StateHasChanged();
+    }
+
+    public string StrInfo { get; set; } = "";
+
+    void OnShow()
+    {
+        HideAnswer = !HideAnswer;
+        lstWords.ForEach(w => w.ToWordAns = HideAnswer ? "" : ToWordD(w) );
+        StateHasChanged();
+    }
+
+    void OnOk(TWord _w)
+    {
+        var i = lstWords.FindIndex(w => _w.ID == w.ID);
+        if (i == -1)
+            return;
+        lstWords[i].IsCorrect = !lstWords[i].IsCorrect;
+        lstWords[i].Level += lstWords[i].IsCorrect ? 2 : -2;
+        //TWord w = lstWords[i];
+        //int newLevel = w.Level + (w.IsCorrect ? 2 : -2);
+        //lstWords[i] = lstWords[i] with { IsCorrect = !w.IsCorrect, Level = newLevel };
+        //Program.UpdateSelectedWord(lstWords[i]);
+
+        var ix = lstSelected.FindIndex(w => _w.ID == w.ID);
+        if (ix == -1)
+            return;
+        lstSelected[ix].IsCorrect = lstWords[i].IsCorrect;
+        //lstSelected[ix] = lstSelected[ix] with { IsCorrect = lstWords[i].IsCorrect};
+    }
+
+    void OnRemove()
+    {
+        lstWords = lstWords.Where(w => !w.IsCorrect).ToList();
+    }
+
+    void OnReset(bool x)
+    {
+        OnSave();
+        DoInit();
+        StateHasChanged();
+    }
+
+    private bool SwapWord { get; set; } = false;
+    void OnSwapWord()
+    {
+        SwapWord = !SwapWord;
+        lstWords?.ForEach(w => w.ToWordAns = "");
+        StateHasChanged();
+    }
+
+    string FromWordD(TWord w) 
+    {
+        string s;
+        s =  $"{(SwapWord ? w.ToWord : w.FromWord)}  ";
+        return s;
+    }
+
+    string ToWordD (TWord w)  { 
+        return $"{(SwapWord ? w.FromWord : w.ToWord)}  "; 
+    }
+
+    string StrFromLangD()
+    {
+        if (lstSelected == null)
+            return "";
+
+        int corr = lstSelected.Where(w => w.IsCorrect).Count();
+        string s = $"({corr}/{lstSelected.Count})";
+        return $"{(SwapWord ? StrToLangN : StrFromLangN)} {s}  ";
+    }
+
+    string StrToLangD()
+    {
+        return $"{(SwapWord ? StrFromLangN : StrToLangN)}  ";
+    }
+       
+    private Timer? timer = null;
+    private double warmup;
+    private double dx = 0.01;
+    private double slot = 100;
+    void OnBlinking()
+    {
+        if (timer != null)
+        {
+            timer.Stop();
+            timer = null;
+        }
+
+
+        timer = new Timer();
+        SetTimerInteval(this.MsWord);
+        timer.Elapsed += new ElapsedEventHandler(OnTimerWord);
+        timer.Start();
+        warmup = 0;
+
+        lstWords = lstSelected.FindRandomWords(Size);
+
+        void OnTimerWord(object sender, ElapsedEventArgs e)
+        {
+            if (timer == null || lstWords.Count == 0)
+                return;
+
+            warmup += dx;
+            if (warmup > 1)
+            {
+                warmup = 0;
+ 
+                NewWords();
+            }
+           
+             StateHasChanged();
+
+    
+            return;
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        SaveData();
+        timer?.Stop();
+        timer = null;
+    }
+
+    int SmileyIndex = 5;
+    void OnChangeSmiley()
+    {
+        SmileyIndex = SmileyIndex - 1;
+        if (SmileyIndex < 0)
+            SmileyIndex = 5;
+        //SmileOff.ForEach((x, i) =>  (i > iMax));
+        OnReset(false);
+    }
+
+
+
+ }
+
+
+

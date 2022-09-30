@@ -1,0 +1,115 @@
+﻿@page "/DictionarySelection"
+@using BlazorWEB.Services;
+
+@inject NavigationManager NavigationManager
+@implements IDisposable
+@inject IStorage IStorage
+@code {
+    #pragma warning disable 4014, 1998, 039
+}
+<Csscontrol></Csscontrol>
+<div class="coolDiv">
+    <p class="coolP">Ordlister</p>
+    <span class="coolSpan">
+        <label for="words">Navn :</label>
+        <select class="coolSelect" name="words" id="words" @bind="@TotalWords">
+            @foreach (var x in new[] { 100, 250, 500, 750, 1000 })
+            {
+                <option value=@x>@x viktigste</option>
+            }
+        </select>
+        <button class="coolButton" @onclick="OnReset">Nullstill</button>
+    </span>
+
+</div>
+
+<InfoBox @ref=InfoBox @bind-StrInfo="StrInfo" strError=@StrError></InfoBox>
+@if (!string.IsNullOrEmpty(StrWarn))
+{
+    <div  @onclick="@(()=>StrWarn = string.Empty)">
+        <h6 class="isa_success">&#10004 @StrWarn </h6>
+    </div>
+}
+
+<YesNo @ref="YesNo"  Message = "Nullstille alt - Er du sikker ?" ConfirmedChanged="OnDelAll"  />
+
+@code {
+    private YesNo? YesNo { get; set; } = null;
+    int TotalWords
+    {
+        get => dt.TotalWords;
+        set { dt.TotalWords = value; OnSave(); }
+    }
+
+    string StrInfo { get; set; } = "";
+    string StrWarn { get; set; } = "";
+    string StrError { get; set; } = "";
+    private InfoBox? InfoBox { get; set; } = null;
+
+    private Data dt = default;
+
+#pragma warning disable CS8622
+    protected override void OnInitialized()
+    {
+        // Subscribe to the event
+        NavigationManager.LocationChanged += LocationChanged;
+        base.OnInitialized();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+        await LoadParams();
+        StateHasChanged();
+    }
+
+    private int orgTotalWords;
+    private async Task LoadParams()
+    {
+
+        dt = IStorage.GetItem<Data>(Defs.keySetup);
+        if (dt.TotalWords == 0) 
+        {
+            dt = Program.CreateStartupData();
+        }
+        orgTotalWords = dt.TotalWords;
+    }
+
+
+    private async void OnSave()
+    {
+        IStorage._SetData(dt);
+        StrWarn =  "";
+        dt = Program.CreateStartupData(dt.TotalWords); 
+        InfoBox?.DoStateHasChanged();
+        StateHasChanged();
+    }
+
+    public async Task DoStateHasChanged()
+    {
+        await LoadParams();
+        StateHasChanged();
+    }
+
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+      //  OnSave();
+    }
+    async void IDisposable.Dispose()
+    {
+        NavigationManager.LocationChanged -= LocationChanged;
+    }
+
+
+    void OnReset() => YesNo?.ShowPop();
+
+    void OnDelAll()
+    {
+        IStorage.Reset();
+        LoadParams();
+        StateHasChanged();
+    }
+
+}
+
+

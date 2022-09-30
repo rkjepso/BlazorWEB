@@ -1,0 +1,17 @@
+﻿@page "/Dictionaries"
+
+
+<div hidden="@(!IsLoggedIn)">
+    <h1>Welcome to all dictionaries</h1>
+</div>
+
+<div class="alert-danger" hidden="@IsLoggedIn">
+    <h1>Welcome to a limited number of Dictionaries</h1>
+    <h1>Please log on for all Dictionaries</h1>
+</div> 
+
+@code {
+    private bool IsLoggedIn {get => Program.IsLoggedIn;}
+
+
+}
