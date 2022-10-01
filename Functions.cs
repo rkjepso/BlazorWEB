@@ -40,10 +40,10 @@ public static class Functions
     {
         return lang switch
         {
-            Lang.Spanish => @"Img/spain.jpg",
-            Lang.English => @"Img/uk.jpg",
-            Lang.Norwegian => @"Img/norway.jpg",
-            Lang.German => @"Img/germany.jpg",
+            Lang.Spanish => @"Img/Spain.jpg",
+            Lang.English => @"Img/Uk.jpg",
+            Lang.Norwegian => @"Img/Norway.jpg",
+            Lang.German => @"Img/Germany.jpg",
             Lang.French => @"Img/French.png",
             _ => ""
         };
