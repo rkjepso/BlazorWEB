@@ -1,15 +1,25 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorWEB</a>
+        <a class="navbar-brand" href="">Pugge - Info</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu" >
+    <nav class="flex-column" >
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="LangSetup">
+                <span class="oi oi-plus" aria-hidden="true"></span> Språk
+            </NavLink>
+        </div>
 
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="SimpleList">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Velg Ord
+            </NavLink>
+        </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Scroll">
                 <span class="oi oi-plus" aria-hidden="true"></span> Pugg
@@ -22,17 +32,7 @@
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="LangSetup">
-                <span class="oi oi-plus" aria-hidden="true"></span> Språk
-            </NavLink>
-        </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="SimpleList">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Velg Ord
-            </NavLink>
-        </div>
 
     </nav>
 </div>
