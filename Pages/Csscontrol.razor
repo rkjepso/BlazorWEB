@@ -23,17 +23,15 @@
         --FromWord : black;/*hsl(var(--BaseColor), 100%, 20%);*/
         --ToWord : dark blue;
 
-        --BodyGradientFrom : hsla(var(--BaseColor), var(--ColorIntensity), 10%);
-        --BodyGradientTo : hsla(var(--BaseColor), var(--ColorIntensity), 20%);
-
-        --MenuGradientFrom : hsla(var(--BaseColor), var(--ColorIntensity), 40%);
-        --MenuGradientTo : hsla(var(--BaseColor), var(--ColorIntensity), 70%);
+        --GradientBody: linear-gradient(to right, darkblue, rgb(64,0,112));
+        --GradientMenu: linear-gradient(to top, blue, rgb(64,0,132));
 
         --TableGradientFrom : hsla(var(--BaseColor), var(--ColorIntensity), 40%);
         --TableGradientTo : hsla(var(--BaseColor), var(--ColorIntensity), 70%);
 
         --TableEvenFrom : hsla(var(--BaseColor), var(--ColorIntensity), 80%);
         --TableEvenTo   : hsla(var(--BaseColor), var(--ColorIntensity), 70%);
+
     }
 
     body {
@@ -41,7 +39,7 @@
         margin: 0px;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-size: 120%;
-        background-image: linear-gradient(to right, darkblue, rgb(32,0,32));
+        background-image: var(--GradientBody);
     }
 
     p {
