@@ -40,10 +40,91 @@
         }
 
     </script>
+
+    <style>
+        .container {
+            width: 80%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 10%;
+            background: #292970;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: center;
+            align-content: center;
+            background-image: linear-gradient(to right, darkblue, rgb(32,0,32));
+        }
+
+        .flex {
+            min-height: 60pt;
+        }
+
+        @keyframes loading {
+            0% {
+                width: 50pt;
+                height: 50pt;
+                margin-top: 0;
+            }
+
+            25% {
+                height: 4pt;
+                margin-top: 23pt;
+            }
+
+            50% {
+                width: 4pt;
+            }
+
+            75% {
+                width: 50pt;
+            }
+
+            100% {
+                width: 50pt;
+                height: 50pt;
+                margin-top: 0;
+            }
+        }
+
+        .loader {
+            width: 50pt;
+            height: 50pt;
+            border-radius: 100%;
+            border: yellow 5pt solid;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: transparent;
+            animation: loading 600ms infinite;
+            color: darkblue;
+        }
+
+        .load-text {
+            padding-top: 15px;
+            text-align: center;
+            font: 14pt "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: white;
+        }
+    </style>
 </head>
 
+
+
+
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+
+        <div class="container">
+            <div class="flex">
+                <div class="loader">
+                </div>
+            </div>
+            <div class="load-text">
+                Vent noen sekunder ....
+            </div>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
