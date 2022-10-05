@@ -1,9 +1,21 @@
 ﻿@inject NavigationManager NavigationManager
 @implements IDisposable
+
+
+@using BlazorWEB.Pages;
+
+<Csscontrol></Csscontrol>
+
 <style>
     a {
         color:yellow;
+        padding:0px;
     }
+
+    a:hover {
+        background-color: blue;
+            padding: 1px;
+        }
 </style>
 
 
@@ -15,42 +27,13 @@
         <a class="navbar-brand" style=@Style("Scroll") href ="Scroll">Pugg</a>
         <a class="navbar-brand" style=@Style("ScrollList") href="ScrollList">Liste</a>
 
-        <a class="navbar-brand" href="">Hjelp</a>
+        <a class="navbar-brand" style=@Style("Hjelp") href ="">Hjelp</a>
 
     </div>
 
 
 </div>
-@*
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu" >
-    <nav class="flex-column" >
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="LangSetup">
-                <span aria-hidden="true"></span> Språk
-            </NavLink>
-        </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="SimpleList">
-                <span  aria-hidden="true"></span> Velg Ord
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Scroll">
-                <span  aria-hidden="true"></span> Pugg
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="ScrollList">
-                <span  aria-hidden="true"></span> Pugg Liste
-            </NavLink>
-        </div>
-
-
-
-    </nav>
-</div>*@
 
 @code {
     private bool collapseNavMenu = true;
