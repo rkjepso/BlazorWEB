@@ -10,24 +10,38 @@
     a {
         color:yellow;
         padding:0px;
+ 
     }
 
     a:hover {
         background-color: blue;
             padding: 1px;
         }
+
+    .navbar {
+        overflow:hidden;
+        background-color:black;
+
+    }
+
+    .navbar a {
+        float:left;
+        color:white;
+        text-align:center;
+        padding: 3px 6px;
+    }
+
 </style>
 
 
 <div >
-    <div>
+    <div class ="navbar">
 
-        <a class="navbar-brand" style=@Style("LangSetup") href="LangSetup">Språk</a>
-        <a class="navbar-brand" style=@Style("SimpleList") href ="SimpleList">Ord</a>
-        <a class="navbar-brand" style=@Style("Scroll") href ="Scroll">Pugg</a>
-        <a class="navbar-brand" style=@Style("ScrollList") href="ScrollList">Liste</a>
-
-        <a class="navbar-brand" style=@Style("Hjelp") href ="">Hjelp</a>
+        <a style=@Style("LangSetup") href="LangSetup">Språk</a>
+        <a style=@Style("SimpleList") href ="SimpleList">Ord</a>
+        <a style=@Style("Scroll") href ="Scroll">Pugg</a>
+        <a style=@Style("ScrollList") href="ScrollList">Liste</a>
+        <a style=@Style("Hjelp") href ="">Hjelp</a>
 
     </div>
 
@@ -48,14 +62,13 @@
     protected async override Task OnInitializedAsync()
     {
         NavigationManager.LocationChanged += LocationChanged;
+        await Task.Delay(1);
     }
     void IDisposable.Dispose()
     {
         NavigationManager.LocationChanged -= LocationChanged;
     }
 
-
-    static int i = 0;
     string Style(string pageCurr)
     {
         if (page == pageCurr)
@@ -71,7 +84,7 @@
         return s ?? "";
     }
     static string page = "";
-    void LocationChanged(object sender, LocationChangedEventArgs e)
+    void LocationChanged(object ? sender, LocationChangedEventArgs e)
     {
         page = GetPage(e.Location);
         StateHasChanged();

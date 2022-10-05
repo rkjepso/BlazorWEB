@@ -21,14 +21,16 @@ namespace BlazorWEB
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             MyStuff();
-            await AccountService.Load(Program.BaseDataObj.LangT);
+            if (AccountService!= null)
+                await AccountService.Load(Program.BaseDataObj.LangT);
             await builder.Build().RunAsync();
         }
 
         static void MyStuff()
         {
-            _Http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-            builder.Services.AddScoped(sp => _Http);
+            _Http = new HttpClient { BaseAddress = new Uri(builder?.HostEnvironment.BaseAddress??"") };
+
+            builder?.Services.AddScoped(sp => _Http);
 
             //// YYZ
             //builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
