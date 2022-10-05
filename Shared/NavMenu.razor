@@ -1,12 +1,22 @@
-﻿<div >
-    <div style="color:white">
+﻿@inject NavigationManager NavigationManager
+@implements IDisposable
+<style>
+    a {
+        color:yellow;
+    }
+</style>
 
-        <a class="navbar-brand" href="LangSetup">Språk</a>
-        <a class="navbar-brand" href="SimpleList">Ord</a>
-        <a class="navbar-brand" href="Scroll">Pugg</a>
-        <a class="navbar-brand" href="ScrollList">Liste</a>
+
+<div >
+    <div>
+
+        <a class="navbar-brand" style=@Style("LangSetup") href="LangSetup">Språk</a>
+        <a class="navbar-brand" style=@Style("SimpleList") href ="SimpleList">Ord</a>
+        <a class="navbar-brand" style=@Style("Scroll") href ="Scroll">Pugg</a>
+        <a class="navbar-brand" style=@Style("ScrollList") href="ScrollList">Liste</a>
 
         <a class="navbar-brand" href="">Hjelp</a>
+
     </div>
 
 
@@ -50,5 +60,37 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += LocationChanged;
+    }
+    void IDisposable.Dispose()
+    {
+        NavigationManager.LocationChanged -= LocationChanged;
+    }
+
+
+    static int i = 0;
+    string Style(string pageCurr)
+    {
+        if (page == pageCurr)
+            return "color:yellow;text-decoration:underline;";
+        return "color:white";
+    }
+
+
+    static string GetPage(string location)
+    {
+        string[] a = location.Split(@"/");
+        string? s = a.LastOrDefault();
+        return s ?? "";
+    }
+    static string page = "";
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        page = GetPage(e.Location);
+        StateHasChanged();
     }
 }

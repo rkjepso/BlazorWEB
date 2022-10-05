@@ -89,6 +89,15 @@ namespace BlazorWEB
                 return (0, 0);
             return (dimension.Width, dimension.Height);
         }
+
+        public static string GetTitle()
+        {
+
+            var bs = _host?.Services?.GetRequiredService<BrowserService>();
+            var s = bs?.GetTitle();
+
+            return s ?? "";
+        }
         public static int Height { get; set; }
 
         public static BrowserService? BrowserService { get; set; }

@@ -35,6 +35,10 @@
             window.scrollTo(0, offsetTop);
         }
 
+        window.getTitle = () => {
+            return document.title;
+        };
+
         function Test() {
             DotNet.invokeMethod("Pugger.Client", "fnFromJS");
         }

@@ -12,6 +12,12 @@ public class BrowserService
     {
         return ((IJSInProcessRuntime)_js).Invoke<BrowserDimension>("getDimensions");
     }
+
+    public string GetTitle()
+    {
+        // return "HELLO";
+        return ((IJSInProcessRuntime)_js).Invoke<string>("getTitle");
+    }
 }
 
 public class BrowserDimension
