@@ -1,16 +1,16 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
+@using BlazorWEB.Pages;
 
+<Csscontrol></Csscontrol>
 
 <div class="page">
-    <div class="sidebar" style="background-image: linear-gradient(to bottom, rgb(12,0,12),darkblue ">
+    <div class="sidebar" style="background-image:var(--GradientMenu);">
         <NavMenu />
     </div>
 
     <main>
-
-
         <article class="content px-1">
             @Body
         </article>
