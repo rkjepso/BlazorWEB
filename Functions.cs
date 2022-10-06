@@ -12,18 +12,16 @@ public static class Functions
     level switch
     {
         >= 0 and <= 4 => 0,
-        >= 5 and <= 9 => 1,
-        >= 10 and <= 20 => 2,
-        >= 21 and <= 35 => 3,
-        >= 36 and <= 60 => 4,
-        _ => 5
+        >= 5 and <= 14 => 1,
+        >= 15 and <= 30 => 2,
+        >= 31 and <= 60 => 3,
+        _ => 4
     };
 
     public static string[] Smileys = new string[]
     {
          "Img/Smiley_Dead.png",
          "Img/Smiley_Sad.png",
-         "Img/Smiley_Orange.png",
          "Img/Smiley_Neutral.png",
          "Img/Smiley_Happy.png",
          "Img/Smiley_Green.png"
