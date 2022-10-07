@@ -90,7 +90,7 @@
     .stack {
         text-align: center;
         font-size: 30px;
-        color: yellow;
+        color: lightgreen;
     }
 
 </style>
@@ -180,7 +180,7 @@
               @for (int x = 0; x < Math.Min(stkWords.Count, 10);x++)
             {
                 var ws = stkWords.ToArray()[x];
-                <p class="stack" style="@StyleStack(x)">@FromWordD(ws) - @ToWordD(ws)</p>
+                <p class="stack" style="@StyleStack(x)">&#10004 @FromWordD(ws) - @ToWordD(ws)</p>
             }
 
     </div>
