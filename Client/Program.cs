@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-
 using BlazorWEB.Client;
 using BlazorWEB.Services;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using static BlazorWEB.Functions;
-using static System.Net.WebRequestMethods;
 
 namespace BlazorWEB
 {
@@ -21,14 +18,14 @@ namespace BlazorWEB
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             MyStuff();
-            if (AccountService!= null)
+            if (AccountService != null)
                 await AccountService.Load(Program.BaseDataObj.LangT);
             await builder.Build().RunAsync();
         }
 
         static void MyStuff()
         {
-            _Http = new HttpClient { BaseAddress = new Uri(builder?.HostEnvironment.BaseAddress??"") };
+            _Http = new HttpClient { BaseAddress = new Uri(builder?.HostEnvironment.BaseAddress ?? "") };
 
             builder?.Services.AddScoped(sp => _Http);
 
@@ -132,7 +129,7 @@ namespace BlazorWEB
 
 
 
-        public static Data CreateStartupData(int TotalWords=250)
+        public static Data CreateStartupData(int TotalWords = 250)
         {
             if (Storage == null)
                 return new Data();
@@ -150,7 +147,7 @@ namespace BlazorWEB
                 Storage._SetData(data);
 
                 var lst = GetDictionary();
-                 SaveSelectedWords(lst.GetRange(0, data.Step));
+                SaveSelectedWords(lst.GetRange(0, data.Step));
             }
             catch (Exception)
             {

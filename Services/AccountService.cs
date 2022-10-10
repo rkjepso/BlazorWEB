@@ -1,10 +1,4 @@
-﻿using BlazorWEB.Shared;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-
-
-namespace BlazorWEB.Services;
+﻿namespace BlazorWEB.Services;
 
 public interface IAccountService
 {
@@ -37,7 +31,7 @@ class AccountService : IAccountService
     {
         try
         {
-            if (Http==null)
+            if (Http == null)
                 return "";
             string uri = BaseUrl + @"GetErrorString";
             var s = await Http.GetStringAsync(uri);
@@ -50,18 +44,18 @@ class AccountService : IAccountService
 
     }
 
-    private static   Dictionary<LangT, List<TWord>>  LstLang = new();
+    private static readonly Dictionary<LangT, List<TWord>> LstLang = new();
 
     public List<TWord> GetDictionary()
     {
         // New stuff
-        List<TWord> lst = new ();
+        List<TWord> lst = new();
         LangT langT = Program.BaseDataObj.LangT;
         if (!LstLang.ContainsKey(langT))
             return lst;
-        
+
         int max = Program.Storage?._GetData().TotalWords ?? 1000;
-        lst = LstLang[langT].CopyMany(0, max);   
+        lst = LstLang[langT].CopyMany(0, max);
         return lst;
     }
 
@@ -69,16 +63,16 @@ class AccountService : IAccountService
     {
         if (LstLang.ContainsKey(langT) && LstLang[langT].Count > 0)
             return 0;
-DateTime dt = DateTime.Now;
+        DateTime dt = DateTime.Now;
         LstLang[langT] = await GetDefaultDictionary(langT);
-int ms = (DateTime.Now - dt).Milliseconds;
+        int ms = (DateTime.Now - dt).Milliseconds;
         return ms;
     }
 
 
     private static async Task<List<TWord>> GetDefaultDictionary(LangT langT)
     {
-        var  lst = await ReadData.Read(langT);
+        var lst = await ReadData.Read(langT);
         lst = lst.Where(w => !string.IsNullOrWhiteSpace(w.FromWord) &&
                              !string.IsNullOrWhiteSpace(w.ToWord)).ToList();
         lst = lst.Distinct(new TWordItemComparer()).ToList();
@@ -87,7 +81,7 @@ int ms = (DateTime.Now - dt).Milliseconds;
         return lst;
 
         void NewID()
-        { 
+        {
             int _ID = 1;
             for (int idx = 0; idx < lst.Count; idx++)
                 lst[idx] = lst[idx] with { ID = _ID++ };
@@ -95,4 +89,3 @@ int ms = (DateTime.Now - dt).Milliseconds;
     }
 }
 
- 

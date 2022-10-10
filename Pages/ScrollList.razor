@@ -376,7 +376,7 @@ else
     {
         return $"{(SwapWord ? StrFromLangN : StrToLangN)}  ";
     }
-       
+
     private Timer? timer = null;
     private double warmup;
     private double dx = 0.01;
@@ -407,13 +407,13 @@ else
             if (warmup > 1)
             {
                 warmup = 0;
- 
+
                 NewWords();
             }
-           
-             StateHasChanged();
 
-    
+            StateHasChanged();
+
+
             return;
         }
     }
@@ -425,12 +425,12 @@ else
         timer = null;
     }
 
-    int SmileyIndex = 4;
+    int SmileyIndex = Smileys.Length - 1;
     void OnChangeSmiley()
     {
         SmileyIndex = SmileyIndex - 1;
         if (SmileyIndex < 0)
-            SmileyIndex = 4;
+            SmileyIndex = Smileys.Length - 1;
         //SmileOff.ForEach((x, i) =>  (i > iMax));
         OnReset(false);
     }

@@ -5,9 +5,9 @@ public class TWordBase
 {
 
 }
-public record TWord(int ID, 
-                    string FromWord, 
-                    string ToWord, 
+public record TWord(int ID,
+                    string FromWord,
+                    string ToWord,
                     string ToWordEnglish,
                     string FromSentence,
                     string ToSentence)
