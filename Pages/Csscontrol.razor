@@ -1,35 +1,38 @@
 ﻿
 @code {
-    #pragma warning disable 4014, 1998, 039
+    #pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButton" : "coolButtonX";
 }
 <style>
     :root {
-        --BaseColor : 240;
-        --ColorIntensity : 60%;
-        --PanelBkColor : hsl(var(--BaseColor), var(--ColorIntensity), 80%);
-        --BoderColor : white ; /*hsl(var(--BaseColor), 40% ,20%);*/
-        --TextColor : hsl(var(--BaseColor), 100%, 100%);
-        --TextColorDark : hsl(var(--BaseColor), 100%, 0%);
-        --TextColorFlag: var(--TextColor);
-        --ControlColor : hsl(var(--BaseColor), var(--ColorIntensity), 50%);
+        --BC : 240;
+        --CI : 60%;
+        --BDark : 30%;
+        --BLight : 80%;
+        --PanelBkImg: linear-gradient(to left, hsl(var(--BC),var(--CI),90%), hsl(var(--BC),var(--CI),70%) );
+        --BoderColor : white ; /*hsl(var(--BC), 40% ,20%);*/
+        --ButtonColor : white;/*hsl(var(--BC), -var(--CI), 10%);*/
+        --ButtonColorX: lightgray;/* hsl(var(--BC), 60%, 80%);*/
+        --TextColor : black;
+        --TextColorDark : hsl(var(--BC), 100%, 0%);
+        --TextColorFlag: white;
+        --ControlColor : hsl(var(--BC), var(--CI), 50%);
         --TableHeadColor : var(--ControlColor);
         --TableBorder : solid black 1px;
-        --HelpBkColor : hsl(var(--BaseColor), 80%, 70%);  /*#BDE5F8;*/
+        --HelpBkColor : hsl(var(--BC), 80%, 70%);  /*#BDE5F8;*/
 
 
         --StdBorder :  0.05em solid black;/*var(--ControlColor);*/
-        --FromWord : black;/*hsl(var(--BaseColor), 100%, 20%);*/
+        --FromWord : black;/*hsl(var(--BC), 100%, 20%);*/
         --ToWord : dark blue;
+        --GradientBody: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
+        --GradientMenu: linear-gradient(to right, black, grey);
 
-        --GradientBody: linear-gradient(to right, darkblue, rgb(64,0,112));
-        --GradientMenu: linear-gradient(to left, rgb(124,0,132), rgb(124,0,132));
+        --TableGradientFrom : hsla(var(--BC), var(--CI), 40%);
+        --TableGradientTo : hsla(var(--BC), var(--CI), 70%);
 
-        --TableGradientFrom : hsla(var(--BaseColor), var(--ColorIntensity), 40%);
-        --TableGradientTo : hsla(var(--BaseColor), var(--ColorIntensity), 70%);
-
-        --TableEvenFrom : hsla(var(--BaseColor), var(--ColorIntensity), 80%);
-        --TableEvenTo   : hsla(var(--BaseColor), var(--ColorIntensity), 70%);
+        --TableEvenFrom : hsla(var(--BC), var(--CI), 80%);
+        --TableEvenTo   : hsla(var(--BC), var(--CI), 70%);
 
     }
 
@@ -42,17 +45,17 @@
     }
 
     p {
-        color:var(--TextColorDark);
+ /*       color:var(--TextColorDark);*/
     }
 
     .coolP, label {
-        color: var(--TextColorDark);
+  /*      color: var(--TextColorDark);*/
         line-height: 14px;
         margin: 1em 0em 0.2em 0.2em;
     }
 
      option, .coolDiv, .coolButtonX{
-        background-color:var(--PanelBkColor);
+        background-color:var(--ButtonColor);
         border: none ;
         display: inline-block;
         border-radius: 0.3em;
@@ -67,31 +70,33 @@
 
     .coolSelect, .coolButton, .coolButtonX, .coolSpan  {
         border: var(--StdBorder);
-        background-color: var(--PanelBkColor);
+        background-color: var(--ButtonColor);
         border-radius: 0.3em;
         display: inline-block;
         color:var(--TextColor);
     }
     .coolSelect, .coolButton {
-        background-color: var(--ControlColor);
+        background-color: var(--ButtonColor);
 
     }
     .coolSelect:hover, .coolButton:hover, .coolButtonX:hover {
         color: yellow;
         border: 0.15em solid red;
-        background-color: hsl(235 80% 60%);
+        background-color: hsl(var(--BC) 80% 60%);
         padding: 0.0em 0.2em;
     }
     .coolSpan,  .coolSelect, .coolButton, .coolButtonX {
         padding : 0.1em 0.3em;
         border: var(--StdBorder);
+
     }
     .coolSelect, .coolButtonX, .coolButton, 
     .coolSelect:hover{
         margin : 1px;
     }
     .coolButtonX {
-        color:var(--TextColorDark);
+        color:var(--TextColor);
+        background-color: var(--ButtonColorX);
     }
     .coolSelect {
         padding: 0.3em 0.1em;
@@ -101,13 +106,15 @@
     }
 
     .coolDiv {
-        background-color: var(--PanelBkColor);
+        background-image: var(--PanelBkImg);
         padding: 0em 0.05em 0.2em 0.05em;
         text-align: left;
         width: 100%;
     }
-    
 
+    .coolSpan {
+        background-image: var(--PanelBkImg);
+    }
 
     table.g_blueTable {
         border: 1px solid var(--BoderColor); /* #1C6EA4;*/
@@ -127,7 +134,7 @@
     }
 
     table.g_blueTable tr:nth-child(even) {
-        background: var(--PanelBkColor);
+            background-image:var(--PanelBkImg);
         background-image: linear-gradient(to right, var(--TableEvenFrom), var(--TableEvenTo));
     }
 
@@ -163,7 +170,7 @@
    @@keyframes pugging0 {
     0% {
         opacity: 0.0;
-        color: var(--PanelBkColor);
+        background-image:var(--PanelBkImg);
     }
 
     40% {
