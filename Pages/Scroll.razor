@@ -93,15 +93,17 @@
         color: white
     }
 
+    .imgSmileyButton:hover {
+        border: 0.15em solid red;
+        padding:0em;
+        border-radius: 100%;
+        user-select: none;
+    }
+
 </style>
 
 <span class="coolSpan">
     <button class="coolButton" @onclick="@(()=>OnRestart())"> ⟳ </button>
-    @*    <button class="coolButton" @onclick="@(()=>OnEnglish())">
-    </button>*@
-
-    @*  <img class=@ClsEngImage() src='Img/uk.jpg' />*@
-
     <img class="imgSmileyButton" @onclick="@(()=>OnChangeSmiley())" src=@Smileys[SmileyIndex]>
 </span>
 
@@ -109,7 +111,7 @@
     @{
         foreach (var ms in new int[] { 1000, 2000, 3000, 4000, 5000 })
         {
-            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))">@((double)ms / 1000)s</button>
+                <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))">@((double)ms / 1000)s</button>
         }
     }
 </span>
@@ -127,64 +129,64 @@
     string _style = "";
     @if (w != null)
     {
-        <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRemoveWord())">
-            <table>
-                <thead>
+    <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRemoveWord())">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:50%"></th>
+                            <th style="width:10%"></th>
+                            <th style="width:40%"></th>
+                            <th style="width:10%"></th>
+                        </tr>
+                    </thead>
                     <tr>
-                        <th style="width:50%"></th>
-                        <th style="width:10%"></th>
-                        <th style="width:40%"></th>
-                        <th style="width:10%"></th>
-                    </tr>
-                </thead>
-                <tr>
-                    <td class="wordinfo">
-                        @(i == 0 ? StrRest : "")
-                    </td>
-                    <td>
-                        @{
+                        <td class="wordinfo">
+                            @(i == 0 ? StrRest : "")
+                        </td>
+                        <td>
+                            @{
                             if (w.IsDeleted)
                             {
-                                <p class="fromWord">&#10004; @FromWordD(w)</p>
+                                        <p class="fromWord">&#10004; @FromWordD(w)</p>
                             }
                             else
                             {
-                                <p class="fromWord">@FromWordD(w)</p>
+                                        <p class="fromWord">@FromWordD(w)</p>
                             }
-                        }
-                    </td>
-                    <td></td>
-                    <td>
-                        <div class="smiley">
-                            <img class="imgSmileyButton" src=@GetSmiley(NewLevel(w)) />
-                        </div>
-                    </td>
-                </tr>
+                            }
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="smiley">
+                                <img class="imgSmileyButton" style="user-select:unset" src=@GetSmiley(NewLevel(w)) />
+                            </div>
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
-                    </td>
-                    <td></td>
-                    <td class="level">
-                        @NewLevel(w)%
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
+                        </td>
+                        <td></td>
+                        <td class="level">
+                            @NewLevel(w)%
+                        </td>
+                    </tr>
+                </table>
+    </div>
+    <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
 
-        <div class="stack">
+    <div class="stack">
 
-            @for (int x = 0; x < Math.Min(stkWords.Count, 10); x++)
+                @for (int x = 0; x < Math.Min(stkWords.Count, 10); x++)
             {
                 var ws = stkWords.ToArray()[x];
-                <p class="stack" style="@StyleStack(x)">&#10004 @FromWordD(ws) - @ToWordD(ws)</p>
+                    <p class="stack" style="@StyleStack(x)">&#10004 @FromWordD(ws) - @ToWordD(ws)</p>
             }
 
-        </div>
+    </div>
     }
 }
 
