@@ -11,17 +11,19 @@ public static class Functions
     public static int GetSmileyIndex(int level) =>
     level switch
     {
-        >= 0 and <= 4 => 0,
-        >= 5 and <= 14 => 1,
-        >= 15 and <= 30 => 2,
-        >= 31 and <= 60 => 3,
-        _ => 4
+        >= 0 and <= 10 => 0,
+        >= 10 and <= 20 => 1,
+        >= 21 and <= 34 => 2,
+        >= 35 and <= 50 => 3,
+        >= 51 and <= 65 => 4,
+        _ => 5
     };
 
     public static string[] Smileys = new string[]
     {
          "Img/Smiley_Dead.png",
-         "Img/Smiley_Sad.png",
+         "Img/Smiley_SadM.png",
+         "Img/Smiley_Orange.png",
          "Img/Smiley_Neutral.png",
          "Img/Smiley_Happy.png",
          "Img/Smiley_Green.png"

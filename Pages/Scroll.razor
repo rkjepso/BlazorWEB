@@ -90,7 +90,7 @@
     .stack {
         text-align: center;
         font-size: 30px;
-        color: lightgreen;
+        color: white
     }
 
 </style>
@@ -109,7 +109,7 @@
     @{
         foreach (var ms in new int[] { 1000, 2000, 3000, 4000, 5000 })
         {
-                <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))">@((double)ms / 1000)s</button>
+            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))">@((double)ms / 1000)s</button>
         }
     }
 </span>
@@ -127,68 +127,69 @@
     string _style = "";
     @if (w != null)
     {
-    <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRemoveWord())">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:50%"></th>
-                            <th style="width:10%"></th>
-                            <th style="width:40%"></th>
-                            <th style="width:10%"></th>
-                        </tr>
-                    </thead>
+        <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRemoveWord())">
+            <table>
+                <thead>
                     <tr>
-                        <td class="wordinfo">
-                            @(i == 0 ? StrRest : "")
-                        </td>
-                        <td>
-                            @{
+                        <th style="width:50%"></th>
+                        <th style="width:10%"></th>
+                        <th style="width:40%"></th>
+                        <th style="width:10%"></th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="wordinfo">
+                        @(i == 0 ? StrRest : "")
+                    </td>
+                    <td>
+                        @{
                             if (w.IsDeleted)
                             {
-                                        <p class="fromWord">&#10004; @FromWordD(w)</p>
+                                <p class="fromWord">&#10004; @FromWordD(w)</p>
                             }
                             else
                             {
-                                        <p class="fromWord">@FromWordD(w)</p>
+                                <p class="fromWord">@FromWordD(w)</p>
                             }
-                            }
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="smiley">
-                                <img class="imgSmileyButton" src=@GetSmiley(NewLevel(w)) />
-                            </div>
-                        </td>
-                    </tr>
+                        }
+                    </td>
+                    <td></td>
+                    <td>
+                        <div class="smiley">
+                            <img class="imgSmileyButton" src=@GetSmiley(NewLevel(w)) />
+                        </div>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
-                        </td>
-                        <td></td>
-                        <td class="level">
-                            @NewLevel(w)%
-                        </td>
-                    </tr>
-                </table>
-    </div>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
+                    </td>
+                    <td></td>
+                    <td class="level">
+                        @NewLevel(w)%
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
 
-    <div class="stack">
+        <div class="stack">
 
-              @for (int x = 0; x < Math.Min(stkWords.Count, 10);x++)
+            @for (int x = 0; x < Math.Min(stkWords.Count, 10); x++)
             {
                 var ws = stkWords.ToArray()[x];
                 <p class="stack" style="@StyleStack(x)">&#10004 @FromWordD(ws) - @ToWordD(ws)</p>
             }
 
-    </div>
+        </div>
     }
 }
 
 @code {
-    #pragma warning disable 1998, 8618, 8625, 4014, 8622
+#pragma warning disable 1998, 8618, 8625, 4014, 8622
     string FromWordD(TWord w)
     {
         string s;
@@ -224,7 +225,7 @@
     string StrAni(int i) => $"animated{i}";
 }
 
-<InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
+
 <HelpBox StrInfo="@StrInfo" StrTitle="@StrTitle" EvStateHasChanged="StateHasChanged"></HelpBox>
 
 @code {
@@ -288,7 +289,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
             timerW.Interval = 300;
 
             MsPugg = Math.Max(500, IStorage._GetData().MsPugg);
-            SmileyIndex = Math.Min(4,IStorage._GetData().SmileyIndex);
+            SmileyIndex = Math.Min(4, IStorage._GetData().SmileyIndex);
 
             lstWords = lstWords.Where(w => GetSmileyIndex(w.Level) <= SmileyIndex).ToList();
             lstWordsSav.AddMany(lstWords);
@@ -320,7 +321,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
         if (i >= 0 && !Word.IsDeleted)
             lstWordsSav[i].Counter++;
 
-      
+
 
 
 
@@ -428,7 +429,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
     {
         SmileyIndex = SmileyIndex - 1;
         if (SmileyIndex < 0)
-            SmileyIndex = 4;
+            SmileyIndex = Smileys.Length - 1;
         SaveData();
         OnRestart();
     }

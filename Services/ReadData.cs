@@ -1,5 +1,4 @@
-﻿using BlazorWEB.Shared;
-namespace BlazorWEB.Services;
+﻿namespace BlazorWEB.Services;
 
 public static class ReadData
 {
@@ -52,7 +51,7 @@ public static class ReadData
                 }
             }
         }
-        catch (Exception )
+        catch (Exception)
         {
         }
         return lst;
