@@ -319,16 +319,11 @@ else
             return;
         lstWords[i].IsCorrect = !lstWords[i].IsCorrect;
         lstWords[i].Level += lstWords[i].IsCorrect ? 2 : -2;
-        //TWord w = lstWords[i];
-        //int newLevel = w.Level + (w.IsCorrect ? 2 : -2);
-        //lstWords[i] = lstWords[i] with { IsCorrect = !w.IsCorrect, Level = newLevel };
-        //Program.UpdateSelectedWord(lstWords[i]);
 
         var ix = lstSelected.FindIndex(w => _w.ID == w.ID);
         if (ix == -1)
             return;
         lstSelected[ix].IsCorrect = lstWords[i].IsCorrect;
-        //lstSelected[ix] = lstSelected[ix] with { IsCorrect = lstWords[i].IsCorrect};
     }
 
     void OnRemove()
