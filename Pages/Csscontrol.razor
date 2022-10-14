@@ -1,21 +1,23 @@
 ﻿
 @code {
     #pragma warning disable 4014, 1998, 039, CSS041
-    static public string BoolStyle(bool b) => b ? "coolButton" : "coolButtonX";
+    static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
 }
 <style>
     :root {
-        --BC : 240;
+        --BC : 260;
         --CI : 60%;
         --BDark : 30%;
-        --BLight : 80%;
+        --BLight : 60%;
         --PanelBkImg: linear-gradient(to left, hsl(var(--BC),var(--CI),90%), hsl(var(--BC),var(--CI),70%) );
         --BoderColor : white ; /*hsl(var(--BC), 40% ,20%);*/
         --ButtonColor : white;/*hsl(var(--BC), -var(--CI), 10%);*/
-        --ButtonColorX: lightgray;/* hsl(var(--BC), 60%, 80%);*/
+        --ButtonColorX: hsl(var(--BC), 100%, 50%);
+        ; /* hsl(var(--BC), 60%, 80%);*/
         --TextColor : black;
         --TextColorDark : hsl(var(--BC), 100%, 0%);
         --TextColorFlag: white;
+        --TextColorX: white;
         --ControlColor : hsl(var(--BC), var(--CI), 50%);
         --TableHeadColor : var(--ControlColor);
         --TableBorder : solid black 1px;
@@ -26,7 +28,7 @@
         --FromWord : black;/*hsl(var(--BC), 100%, 20%);*/
         --ToWord : dark blue;
         --GradientBody: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
-        --GradientMenu: linear-gradient(to right, black, grey);
+        --GradientMenu: linear-gradient(to right, black, hsl(var(--BC),var(--CI),var(--BDark)));
 
         --TableGradientFrom : hsla(var(--BC), var(--CI), 40%);
         --TableGradientTo : hsla(var(--BC), var(--CI), 70%);
@@ -65,7 +67,7 @@
 
     option
     {
-        color:var(--TextColorDark);
+        color:var(--TextColor);
     }
 
     .coolSelect, .coolButton, .coolButtonX, .coolSpan  {
@@ -95,7 +97,7 @@
         margin : 1px;
     }
     .coolButtonX {
-        color:var(--TextColor);
+        color:var(--TextColorX);
         background-color: var(--ButtonColorX);
     }
     .coolSelect {
