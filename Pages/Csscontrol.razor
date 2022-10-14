@@ -5,19 +5,20 @@
 }
 <style>
     :root {
-        --BC : 260;
-        --CI : 60%;
+        --BC : 200;
+        --CI : 20%;
         --BDark : 30%;
         --BLight : 60%;
         --PanelBkImg: linear-gradient(to left, hsl(var(--BC),var(--CI),90%), hsl(var(--BC),var(--CI),70%) );
-        --BoderColor : white ; /*hsl(var(--BC), 40% ,20%);*/
+        --BoderColor : hsl(var(--BC), 40% ,20%);
         --ButtonColor : white;/*hsl(var(--BC), -var(--CI), 10%);*/
         --ButtonColorX: hsl(var(--BC), 100%, 50%);
         ; /* hsl(var(--BC), 60%, 80%);*/
         --TextColor : black;
-        --TextColorDark : hsl(var(--BC), 100%, 0%);
         --TextColorFlag: white;
         --TextColorX: white;
+        --TextColorToWord:hsl(var(--BC), var(--CI), 30%);
+
         --ControlColor : hsl(var(--BC), var(--CI), 50%);
         --TableHeadColor : var(--ControlColor);
         --TableBorder : solid black 1px;
@@ -65,11 +66,6 @@
     }
 
 
-    option
-    {
-        color:var(--TextColor);
-    }
-
     .coolSelect, .coolButton, .coolButtonX, .coolSpan  {
         border: var(--StdBorder);
         background-color: var(--ButtonColor);
@@ -77,10 +73,7 @@
         display: inline-block;
         color:var(--TextColor);
     }
-    .coolSelect, .coolButton {
-        background-color: var(--ButtonColor);
 
-    }
     .coolSelect:hover, .coolButton:hover, .coolButtonX:hover {
         color: yellow;
         border: 0.15em solid red;
@@ -176,12 +169,12 @@
     }
 
     40% {
-        color: darkblue;
+            color: var(--TextColorToWord);
         opacity: 0.0;
     }
 
     100% {
-        color: darkblue;
+        color: var(--TextColorToWord);
     }
 }
 </style>

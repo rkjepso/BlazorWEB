@@ -19,7 +19,7 @@ public static class Functions
         _ => 5
     };
 
-    public static string[] Smileys = new string[]
+    public static readonly string[] Smileys = new string[]
     {
          "Img/Smiley_Dead.png",
          "Img/Smiley_SadM.png",

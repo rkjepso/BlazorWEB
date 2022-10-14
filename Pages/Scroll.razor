@@ -291,7 +291,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
             timerW.Interval = 300;
 
             MsPugg = Math.Max(500, IStorage._GetData().MsPugg);
-            SmileyIndex = Math.Min(4, IStorage._GetData().SmileyIndex);
+            SmileyIndex = Math.Min(Smileys.Length-1, IStorage._GetData().SmileyIndex);
 
             lstWords = lstWords.Where(w => GetSmileyIndex(w.Level) <= SmileyIndex).ToList();
             lstWordsSav.AddMany(lstWords);
