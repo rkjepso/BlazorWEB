@@ -109,12 +109,13 @@ else
 
 @code {
     #pragma warning disable 1998,8622
-    double opacity = 1;
+
     private string OpaCity(int i) 
     {
-        //  opacity = (warmup - (double)(i+2)/(Size*1.4)   ) * (i+5) ;
-        opacity = (warmup - (double)(i+1)/(Size+1)) > 0 ? 1 : 0;
-        opacity = Math.Max(0, opacity);
+        double opacity = 0;
+        if (warmup >  (i+1.0)/(RealSize+1) )
+            opacity = 1;
+
         if (Show)
             opacity = 1;
 
@@ -153,17 +154,17 @@ else
     {
         MsWord = msPerWord;
 
-        if (timer!=null) timer.Interval = (Size*msPerWord + 1500)/slot;        
+        if (timer != null) timer.Interval = RealSize * msPerWord / slot;
     }
 
 
     public int Size { get; set; } = 4;
+    private int RealSize => Math.Min(Size, lstWords.Count());
     private void OnSize(int n)
     {
         Size = n;
         OnReset(true);
-        //SaveData();
-        //NewWords();
+
     }
     private void NewWords()
     {
@@ -286,7 +287,6 @@ else
     {
         var data = IStorage._GetData();
 
-
         data.SmileyIndex = SmileyIndex;
         data.MsBlink = MsWord;
         data.NumBatch = Size;
@@ -402,7 +402,6 @@ else
             if (warmup > 1)
             {
                 warmup = 0;
-
                 NewWords();
             }
 
@@ -426,7 +425,6 @@ else
         SmileyIndex = SmileyIndex - 1;
         if (SmileyIndex < 0)
             SmileyIndex = Smileys.Length - 1;
-        //SmileOff.ForEach((x, i) =>  (i > iMax));
         OnReset(false);
     }
 
