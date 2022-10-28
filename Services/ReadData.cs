@@ -8,11 +8,11 @@ public static class ReadData
         List<TWord> lst = new();
 
         if (lang == LangT.SpanishNorwegian)
-            file = "SPANSK_NORSK_V1.CSV";
+            file = "SPANSK_NORSK_V1.csv";
         if (lang == LangT.GermanNorwegian)
-            file = "TYSK_NORSK_V2.CSV";
+            file = "TYSK_NORSK_V2.csv";
         if (lang == LangT.FrenchNorwegian)
-            file = "FRANSK_NORSK.CSV";
+            file = "FRANSK_NORSK.csv";
 
         if (file.IsEmpty())
             return lst;
