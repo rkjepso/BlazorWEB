@@ -94,6 +94,10 @@
     void LocationChanged(object ? sender, LocationChangedEventArgs e)
     {
         page = GetPage(e.Location);
+
+        string navigationMethod = e.IsNavigationIntercepted ? "HTML" : "code";
+        System.Diagnostics.Debug.WriteLine($"Notified of navigation via {navigationMethod} to {e.Location}");
+
         StateHasChanged();
     }
 }
