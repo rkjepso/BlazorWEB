@@ -96,7 +96,7 @@
     }
 
     .stack .imgSmileyButton {
-        height: 1em;
+        height: 0.8em;
     }
 
 </style>
@@ -177,21 +177,18 @@
         </div>
  
         <div class="stack">
-
             @for (int x = 0; x < Math.Min(stkWords.Count, 10); x++)
             {
                 var ws = stkWords.ToArray()[x];
                 <p class="stack" style="@StyleStack(x)">
-                    @FromWordD(ws) - @ToWordD(ws)
-                    <img class="imgSmileyButton" style="user-select:unset" src=@GetSmiley(NewLevel(ws)) />
-
+                    @FromWordD(ws) - @ToWordD(ws) (@NewLevel(ws)%)
                 </p>
             }
-
         </div>
     }
 }
-
+                   
+@*<img class="imgSmileyButton" style="user-select:unset" src=@GetSmiley(NewLevel(ws))>*@
 @code {
 #pragma warning disable 1998, 8618, 8625, 4014, 8622
     string FromWordD(TWord w)
@@ -213,7 +210,7 @@
 
     string ToWordD(TWord w)
     {
-        return (SwapWord ? w.FromWord : w.ToWord) + (UseEnglish ? $"  -  {w.ToWordEnglish}" : "");
+        return (SwapWord ? w.FromWord : w.ToWord) + (UseEnglish ? $"  /  {w.ToWordEnglish}" : "");
     }
 
     private bool IsRunning => timerW?.Enabled ?? false;
