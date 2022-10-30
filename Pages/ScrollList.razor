@@ -22,7 +22,10 @@
         color:var(--TextColorDark);
     }
 
-
+    .coolSpan, p {
+        white-space: nowrap;
+        margin: 4px 0px 4px 0px;
+    }
     .coolDiv {
         white-space:nowrap;
         vertical-align: middle; 
@@ -39,10 +42,10 @@
 </style>
 
 
-<div class="coolDiv" >
+
 
 @*    <span class="coolSpan">*@
-        <button class="coolSelect" @onclick="@(()=>OnReset(true))" >⟳</button> 
+        <button class="coolButton" @onclick="@(()=>OnReset(true))" > ⟳ </button> 
 @*    </span>*@
     <span class="coolSpan">
         @foreach (var n in new[] { 4,6,8})
@@ -58,8 +61,7 @@
             <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(BlinkStr(ms))</button>
         }
     </span>
-     
-</div>
+
 
 <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
 <HelpBox StrTitle="Pugging via Liste" StrInfo="@StrInfo" EvStateHasChanged="StateHasChanged"></HelpBox>

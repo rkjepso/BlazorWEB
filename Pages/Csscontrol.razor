@@ -30,7 +30,7 @@
         --GradientMenu: linear-gradient(to right, black, hsl(var(--BC),var(--CI),var(--BDark)));
         --TableGradientFrom: hsla(var(--BC), var(--CI), 40%);
         --TableGradientTo: hsla(var(--BC), var(--CI), 70%);
-        --TableEvenFrom: hsla(var(--BC), var(--CI), 80%);
+        --TableEvenFrom: var(--Bo)
         --TableEvenTo: hsla(var(--BC), var(--CI), 70%);
     }
 
@@ -66,13 +66,13 @@
 
         .coolSelect:hover, .coolButton:hover, .coolButtonX:hover {
             color: yellow;
-            border: 0.15em solid red;
+            border: 0.15em  solid red;
             background-color: hsl(var(--BC) 80% 20%);
             padding: 0.0em 0.2em;
         }
 
     .coolSpan, .coolSelect, .coolButton, .coolButtonX {
-        padding: 0.1em 0.3em;
+        padding: 0.15em 0.3em;
         border: var(--StdBorder);
     }
 
@@ -122,8 +122,8 @@
         }
 
         table.g_blueTable tr:nth-child(even) {
-            background-image: var(--PanelBkImg);
-            background-image: linear-gradient(to right, var(--TableEvenFrom), var(--TableEvenTo));
+            background-image: var(--GradientBody);
+            color:white;
         }
 
         table.g_blueTable thead {
