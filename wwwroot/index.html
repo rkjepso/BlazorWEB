@@ -46,7 +46,17 @@
     </script>
 
     <style>
+        * {
+            --BC: 270;
+            --CI: 10%;
+            --BDark: 10%;
+            --BLight: 30%;
+
+       
+        }
         .container {
+
+
             width: 80%;
             height: 100vh;
             position: fixed;
@@ -58,7 +68,7 @@
             align-items: stretch;
             justify-content: center;
             align-content: center;
-            background-image: linear-gradient(to right, darkblue, rgb(32,0,32));
+            background-image: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
         }
 
         .flex {

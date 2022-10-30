@@ -1,21 +1,31 @@
 ﻿@code {
-#pragma warning disable 4014, 1998, 039, CSS041
+    #pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
+
+    static public string TextColor
+    {
+        get;
+        set;
+    } = ConsoleColor.White.ToString();
+    static public string TextColor2
+    {
+        get;
+        set;
+    } = ConsoleColor.Yellow.ToString();
 }
 <style>
+
     :root {
-        --BC: 230;
-        --CI: 10%;
-        --BDark: 10%;
-        --BLight: 30%;
+
         --GradientBody: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
         --GradientEven: linear-gradient(to left, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
-        --TextColor: white;
-        --TextColor2: yellow;
+        --TextColor: @TextColor;
+        --TextColor2: @TextColor2;
     }
 
     body {
         background-image: var(--GradientBody);
+        font-family:'Malgun Gothic';
   
     }
     * {
@@ -80,8 +90,8 @@
 
 
     table.g_blueTable thead th {
-        color: var(--TextColor2);
-        font-weight: 700;
+        color: var(--TextColor);
+        font-weight: 900;
         background-image: var(--GradientEven);
     }
 
