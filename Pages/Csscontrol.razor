@@ -5,170 +5,77 @@
 <style>
     :root {
         --BC: 200;
-        --CI: 20%;
+        --CI: 10%;
         --BDark: 10%;
-        --BLight: 50%;
-        --PanelBkImg: linear-gradient(to left, hsl(var(--BC),var(--CI),90%), hsl(var(--BC),var(--CI),70%) );
-        --BoderColor: hsl(var(--BC), 40%,20%);
-        --ButtonColor: white; /*hsl(var(--BC), -var(--CI), 10%);*/
-        --ButtonColorX: hsl(var(--BC), 100%, 30%);
-        ; /* hsl(var(--BC), 60%, 80%);*/
-        --TextColor: black;
-        --TextColorFlag: white;
-        --TextColorX: white;
-        --TextColorToWord: hsl(var(--BC), var(--CI), 30%);
-        --ControlColor: hsl(var(--BC), var(--CI), 50%);
-        --TableHeadColor: var(--ControlColor);
-        --TableBorder: solid black 1px;
-        --HelpBkColor: hsl(var(--BC), 80%, 70%); /*#BDE5F8;*/
-
-
-        --StdBorder: 0.05em solid black; /*var(--ControlColor);*/
-        --FromWord: black; /*hsl(var(--BC), 100%, 20%);*/
-        --ToWord: dark blue;
+        --BLight: 30%;
         --GradientBody: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
-        --GradientMenu: linear-gradient(to right, black, hsl(var(--BC),var(--CI),var(--BDark)));
-        --TableGradientFrom: hsla(var(--BC), var(--CI), 40%);
-        --TableGradientTo: hsla(var(--BC), var(--CI), 70%);
-        --TableEvenFrom: var(--Bo)
-        --TableEvenTo: hsla(var(--BC), var(--CI), 70%);
+        --GradientEven: linear-gradient(to left, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
+        --TextColor: white;
     }
 
     body {
-        padding: 0px;
-        margin: 0px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /*Verdana, Geneva, Tahoma, sans-serif;*/
-        font-size: 110%;
         background-image: var(--GradientBody);
-    }
-
-    .coolP, label {
-        line-height: 14px;
-        margin: 1em 0em 0.2em 0.2em;
-    }
-
-    option, .coolDiv, .coolButtonX {
-        background-color: var(--ButtonColor);
-        border: none;
-        display: inline-block;
-        border-radius: 0.3em;
         color: var(--TextColor);
     }
 
-
-    .coolSelect, .coolButton, .coolButtonX, .coolSpan {
-        border: var(--StdBorder);
-        background-color: var(--ButtonColor);
-        border-radius: 0.3em;
-        display: inline-block;
-        color: var(--TextColor);
+    .coolButton, .coolSelect {
+        background-color: transparent;
+        border-radius: 0.2em;
+        border: 0.1em solid blue; /*var(--ControlColor);*/
+        color: lightblue;
+        margin: 0.1em;
     }
 
-        .coolSelect:hover, .coolButton:hover, .coolButtonX:hover {
-            color: yellow;
-            border: 0.15em  solid red;
-            background-color: hsl(var(--BC) 80% 20%);
-            padding: 0.0em 0.2em;
+        .coolButton:hover, .coolSelect:hover {
+            border: 0.1em solid red;
         }
 
-    .coolSpan, .coolSelect, .coolButton, .coolButtonX {
-        padding: 0.15em 0.3em;
-        border: var(--StdBorder);
-    }
-
-        .coolSelect, .coolButtonX, .coolButton,
-        .coolSelect:hover {
-            margin: 1px;
-        }
-
-    .coolButtonX {
-        color: var(--TextColorX);
-        background-color: var(--ButtonColorX);
+    .coolDiv {
+        border: 0.05em solid gray; /*var(--ControlColor);*/
+        margin: 0.2em;
     }
 
     .coolSelect {
         padding: 0.2em 0.1em;
     }
 
-        .coolSelect:hover {
-            padding: 0.1em 0.0em;
-        }
-
-    .coolDiv {
-        background-image: var(--PanelBkImg);
-        padding: 0em 0.05em 0.2em 0.05em;
-        text-align: left;
-        width: 100%;
-    }
-
-    .coolSpan {
-        background-image: var(--PanelBkImg);
-    }
-
-    table.g_blueTable {
-        border: 1px solid var(--BoderColor); /* #1C6EA4;*/
-        background-color: #EEEEEE;
-        width: 100%;
-        text-align: left;
-        border-collapse: collapse;
-        margin: 0.5em 0em;
-        font-size: 1.1em;
-    }
-
-        table.g_blueTable td, table.g_blueTable th {
-            padding: 1px 1px;
-            width: 33%;
-            white-space: nowrap;
-        }
-
-        table.g_blueTable tr:nth-child(even) {
-            background-image: var(--GradientBody);
-            color:white;
-        }
-
-        table.g_blueTable thead {
-            background: var(--TableHeadColor);
-            width: 33%;
-        }
-
-            table.g_blueTable thead th {
-                color: var(--TextColor);
-                border-left: 1px solid var(--BoderColor);
-                color: white;
-                font-weight: 400;
-                background-image: linear-gradient(to right, var(--TableGradientFrom), var(--TableGradientTo));
-            }
-
-                table.g_blueTable thead th:first-child {
-                    border-left: none;
-                }
-
     .imgSmileyButton, .xsequental, .xrandom {
         height: 1.7em;
         margin: 0em 0em 0.2em 0em;
     }
 
-        .imgSmileyButton:hover {
-            border: 0.15em solid red;
-            border-radius: 100%;
-        }
+    .imgSmileyButton:hover {
+        border: 0.15em solid red;
+        border-radius: 100%;
+    }
 
-    @@keyframes pugging0 {
-        0% {
-            opacity: 0.0;
-            background-image: var(--PanelBkImg);
-        }
+    table.g_blueTable td, table.g_blueTable th {
+        padding: 1px 1px;
+        width: 33%;
+        white-space: nowrap;
+    }
 
-        40% {
-            color: var(--TextColorToWord);
-            opacity: 0.0;
-        }
+    table.g_blueTable tr:nth-child(even) {
+        background-image: var(--GradientEven);
+        color: white;
+    }
 
-        100% {
-            color: var(--TextColorToWord);
-        }
+    table.g_blueTable thead {
+        background: var(--TableHeadColor);
+        width: 33%;
+       
+    }
+
+    table.g_blueTable thead th {
+        color: var(--TextColor);
+        border-left: 1px solid var(--BoderColor);
+        color: yellow;
+        font-weight: 700;
+        background-image: var(--GradientEven);
+    }
+
+    table.g_blueTable thead th:first-child {
+        border-left: none;
     }
 </style>
-@code {
 
-}
