@@ -17,73 +17,73 @@
 
 <style>
     td {
-        white-space:nowrap;
+        white-space: nowrap;
     }
+
     .coolDiv {
-        white-space:nowrap;
+        white-space: nowrap;
     }
 
 </style>
 
 
-<div class="coolDiv" >
-    <select class="coolSelect" name="order" id="order" @bind="@SortOrder">
-        <option value=@Order.Alfabetic>Alfabet</option>
-        <option value=@Order.Sequental>Viktige</option>
-        <option value=@Order.Random>Tilfeldig</option>
+<select class="coolSelect" name="order" id="order" @bind="@SortOrder">
+    <option value=@Order.Alfabetic>Alfabet</option>
+    <option value=@Order.Sequental>Viktige</option>
+    <option value=@Order.Random>Tilfeldig</option>
+</select>
+
+
+@if (SortOrder == Order.Alfabetic)
+{
+    <label for="batch">Ord:</label>
+    <select span class="coolSelect" name="batch" id="batch" @bind="@Letter">
+        @foreach (var x in dictWords)
+        {
+            <option value=@(x.Key)>@x.Key (@x.Value.Count) </option>
+        }
     </select>
+}
+@if (SortOrder == Order.Random)
+{
+    <label for="batch">Ord:</label>
+    <select span class="coolSelect" name="batch" id="batch" @bind="@SizeGroup">
+        @foreach (var x in new[] { "5", "10", "15", "20", "25", "30", "50" })
+        {
+            <option value=@x>@x</option>
+        }
+    </select>
+    <button class="coolButton" @onclick="SelectWords">Nye</button>
+}
+@if (SortOrder == Order.Sequental)
+{
+    <label for="batch">Ord:</label>
+    <select span class="coolSelect" name="batch" id="batch" @bind="@SizeGroup">
+        @foreach (var x in new[] { "5", "10", "15", "20", "25", "30", "50" })
+        {
+            <option value=@x>@x</option>
+        }
+    </select>
+    <label for="_IMin">Fra:</label>
+    <select span class="coolSelect" name="_IMin" id="_IMin" @bind="@_IMin">
+        @foreach (var x in _listMins)
+        {
+            <option value=@x>@x</option>
+        }
+    </select>
+}
+<button class="coolButton" @onclick="OnQueryDelStat">Reset</button>
 
-
-    @if (SortOrder == Order.Alfabetic)
-    {
-        <label for="batch">Ord:</label>
-        <select span class="coolSelect" name="batch" id="batch" @bind="@Letter">
-            @foreach (var x in dictWords)
-            {
-                <option value=@(x.Key)>@x.Key (@x.Value.Count) </option>
-            }
-        </select>
-    }
-    @if (SortOrder == Order.Random)
-    {
-        <label for="batch">Ord:</label>
-        <select span class="coolSelect" name="batch" id="batch" @bind="@SizeGroup">
-            @foreach (var x in new[] { "5", "10", "15", "20", "25", "30", "50" })
-            {
-                <option value=@x>@x</option>
-            }
-        </select>
-        <button class="coolButton" @onclick="SelectWords">Nye</button>
-    }
-    @if (SortOrder == Order.Sequental)
-    {
-        <label for="batch">Ord:</label>
-        <select span class="coolSelect" name="batch" id="batch" @bind="@SizeGroup">
-            @foreach (var x in new[] { "5", "10", "15", "20", "25", "30", "50" })
-            {
-                <option value=@x>@x</option>
-            }
-        </select>
-        <label for="_IMin">Fra:</label>
-        <select span class="coolSelect" name="_IMin" id="_IMin" @bind="@_IMin">
-            @foreach (var x in _listMins)
-            {
-                <option value=@x>@x</option>
-            }
-        </select>
-    }
-     <button class="coolButton" @onclick="OnQueryDelStat">Reset</button>
-</div>
-<InfoBox strError="@StrError" ></InfoBox>
-<HelpBox StrInfo="@StrInfo" StrTitle = "@StrTitle" EvStateHasChanged="StateHasChanged"></HelpBox>
+<InfoBox strError="@StrError"></InfoBox>
+<HelpBox StrInfo="@StrInfo" StrTitle="@StrTitle" EvStateHasChanged="StateHasChanged"></HelpBox>
 
 @if (!string.IsNullOrEmpty(StrSuccess))
 {
-    <div  @onclick="@(()=>StrSuccess = string.Empty)">
+    <div @onclick="@(()=>StrSuccess = string.Empty)">
         <h6 class="isa_success">&#10004 @StrSuccess </h6>
     </div>
 }
-<YesNo @ref="YesNo"  Message = "(Re)sette nivået til 0 for ordene ?" ConfirmedChanged="OnDelStat"  />
+<YesNo @ref="YesNo" Message="(Re)sette nivået til 0 for ordene ?" ConfirmedChanged="OnDelStat" />
 
 @if (lstWords == null)
 {
@@ -240,8 +240,8 @@ else
         Program.currentStateHasChanged = StateHasChanged;
     }
 #pragma warning restore 1998
-    static public List<TWord> LstDict { get; set; } = new() ;
-    static public Dictionary<char, List<TWord>> dictWords {get; set;} = new();
+    static public List<TWord> LstDict { get; set; } = new();
+    static public Dictionary<char, List<TWord>> dictWords { get; set; } = new();
     public void DoInit()
     {
         try
@@ -320,7 +320,7 @@ else
         data.Info = StrFlag;
         data.Letter = Letter;
         IStorage._SetData(data);
-        Program.SaveSelectedWords( lstWords);
+        Program.SaveSelectedWords(lstWords);
     }
 
     void OnQueryDelStat()
@@ -335,11 +335,11 @@ else
     }
 
     public const string StrTitle = "Her velger du ordene du vil pugge.";
-    public const string StrInfo = @"Trykk på flagget = puggeretning. 
+    public const string StrInfo = @"Trykk på flagget = puggeretning.
 Du velger de viktigste, fra en bokstav eller et antall tilfeldige.
-Reset nullstiller ALLE ordene i ordlisten. 
+Reset nullstiller ALLE ordene i ordlisten.
 (Ordlister velges i Hjem menyen.)";
-  
+
 
     private int[] _listMins
     {
@@ -363,8 +363,8 @@ Reset nullstiller ALLE ordene i ordlisten.
         {
             Dictionary<char, List<TWord>> d = new();
             try
-            {   
-        
+            {
+
                 for (char ch = 'A'; ch < 'Z'; ch++)
                     d.Add((char)ch, LstDict.Where(w => CompareFirstUpper(w.FromWord, ch)).ToList());
                 return d;
@@ -379,7 +379,7 @@ Reset nullstiller ALLE ordene i ordlisten.
 
     static bool CompareFirstUpper(string s, char ch)
     {
-        if (s==null || s.Length == 0)
+        if (s == null || s.Length == 0)
             return false;
         return s.ToUpper()[0] == ch;
     }

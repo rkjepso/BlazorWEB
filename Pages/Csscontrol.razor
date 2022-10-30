@@ -4,31 +4,43 @@
 }
 <style>
     :root {
-        --BC: 200;
+        --BC: 230;
         --CI: 10%;
         --BDark: 10%;
         --BLight: 30%;
         --GradientBody: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
         --GradientEven: linear-gradient(to left, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
         --TextColor: white;
+        --TextColor2: yellow;
     }
 
     body {
         background-image: var(--GradientBody);
+  
+    }
+    * {
         color: var(--TextColor);
     }
 
-    .coolButton, .coolSelect {
+    .coolButton, .coolSelect, .coolButtonX {
         background-color: transparent;
         border-radius: 0.2em;
-        border: 0.1em solid blue; /*var(--ControlColor);*/
-        color: lightblue;
+        border: 0.1em solid lightgray; /*var(--ControlColor);*/
         margin: 0.1em;
+
+    }
+    .coolButtonX {
+        border: 0.1em solid red; /*var(--ControlColor);*/
+        color:var(--TextColor2);
     }
 
-        .coolButton:hover, .coolSelect:hover {
-            border: 0.1em solid red;
-        }
+    .coolButton:hover, .coolSelect:hover {
+        border: 0.1em solid red;
+    }
+
+    option {
+        color: black;
+    }
 
     .coolDiv {
         border: 0.05em solid gray; /*var(--ControlColor);*/
@@ -66,22 +78,13 @@
         color: white;
     }
 
-    table.g_blueTable thead {
-        background: var(--TableHeadColor);
-        width: 33%;
-       
-    }
 
     table.g_blueTable thead th {
-        color: var(--TextColor);
-        border-left: 1px solid var(--BoderColor);
-        color: yellow;
+        color: var(--TextColor2);
         font-weight: 700;
         background-image: var(--GradientEven);
     }
 
-    table.g_blueTable thead th:first-child {
-        border-left: none;
-    }
+ 
 </style>
 
