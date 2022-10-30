@@ -39,6 +39,10 @@
     color:var(--ToWord);
     }*/
 
+    th, coolSelect, coolButtonX, coolSpan {
+            user-select: none;
+        }
+
 </style>
 
 
@@ -74,14 +78,23 @@ else
 {
     <table class="g_blueTable">
         <thead>
-            <tr>
+  @*          <tr>
                 <th style="width:37%;user-select:none;"  >
                     @StrFromLangD()
                 </th>
                 <th style="width:33%" @onclick="OnShow" >@StrToLangD() </th>
                 <th style="width:20%" @onclick="@(()=>OnChangeSmiley())">
-                    <img  hidden="@IsRunning" class="imgSmileyButton"  src=@Smileys[SmileyIndex]> Max</th>
-            </tr>
+                    <img  hidden="@IsRunning" class="imgSmileyButton"  src=@Smileys[SmileyIndex]> Max
+                    TEST
+                </th>
+            </tr>*@
+        <tr>
+                <th style="width:35%">@StrFromLangD()</th>
+                <th style="width:35%">@StrToLangD()</th>
+                <th style="width:20%">Nivå</th>
+                <th style="width:0%"></th>
+        </tr>
+
         </thead>
         <tbody>
             
