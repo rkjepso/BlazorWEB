@@ -15,7 +15,7 @@
 <style>
     .fromWord, .toWord {
         width: 100%;
-        font-size: 2em;
+        font-size: 2rem;
         display: inline-block;
         margin: 3px 0px 10px;
         color:var(--TextColor2);
@@ -56,9 +56,9 @@
 
     .stack {
         text-align: center;
-        font-size: 1em;
-        padding:0em;
-        margin:-0.2em;
+        font-size: 1rem;
+        padding:0rem;
+        margin:-0.2rem;
     }
 
     @@keyframes pugging0 {
@@ -106,7 +106,7 @@
     string _style = "";
     @if (w != null)
     {
-    <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRemoveWord())">
+    <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRremoveWord())">
                                     <table>
                                         <thead>
                                             <tr>
@@ -309,7 +309,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
         StateHasChanged();
     }
 
-    void OnRemoveWord()
+    void OnRremoveWord()
     {
         if (Word.IsDeleted)
             return;
@@ -374,7 +374,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
         SaveData();
         if (Tot() == 0)
         {
-            StrWarn = "List is empty. Change Smiley ?";
+            StrWarn = "List is rempty. Change Smiley ?";
             return;
         }
 
