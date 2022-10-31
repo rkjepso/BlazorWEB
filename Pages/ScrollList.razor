@@ -17,26 +17,33 @@
 
 
 <style>
-
-
     th, coolSelect, coolButtonX, coolSpan {
             user-select: none;
         }
-
+    .btn_ghost {
+        width:0.1em;
+        height:0.5em;
+        padding:0;
+        margin:0;
+        background-color: transparent;
+    }
 </style>
 
 
 
 
-@*    <span class="coolSpan">*@
-        <button class="coolButton" @onclick="@(()=>OnReset(true))" > ⟳ </button> 
-@*    </span>*@
+
+<button class="coolButton" @onclick="@(()=>OnReset(true))" > ⟳ </button>
+<button class="btn_ghost"></button>
+
     <span class="coolSpan">
         @foreach (var n in new[] { 4,6,8})
         {
         <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(n)</button>
         }
     </span>
+
+    <button class="btn_ghost"></button>
 
      <span class="coolSpan">
         @foreach (var _ms in new[] { 1000, 2000, 3000, 5000})
@@ -50,24 +57,15 @@
 <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
 <HelpBox StrTitle="Pugging via Liste" StrInfo="@StrInfo" EvStateHasChanged="StateHasChanged"></HelpBox>
 
-@if (lstWords == null)
+@if (lstWords.IsNullOrEmpty())
 {
-    <p><em>Laster Gloser ... </em></p>
+
 }
 else
 {
     <table class="g_blueTable">
         <thead>
-  @*          <tr>
-                <th style="width:37%;user-select:none;"  >
-                    @StrFromLangD()
-                </th>
-                <th style="width:33%" @onclick="OnShow" >@StrToLangD() </th>
-                <th style="width:20%" @onclick="@(()=>OnChangeSmiley())">
-                    <img  hidden="@IsRunning" class="imgSmileyButton"  src=@Smileys[SmileyIndex]> Max
-                    TEST
-                </th>
-            </tr>*@
+
         <tr>
                 <th style="width:35%">@StrFromLangD()</th>
                 <th style="width:35%">@StrToLangD()</th>

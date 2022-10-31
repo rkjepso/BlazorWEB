@@ -14,23 +14,30 @@
     } = ConsoleColor.Yellow.ToString();
 }
 <style>
-
-    :root {
-
-        --GradientBody: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
-        --GradientEven: linear-gradient(to left, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
+    * {
+        --BC: 240;
+        --CI: 15%;
+        --BDark: 10%;
+        --BLight: 40%;
         --TextColor: @TextColor;
         --TextColor2: @TextColor2;
+        color: var(--TextColor);
+    }
+
+    :root {
+        --GradientBody: linear-gradient(to right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
+        --GradientEven: linear-gradient(to left, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) )); 
+        font-size:16px;
     }
 
     body {
         background-image: var(--GradientBody);
-        font-family:'Malgun Gothic';
-  
+        font-family:'Verdana Pro';
+     
     }
-    * {
-        color: var(--TextColor);
-    }
+
+
+
 
     .coolButton, .coolSelect, .coolButtonX {
         background-color: transparent;
@@ -91,7 +98,7 @@
 
     table.g_blueTable thead th {
         color: var(--TextColor);
-        font-weight: 900;
+        font-weight: 700;
         background-image: var(--GradientEven);
     }
 
