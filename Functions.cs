@@ -16,7 +16,7 @@ public static class Functions
         >= 21 and <= 34 => 2,
         >= 35 and <= 50 => 3,
         >= 51 and <= 65 => 4,
-        _ => 5
+        _ => Smileys.Length-1
     };
 
     public static readonly string[] Smileys = new string[]
