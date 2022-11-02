@@ -21,11 +21,12 @@
             user-select: none;
         }
     .btn_ghost {
-        width:0.1rem;
+        width:0.2rem;
         height:0.5rem;
         padding:0;
         margin:0;
         background-color: transparent;
+        border: 0px;
     }
 </style>
 
@@ -46,11 +47,16 @@
     <button class="btn_ghost"></button>
 
      <span class="coolSpan">
-        @foreach (var _ms in new[] { 1000, 2000, 3000, 5000})
+    @{
+        var ams = new (int, string)[] { (1000, "1s"), (1500, ".5"), (2000, "2s"), (3000, "3s"), (5000, "5s") };
+        foreach (var t in ams)
         {
-            int ms = _ms;
-            <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(BlinkStr(ms))</button>
+            int ms = t.Item1;
+            string label = t.Item2;
+
+            <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
         }
+    }
     </span>
 
 
