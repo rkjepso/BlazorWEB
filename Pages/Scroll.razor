@@ -92,7 +92,7 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-                <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
     }
 </span>
@@ -108,68 +108,68 @@
     string _style = "";
     @if (w != null)
     {
-    <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRremoveWord())">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:50%"></th>
-                            <th style="width:10%"></th>
-                            <th style="width:40%"></th>
-                            <th style="width:10%"></th>
-                        </tr>
-                    </thead>
+        <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRremoveWord())">
+            <table>
+                <thead>
                     <tr>
-                        <td class="wordinfo">
-                            @(i == 0 ? StrRest : "")
-                        </td>
-                        <td>
+                        <th style="width:50%"></th>
+                        <th style="width:10%"></th>
+                        <th style="width:40%"></th>
+                        <th style="width:10%"></th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="wordinfo">
+                        @(i == 0 ? StrRest : "")
+                    </td>
+                    <td>
 
                         <p class="fromWord">
                             @if (w.IsDeleted)
                             {
-                                <img class="imgSmileyButton" style="user-select:unset" src="Img/OK.png" />
+                                <img class="imgSmileyButton" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/OK.png" />
                             }
-                        @FromWordD(w)
+                            @FromWordD(w)
                         </p>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="smiley">
-                                <img class="imgSmileyButton" style="user-select:unset" src=@GetSmiley(NewLevel(w)) />
-                            </div>
-                        </td>
-                    </tr>
+                    </td>
+                    <td></td>
+                    <td>
+                        <div class="smiley">
+                            <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
+                        </div>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
-                        </td>
-                        <td></td>
-                        <td class="level">
-                            @NewLevel(w)%
-                        </td>
-                    </tr>
-                </table>
-    </div>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
+                    </td>
+                    <td></td>
+                    <td class="level">
+                        @NewLevel(w)%
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-    <div class="stack">
-                @for (int x = 0; x < Math.Min(stkWords.Count, 10); x++)
+        <div class="stack">
+            @for (int x = 0; x < Math.Min(stkWords.Count, 10); x++)
             {
                 var ws = stkWords.ToArray()[x];
-                    <p class="stack" style="@StyleStack(x)">
- 
-                    FromWord(ws) - @ToWordD(ws) @NewLevel(ws) %
-                    </p>
+                <p class="stack" style="@StyleStack(x)">
+
+                    @FromWord(ws) - @ToWordD(ws) @NewLevel(ws) %
+                </p>
             }
-    </div>
+        </div>
     }
 }
 
 @*<img class="imgSmileyButton" style="user-select:unset" src=@GetSmiley(NewLevel(ws))>*@
 @code {
-    #pragma warning disable 1998, 8618, 8625, 4014, 8622
+#pragma warning disable 1998, 8618, 8625, 4014, 8622
     string FromWordD(TWord w)
     {
         string s = FromWord(w);
