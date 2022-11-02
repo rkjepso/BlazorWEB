@@ -18,13 +18,14 @@
 
 <style>
     th, coolSelect, coolButtonX, coolSpan {
-            user-select: none;
-        }
+        user-select: none;
+    }
+
     .btn_ghost {
-        width:0.2rem;
-        height:0.5rem;
-        padding:0;
-        margin:0;
+        width: 0.2rem;
+        height: 0.5rem;
+        padding: 0;
+        margin: 0;
         background-color: transparent;
         border: 0px;
     }
@@ -34,19 +35,19 @@
 
 
 
-<button class="coolButton" @onclick="@(()=>OnReset(true))" > ⟳ </button>
+<button class="coolButton" @onclick="@(()=>OnReset(true))"> ⟳ </button>
 <button class="btn_ghost"></button>
 
-    <span class="coolSpan">
-        @foreach (var n in new[] { 4,6,8})
-        {
+<span class="coolSpan">
+    @foreach (var n in new[] { 4, 6, 8 })
+    {
         <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(n)</button>
-        }
-    </span>
+    }
+</span>
 
-    <button class="btn_ghost"></button>
+<button class="btn_ghost"></button>
 
-     <span class="coolSpan">
+<span class="coolSpan">
     @{
         var ams = new (int, string)[] { (1000, "1s"), (1500, ".5"), (2000, "2s"), (3000, "3s"), (5000, "5s") };
         foreach (var t in ams)
@@ -57,7 +58,7 @@
             <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
         }
     }
-    </span>
+</span>
 
 
 <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
@@ -72,28 +73,31 @@ else
     <table class="g_blueTable">
         <thead>
 
-        <tr>
+            <tr>
                 <th style="width:35%">@StrFromLangD()</th>
                 <th style="width:35%">@StrToLangD()</th>
                 <th style="width:20%">Nivå</th>
                 <th style="width:0%"></th>
-        </tr>
+            </tr>
 
         </thead>
         <tbody>
-            
+
             @foreach (var w in lstWords)
             {
                 counter = (w == lstWords[0]) ? 0 : counter + 1;
                 <tr @onclick="@(()=>OnOk(w))">
-                    @if (w.IsCorrect)
-                    {
-                         <td > &#10004 @FromWordD(w)</td>  
-                    }
-                    else
-                    {
-                          <td >@FromWordD(w)</td>        
-                    }
+
+
+                    <td>
+                        @if (w.IsCorrect)
+                        {
+                            <img class="imgSmileyButton" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/OK.png" />
+                        }
+                        @FromWordD(w)
+                    </td>
+
+
                     <td class="toWord" style="@OpaCity(counter)">@ToWordD(w)</td>
                     <td>
                         <img class="imgSmileyButton" src=@GetSmiley(w.Level)>@(w.Level)%
@@ -107,12 +111,12 @@ else
 <br />
 
 @code {
-    #pragma warning disable 1998,8622
+#pragma warning disable 1998, 8622
 
-    private string OpaCity(int i) 
+    private string OpaCity(int i)
     {
         double opacity = 0;
-        if (warmup >  (i+1.0)/(RealSize+1) )
+        if (warmup > (i + 1.0) / (RealSize + 1))
             opacity = 1;
 
         if (Show)
@@ -127,7 +131,7 @@ else
     private string BlinkStr(int ms)
     {
         if (ms >= 1000000)
-            return "\u221E"; 
+            return "\u221E";
         return $"{ms / (double)1000}s";
     }
     private int MsWord { get; set; } = 2000;
@@ -178,9 +182,9 @@ else
         {
             timer?.Stop();
             timer = null;
-            StrSuccess = "Pugging er ferdig. Restart ved å trykke på ⟳-knappen ";           
+            StrSuccess = "Pugging er ferdig. Restart ved å trykke på ⟳-knappen ";
         }
-        StateHasChanged();       
+        StateHasChanged();
     }
 
     void OnStopp()
@@ -195,13 +199,13 @@ else
     public static void DoAction(Action f, int ms)
     {
         t2 = new Timer(ms);
-        t2.Elapsed += (x, y) => { f(); t2.Dispose(); t2=null;};
+        t2.Elapsed += (x, y) => { f(); t2.Dispose(); t2 = null; };
         t2.Start();
     }
 
 
-    private bool HideAnswer { get; set; } 
-    public string  StrFlag => IStorage._GetData().Info;
+    private bool HideAnswer { get; set; }
+    public string StrFlag => IStorage._GetData().Info;
     private string StrError { get; set; } = "";
     private string StrWarn { get; set; } = "";
     private string StrSuccess { get; set; } = "";
@@ -216,22 +220,22 @@ else
 
 
     static public List<TWord> LstDict { get; set; } = new();
-    static public Dictionary<char, List<TWord>> dictWords {get; set;} = new();
+    static public Dictionary<char, List<TWord>> dictWords { get; set; } = new();
     protected async override Task OnInitializedAsync()
     {
-        StrInfo = 
-        @"Dersom du kan ordet trykker du ned og får poeng.
-        Trykk på en av sekundknappene for å starte.    
+        StrInfo =
+            @"Dersom du kan ordet trykker du ned og får poeng.
+        Trykk på en av sekundknappene for å starte.
         Trykk direkte på ordet for å godkjenne / få poeng.
         Knappen ∞ betyr manuel visning.
 
         Trykk på flagget = puggeretning. ";
 
-        DoInit();     
+        DoInit();
         Program.currentStateHasChanged = StateHasChanged;
         StateHasChanged();
     }
-    // \u21BB 
+    // \u21BB
     //"Ved uendelig  (\u221E) tid. Trykk på tabellhodet for å vise"+
     //"\u2714 knappen fjerner så godkjente (\u2714 ) ord."+
 
@@ -291,7 +295,7 @@ else
         data.NumBatch = Size;
 
         IStorage._SetData(data);
-        Program.UpdateSelectedWords( lstWords);
+        Program.UpdateSelectedWords(lstWords);
     }
 
 
@@ -307,7 +311,7 @@ else
     void OnShow()
     {
         HideAnswer = !HideAnswer;
-        lstWords.ForEach(w => w.ToWordAns = HideAnswer ? "" : ToWordD(w) );
+        lstWords.ForEach(w => w.ToWordAns = HideAnswer ? "" : ToWordD(w));
         StateHasChanged();
     }
 
@@ -345,15 +349,16 @@ else
         StateHasChanged();
     }
 
-    string FromWordD(TWord w) 
+    string FromWordD(TWord w)
     {
         string s;
-        s =  $"{(SwapWord ? w.ToWord : w.FromWord)}  ";
+        s = $"{(SwapWord ? w.ToWord : w.FromWord)}  ";
         return s;
     }
 
-    string ToWordD (TWord w)  { 
-        return $"{(SwapWord ? w.FromWord : w.ToWord)}  "; 
+    string ToWordD(TWord w)
+    {
+        return $"{(SwapWord ? w.FromWord : w.ToWord)}  ";
     }
 
     string StrFromLangD()
@@ -426,10 +431,7 @@ else
             SmileyIndex = Smileys.Length - 1;
         OnReset(false);
     }
-
-
-
- }
+}
 
 
 
