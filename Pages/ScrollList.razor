@@ -21,14 +21,7 @@
         user-select: none;
     }
 
-    .btn_ghost {
-        width: 0.2rem;
-        height: 0.5rem;
-        padding: 0;
-        margin: 0;
-        background-color: transparent;
-        border: 0px;
-    }
+
 </style>
 
 
@@ -92,7 +85,8 @@ else
                     <td>
                         @if (w.IsCorrect)
                         {
-                            <img class="imgSmileyButton" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/OK.png" />
+                            <img class="imgSmileyButton" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/OK2.png" />
+                            <button class="btn_ghost"></button>
                         }
                         @FromWordD(w)
                     </td>
