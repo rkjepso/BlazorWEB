@@ -22,28 +22,22 @@
         --TextColor: @TextColor;
         --TextColor2: @TextColor2;
         color: var(--TextColor);
+        font-family: 'Rockwell';
     }
 
     html {
         font-size: 18px;
     }
-
-
     :root {
         --GradientBody: linear-gradient(to left, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
         --GradientEven: linear-gradient(to bottom right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),20%)); 
  
     }
-
     body {
         background-image: var(--GradientBody);
-        font-family:'Verdana Pro';
+      
      
     }
-
-
-
-
     .coolButton, .coolSelect, .coolButtonX {
         background-color: transparent;
         border-radius: 0.2rem;
