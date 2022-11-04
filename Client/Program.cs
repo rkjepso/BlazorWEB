@@ -2,6 +2,7 @@ using BlazorWEB.Client;
 using BlazorWEB.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.ComponentModel.Design.Serialization;
 using static BlazorWEB.Functions;
 
 namespace BlazorWEB
@@ -241,12 +242,17 @@ namespace BlazorWEB
             if (lst == null || lst.Count == 0)
                 return;
 
-            var d = lst.ToDictionary(keySelector: w => w.ID);
-            for (int i = 0; i < lst.Count; i++)
-            {
-                if (d.Keys.Contains(lst[i].ID))
-                    lst[i] = lst[i] with { Level = d[lst[i].ID].Level };
-            }
+            //var d = lstS.ToDictionary(keySelector: w => w.ID);
+            //for (int i = 0; i < lst.Count; i++)
+            //{
+            //    if (d.ContainsKey(lst[i].ID))
+            //        d[i] = lst[i] with { Level = d[lst[i].ID].Level };
+            //}
+            for (int i=0; i < lst.Count; i++)
+                for (int iS=0; iS < lstS.Count; iS++)
+                    if (lst[i].ID == lstS[iS].ID)
+                        lstS[iS] = lst[i];
+
             SaveSelectedWords(lstS);
             UpdateListStat(lstS);
         }

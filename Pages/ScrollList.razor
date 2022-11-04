@@ -100,7 +100,7 @@ else
 <br />
 
 @code {
-#pragma warning disable 1998, 8622
+    #pragma warning disable 1998, 8622
 
     private string OpaCity(int i)
     {
@@ -117,36 +117,18 @@ else
     private bool Random { get; set; } = false;
     private bool IsRunning => timer?.Enabled ?? false;
 
-    private string BlinkStr(int ms)
-    {
-        if (ms >= 1000000)
-            return "\u221E";
-        return $"{ms / (double)1000}s";
-    }
     private int MsWord { get; set; } = 2000;
     private bool Show = false;
     void OnBlinkInterval(int ms)
     {
         SetTimerInteval(ms);
-        if (ms >= 1000000)
-        {
-            ToggleShow();
-            return;
-        }
-        Show = false;
-        void ToggleShow()
-        {
-            if (Show)
-                NewWords();
-            Show = !Show;
-        }
     }
 
     void SetTimerInteval(int msPerWord)
     {
         MsWord = msPerWord;
-
-        if (timer != null) timer.Interval = RealSize * msPerWord / slot;
+        if (timer != null) 
+            timer.Interval = RealSize * msPerWord / slot;
     }
 
 
@@ -162,10 +144,11 @@ else
     {
         warmup = 0;
 
+
         lstWords = lstSelected;
         lstWords = lstWords.Where(w => w.IsCorrect == false).ToList();
         lstWords = lstWords.FindRandomWords(Size);
-
+        SetTimerInteval(MsWord);
         SaveData();
         if (lstWords.Count == 0)
         {
@@ -193,7 +176,6 @@ else
     }
 
 
-    private bool HideAnswer { get; set; }
     public string StrFlag => IStorage._GetData().Info;
     private string StrError { get; set; } = "";
     private string StrWarn { get; set; } = "";
@@ -224,29 +206,26 @@ else
         Program.currentStateHasChanged = StateHasChanged;
         StateHasChanged();
     }
-    // \u21BB
-    //"Ved uendelig  (\u221E) tid. Trykk på tabellhodet for å vise"+
-    //"\u2714 knappen fjerner så godkjente (\u2714 ) ord."+
 
     public void DoInit()
     {
         try
         {
-            HideAnswer = true;
+
             LstDict = Program.GetDictionary();
             lstWords = new();
             var data = IStorage._GetData();
 
-            SmileyIndex = Math.Min(4, data.SmileyIndex);
+            SmileyIndex = Math.Min(Smileys.Count()-1, data.SmileyIndex);
             MsWord = data.MsBlink > 0 ? data.MsBlink : 1000;
             Size = data.NumBatch;
             lstWords = Program.GetSelectedWords();
             lstSelected = lstWords;
-            //SelectWords();
+   
 
             StrSuccess = "";
             timer?.Dispose();
-            //if (Start)
+
             OnBlinking();
             UpdateStrInfo();
 
@@ -284,25 +263,12 @@ else
         data.NumBatch = Size;
 
         IStorage._SetData(data);
-        Program.UpdateSelectedWords(lstWords);
     }
 
-
-    void OnDelStat()
-    {
-        lstWords.ForEach(w => w.Level = 0);
-        Program.UpdateSelectedWords(lstWords);
-        StateHasChanged();
-    }
 
     public string StrInfo { get; set; } = "";
 
-    void OnShow()
-    {
-        HideAnswer = !HideAnswer;
-        lstWords.ForEach(w => w.ToWordAns = HideAnswer ? "" : ToWordD(w));
-        StateHasChanged();
-    }
+
 
     void OnOk(TWord _w)
     {
@@ -316,11 +282,7 @@ else
         if (ix == -1)
             return;
         lstSelected[ix].IsCorrect = lstWords[i].IsCorrect;
-    }
-
-    void OnRremove()
-    {
-        lstWords = lstWords.Where(w => !w.IsCorrect).ToList();
+        Program.UpdateSelectedWord(lstWords[i]);
     }
 
     void OnReset(bool x)
