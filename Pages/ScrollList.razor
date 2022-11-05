@@ -150,13 +150,18 @@ else
         lstWords = lstWords.FindRandomWords(Size);
         SetTimerInteval(MsWord);
         SaveData();
+        // CheckEmpty
+        StateHasChanged();
+    }
+
+    void CheckEmpty()
+    {
         if (lstWords.Count == 0)
         {
             timer?.Stop();
             timer = null;
             StrSuccess = "Pugging er ferdig. Restart ved å trykke på ⟳-knappen ";
         }
-        StateHasChanged();
     }
 
     void OnStopp()
@@ -221,7 +226,7 @@ else
             Size = data.NumBatch;
             lstWords = Program.GetSelectedWords();
             lstSelected = lstWords;
-   
+
 
             StrSuccess = "";
             timer?.Dispose();
@@ -283,6 +288,14 @@ else
             return;
         lstSelected[ix].IsCorrect = lstWords[i].IsCorrect;
         Program.UpdateSelectedWord(lstWords[i]);
+        if (IsAllChecked())
+            StateHasChanged();
+
+    }
+
+    bool IsAllChecked()
+    {
+        return lstWords.Where(w => !w.IsCorrect).Count() == 0;
     }
 
     void OnReset(bool x)
@@ -350,16 +363,16 @@ else
 
         void OnTimerWord(object sender, ElapsedEventArgs e)
         {
-            if (timer == null || lstWords.Count == 0)
-                return;
-
-            warmup += dx;
-            if (warmup > 1)
+            if (timer != null && lstWords.Count > 0)
             {
-                warmup = 0;
-                NewWords();
+                warmup += dx;
+                if (warmup > 1 || IsAllChecked())
+                {
+                    warmup = 0;
+                    NewWords();
+                }
             }
-
+            CheckEmpty();
             StateHasChanged();
 
 
