@@ -16,18 +16,11 @@
 <Flags Text="@StrFlag" SwapLang="@SwapWord" OnSwapEv="@OnSwapWord"></Flags>
 
 
-
-
-
-
-
-
-
 <button class="coolButton" @onclick="@(()=>OnReset(true))"> ⟳ </button>
 <button class="btn_ghost"></button>
 
 <span class="coolSpan">
-    @foreach (var n in new[] { 4, 6, 8 })
+    @foreach (var n in new[] { 4, 8, 16 })
     {
         <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(n)</button>
     }
@@ -144,12 +137,12 @@ else
     {
         warmup = 0;
 
-
         lstWords = lstSelected;
         lstWords = lstWords.Where(w => w.IsCorrect == false).ToList();
         lstWords = lstWords.FindRandomWords(Size);
         SetTimerInteval(MsWord);
         SaveData();
+
         // CheckEmpty
         StateHasChanged();
     }
@@ -289,7 +282,9 @@ else
         lstSelected[ix].IsCorrect = lstWords[i].IsCorrect;
         Program.UpdateSelectedWord(lstWords[i]);
         if (IsAllChecked())
+        {
             StateHasChanged();
+        }
 
     }
 
@@ -369,16 +364,18 @@ else
                 if (warmup > 1 || IsAllChecked())
                 {
                     warmup = 0;
+                    Misc.MyDelay(600);
                     NewWords();
                 }
             }
             CheckEmpty();
             StateHasChanged();
-
-
             return;
         }
     }
+
+
+
 
     void IDisposable.Dispose()
     {

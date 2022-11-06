@@ -197,6 +197,24 @@ static public class Misc
         return lstD;
     }
 
+    static public void MyDelay(long ms)
+    {
+        DateTime dt0 = DateTime.Now;
+        Work();
+        TimeSpan ts = DateTime.Now - dt0;
+        double xxx = ts.TotalMilliseconds;
+        int n = (int)(ms / xxx);
+        for (int k = 0; k < n; k++)
+            Work();
+        void Work()
+        {
+            for (long i = 0; i < 1_000_000; i++)
+            {
+
+            }
+        }
+    }
+
 
     //    static public List<TWord> FillWordsLang(List<TWord> lst, LangT langT)
     //    {

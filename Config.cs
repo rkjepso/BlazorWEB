@@ -30,6 +30,9 @@ public struct Data
 
     public int SmileyIndex { get; set; }
 
+
+    public bool UseEnglish { get; set; }
+
     public void Default()
     {
         Mode = (Mode.All_Now);
@@ -47,6 +50,7 @@ public struct Data
         Step = 10;
         SmileyIndex = 5;
         Letter = 'A';
+        UseEnglish = false;
     }
 
 }
