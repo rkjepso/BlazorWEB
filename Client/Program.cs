@@ -58,8 +58,8 @@ namespace BlazorWEB
     public static partial class Program
     {
         private static WebAssemblyHost? _host;
-        static public string GetVersionGloser { get; } = "5.3.1 ";
-        static public string GetDBVersionGloser { get; } = "1.1";
+        static public string GetVersionGloser { get; } = "5.3.2 ";
+        static public string GetDBVersionGloser { get; } = "1.2";
         static public BlazorWEB.Pages.HelpBox? helpBox = null;
 
         static private bool showHelp;

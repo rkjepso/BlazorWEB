@@ -137,21 +137,5 @@ public static class Functions
 
     }
 
-
-    //public static string StrStyleRichard2
-    //{
-    //    get => AppendRnd("css/Richard2.css");
-    //}
-
-    // Append a random number to force reload....
-    //private static string AppendRnd(string sf)
-    //{
-    //    Random r = new ();
-    //    string str = sf + @"?xxx=" + r.Next(DateTime.Now.Millisecond);
-    //    return str;
-    //}
-
-
-
 }
 

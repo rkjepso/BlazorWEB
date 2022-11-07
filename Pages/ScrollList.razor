@@ -11,89 +11,106 @@
 @inject IStorage IStorage
 
 
+
 <Csscontrol></Csscontrol>
-
-<Flags Text="@StrFlag" SwapLang="@SwapWord" OnSwapEv="@OnSwapWord"></Flags>
-
-
-<button class="coolButton" @onclick="@(()=>OnReset(true))"> ⟳ </button>
-<button class="btn_ghost"></button>
-
-<span class="coolSpan">
-    @foreach (var n in new[] { 4, 8, 16 })
-    {
-        <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(n)</button>
+<style>
+    div .topdov {
+        position: fixed;
+        top: 1.5rem;
+        background-image: var(--GradientBody);
+        width: 100%;
+        z-index: 2;
+        padding: 0.5rem 0rem 0rem 0rem;
     }
-</span>
 
-<button class="btn_ghost"></button>
-
-<span class="coolSpan">
-    @{
-        var ams = new (int, string)[] { (1000, "1s"), (1500, ".5"), (2000, "2s"), (3000, "3s"), (5000, "5s") };
-        foreach (var t in ams)
-        {
-            int ms = t.Item1;
-            string label = t.Item2;
-
-            <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
-        }
+    div .bottomdov {
+        position: relative;
+        top: 3.5rem;
+        z-index: 1;
     }
-</span>
+</style>
+<div class="topdov">
+    <Flags Text="@StrFlag" SwapLang="@SwapWord" OnSwapEv="@OnSwapWord"></Flags>
+    <button class="coolButton" @onclick="@(()=>OnReset(true))"> ⟳ </button>
+    <button class="btn_ghost"></button>
 
-
-<InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
-<HelpBox StrTitle="Pugging via Liste" StrInfo="@StrInfo" EvStateHasChanged="StateHasChanged"></HelpBox>
-
-@if (lstWords.IsNullOrEmpty())
-{
-
-}
-else
-{
-    <table class="g_blueTable">
-        <thead>
-
-            <tr>
-                <th style="width:35%">@StrFromLangD()</th>
-                <th style="width:35%">@StrToLangD()</th>
-                <th style="width:20%">Nivå</th>
-                <th style="width:0%"></th>
-            </tr>
-
-        </thead>
-        <tbody>
-
-            @foreach (var w in lstWords)
+    <span class="coolSpan">
+        @{
+            var ta1 = new (int, string)[] { (4, "4"), (8, "8"), (1000, "∞") };
+            foreach (var t in ta1)
             {
-                counter = (w == lstWords[0]) ? 0 : counter + 1;
-                <tr @onclick="@(()=>OnOk(w))">
-
-
-                    <td>
-                        @if (w.IsCorrect)
-                        {
-                            <img class="imgSmileyButton" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
-                            <button class="btn_ghost"></button>
-                        }
-                        @FromWordD(w)
-                    </td>
-
-
-                    <td class="toWord" style="@OpaCity(counter)">@ToWordD(w)</td>
-                    <td>
-                        <img class="imgSmileyButton" src=@GetSmiley(w.Level)>@(w.Level)%
-                    </td>
-                </tr>
+                int n = t.Item1;
+                string label = t.Item2;
+                <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(label)</button>
             }
-        </tbody>
-    </table>
-}
+        }
+    </span>
 
-<br />
+    <button class="btn_ghost"></button>
 
+    <span class="coolSpan">
+        @{
+            var ams = new (int, string)[] { (1000, "1s"), (1500, ".5"), (2000, "2s"), (3000, "3s"), (5000, "5s") };
+            foreach (var t in ams)
+            {
+                int ms = t.Item1;
+                string label = t.Item2;
+                <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
+            }
+        }
+    </span>
+</div>
+
+
+<div class="bottomdov">
+    <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
+    <HelpBox StrTitle="Pugging via Liste" StrInfo="@StrInfo" EvStateHasChanged="StateHasChanged"></HelpBox>
+
+    @if (lstWords.IsNullOrEmpty())
+    {
+
+    }
+    else
+    {
+        <table class="g_blueTable">
+            <thead>
+                <tr>
+                    <th>@StrFromLangD()</th>
+                    <th>@StrToLangD()</th>
+                    <th>Nivå</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var w in lstWords)
+                {
+                    counter = (w == lstWords[0]) ? 0 : counter + 1;
+                    <tr @onclick="@(()=>OnOk(w))">
+
+
+                        <td>
+                            @if (w.IsCorrect)
+                            {
+                                <img class="imgSmileyButton" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
+                                <button class="btn_ghost"></button>
+                            }
+                            @FromWordD(w)
+                        </td>
+
+                        <td class="toWord" style="@OpaCity(counter)">@ToWordD(w)</td>
+                        <td class="short">
+                            <img class="imgSmileyButton" src=@GetSmiley(w.Level)>@(w.Level)%
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <br />
+</div>
 @code {
-    #pragma warning disable 1998, 8622
+#pragma warning disable 1998, 8622
 
     private string OpaCity(int i)
     {
@@ -120,7 +137,7 @@ else
     void SetTimerInteval(int msPerWord)
     {
         MsWord = msPerWord;
-        if (timer != null) 
+        if (timer != null)
             timer.Interval = RealSize * msPerWord / slot;
     }
 
@@ -143,8 +160,15 @@ else
         SetTimerInteval(MsWord);
         SaveData();
 
+        ScrollTop();
+
         // CheckEmpty
         StateHasChanged();
+
+        void ScrollTop()
+        {
+            ((IJSInProcessRuntime)JS).Invoke<string>("scrollTop");
+        }
     }
 
     void CheckEmpty()
@@ -193,7 +217,7 @@ else
     protected async override Task OnInitializedAsync()
     {
         StrInfo =
-            @"Dersom du kan ordet trykker du ned og får poeng.
+                    @"Dersom du kan ordet trykker du ned og får poeng.
         Trykk på en av sekundknappene for å starte.
         Trykk direkte på ordet for å godkjenne / få poeng.
         Knappen ∞ betyr manuel visning.
@@ -214,7 +238,7 @@ else
             lstWords = new();
             var data = IStorage._GetData();
 
-            SmileyIndex = Math.Min(Smileys.Count()-1, data.SmileyIndex);
+            SmileyIndex = Math.Min(Smileys.Count() - 1, data.SmileyIndex);
             MsWord = data.MsBlink > 0 ? data.MsBlink : 1000;
             Size = data.NumBatch;
             lstWords = Program.GetSelectedWords();
@@ -226,7 +250,6 @@ else
 
             OnBlinking();
             UpdateStrInfo();
-
 
             DoAction(StateHasChanged, 10);
         }

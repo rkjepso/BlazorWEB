@@ -75,7 +75,7 @@
     }
 
     .imgSmileyButton, .xsequental, .xrandom {
-        height: 1.2rem;
+        height: 1.4rem;
         margin: 0rem 0rem 0.2rem 0rem;
     }
 
@@ -101,14 +101,27 @@
 
     table.g_blueTable td, table.g_blueTable th {
         padding: 1px 1px;
-        width: 33%;
+    
+        overflow: hidden;
+        text-overflow:clip;
         white-space: nowrap;
     }
 
+    table.g_blueTable td
+    {
+            width: 45%;
+        /*max-width: 7rem;*/
+    }
+
+    table.g_blueTable td.short {
+            width:none;
+            max-width: 2rem;
+    }
+
     table.g_blueTable tr:nth-child(even) {
-   /*     background-image: var(--GradientEven);*/
+
         color: white;
-         background-color: rgba(127, 127, 127, 0.2);
+        background-color: rgba(127, 127, 127, 0.2);
     }
 
 
