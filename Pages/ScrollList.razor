@@ -47,7 +47,6 @@
     </span>
 
     <button class="btn_ghost"></button>
-
     <span class="coolSpan">
         @{
             var ams = new (int, string)[] { (1000, "1s"), (1500, ".5"), (2000, "2s"), (3000, "3s"), (5000, "5s") };
@@ -66,11 +65,7 @@
     <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
     <HelpBox StrTitle="Pugging via Liste" StrInfo="@StrInfo" EvStateHasChanged="StateHasChanged"></HelpBox>
 
-    @if (lstWords.IsNullOrEmpty())
-    {
-
-    }
-    else
+    @if (!lstWords.IsNullOrEmpty())
     {
         <table class="g_blueTable">
             <thead>
@@ -86,8 +81,6 @@
                 {
                     counter = (w == lstWords[0]) ? 0 : counter + 1;
                     <tr @onclick="@(()=>OnOk(w))">
-
-
                         <td>
                             @if (w.IsCorrect)
                             {
@@ -96,7 +89,6 @@
                             }
                             @FromWordD(w)
                         </td>
-
                         <td class="toWord" style="@OpaCity(counter)">@ToWordD(w)</td>
                         <td class="short">
                             <img class="imgSmileyButton" src=@GetSmiley(w.Level)>@(w.Level)%
@@ -106,7 +98,6 @@
             </tbody>
         </table>
     }
-
     <br />
 </div>
 @code {

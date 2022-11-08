@@ -101,87 +101,84 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+                <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
     }
 </span>
 
 
 <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
-@{
-
+@if (Word != null)
+{
     int i = 0;
     TWord w = Word;
-    string _style = "";
-    @if (w != null)
-    {
-        <div class="coolDiv" hidden=@(Tot()==0) style=@_style @onclick="@(()=>OnRremoveWord())">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width:50%"></th>
-                        <th style="width:10%"></th>
-                        <th style="width:40%"></th>
-                        <th style="width:10%"></th>
-                    </tr>
-                </thead>
+    <div class="coolDiv" hidden=@(Tot()==0) @onclick="@(()=>OnRremoveWord())">
+        <table>
+            <thead>
                 <tr>
-                    <td class="wordinfo">
-                    </td>
-                    <td>
-
-                        <p class="fromWord">
-                            @if (w.IsDeleted)
-                            {
-                                <img class="imgCheck" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
-                                <button class="btn_ghost"></button>
-                            }
-                            @FromWordD(w)
-                        </p>
-                    </td>
-                    <td></td>
-                    <td>
-                    </td>
+                    <th style="width:50%"></th>
+                    <th style="width:10%"></th>
+                    <th style="width:40%"></th>
+                    <th style="width:10%"></th>
                 </tr>
+            </thead>
+            <tr>
+                <td class="wordinfo">
+                </td>
+                <td>
 
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
-                    </td>
-                    <td></td>
-                    <td>
-                        <button class=@Csscontrol.BoolStyle(UseEnglish) style="width:auto" @onclick="@OnEnglish">Eng</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="wordinfo">
-                        @(i == 0 ? StrRest : "")
-                    </td>
-                    <div class="smiley">
-                        <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
-                    </div>
-                    <td></td>
-                    <td class="level">
-                        @NewLevel(w)%
-                    </td>
-                </tr>
+                    <p class="fromWord">
+                        @if (w.IsDeleted)
+                        {
+                            <img class="imgCheck" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
+                            <button class="btn_ghost"></button>
+                        }
+                        @FromWordD(w)
+                    </p>
+                </td>
+                <td></td>
+                <td>
+                </td>
+            </tr>
 
-            </table>
-        </div>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
+                </td>
+                <td></td>
+                <td>
+                    <button class=@Csscontrol.BoolStyle(UseEnglish) style="padding:0.2rem;width:auto" @onclick="@OnEnglish">Eng</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="wordinfo">
+                    @(i == 0 ? StrRest : "")
+                </td>
+                <div class="smiley">
+                    <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
+                </div>
+                <td></td>
+                <td class="level">
+                    @NewLevel(w)%
+                </td>
+            </tr>
 
-        <div class="stack">
-            @for (int x = 0; x < Math.Min(stkWords.Count, 5); x++)
-            {
-                var ws = stkWords.ToArray()[x];
-                <p class="stack" style="@StyleStack(x)">
+        </table>
+    </div>
 
-                    @FromWord(ws) - @ToWordD(ws) @NewLevel(ws) %
-                </p>
-            }
-        </div>
-    }
+    <div class="stack">
+        @for (int x = 0; x < Math.Min(stkWords.Count, 5); x++)
+        {
+            var ws = stkWords.ToArray()[x];
+            <p class="stack" style="@StyleStack(x)">
+
+                @FromWord(ws) - @ToWordD(ws) @NewLevel(ws) %
+            </p>
+        }
+    </div>
+
 }
 
 @*<img class="imgSmileyButton" style="user-select:unset" src=@GetSmiley(NewLevel(ws))>*@
@@ -225,12 +222,12 @@
 
     string Cls(int i) => $"toWord{i}";
     string StrAni(int i) => $"animated{i}";
-}
+    }
 
 
 <HelpBox StrInfo="@StrInfo" StrTitle="@StrTitle" EvStateHasChanged="StateHasChanged"></HelpBox>
 
-@code {
+    @code {
     public string StrFlag => IStorage._GetData().Info;
     private string StrError { get; set; } = "";
     private string StrWarn { get; set; } = "ccc";
@@ -436,7 +433,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
         SaveData();
         OnRestart();
     }
-}
+    }
 
 
 
