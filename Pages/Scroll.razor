@@ -61,6 +61,15 @@
         margin: -0.2rem;
     }
 
+    .wordinfo, .smiley, .level {
+        padding: 1rem 0rem 0rem 0rem;
+    }
+
+    .imgSmileyButton {
+        /*      zoom:133%;*/
+    }
+
+
     @@keyframes pugging0 {
         0% {
             opacity: 0.0;
@@ -96,9 +105,7 @@
         }
     }
 </span>
-<span class="coolSpan">
-    <button class=@Csscontrol.BoolStyle(UseEnglish) style="width:auto" @onclick="@OnEnglish">Eng</button>
-</span>
+
 
 <InfoBox @bind-strError="@StrError" @bind-strWarn="@StrWarn" @bind-strSuccess="@StrSuccess"></InfoBox>
 @{
@@ -120,14 +127,13 @@
                 </thead>
                 <tr>
                     <td class="wordinfo">
-                        @(i == 0 ? StrRest : "")
                     </td>
                     <td>
 
                         <p class="fromWord">
                             @if (w.IsDeleted)
                             {
-                                <img class="imgSmileyButton" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
+                                <img class="imgCheck" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
                                 <button class="btn_ghost"></button>
                             }
                             @FromWordD(w)
@@ -135,9 +141,6 @@
                     </td>
                     <td></td>
                     <td>
-                        <div class="smiley">
-                            <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
-                        </div>
                     </td>
                 </tr>
 
@@ -148,15 +151,28 @@
                         <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
                     </td>
                     <td></td>
+                    <td>
+                        <button class=@Csscontrol.BoolStyle(UseEnglish) style="width:auto" @onclick="@OnEnglish">Eng</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wordinfo">
+                        @(i == 0 ? StrRest : "")
+                    </td>
+                    <div class="smiley">
+                        <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
+                    </div>
+                    <td></td>
                     <td class="level">
                         @NewLevel(w)%
                     </td>
                 </tr>
+
             </table>
         </div>
 
         <div class="stack">
-            @for (int x = 0; x < Math.Min(stkWords.Count, 10); x++)
+            @for (int x = 0; x < Math.Min(stkWords.Count, 5); x++)
             {
                 var ws = stkWords.ToArray()[x];
                 <p class="stack" style="@StyleStack(x)">
@@ -305,7 +321,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
         if (lst == null || lst.Count == 0)
             return;
 
-        //await Task.Delay(sleep);
+
         Word = lst[0];
         timerW.Interval = MsPugg;
 
