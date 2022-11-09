@@ -89,7 +89,7 @@
                             }
                             @FromWordD(w)
                         </td>
-                        <td class="toWord" style="@OpaCity(counter)">@ToWordD(w)</td>
+                        <td class="toWord" style="@OpaCity(counter, w)">@ToWordD(w)</td>
                         <td class="short">
                             <img class="imgSmileyButton" src=@GetSmiley(w.Level)>@(w.Level)%
                         </td>
@@ -101,15 +101,17 @@
     <br />
 </div>
 @code {
-#pragma warning disable 1998, 8622
+    #pragma warning disable 1998, 8622
 
-    private string OpaCity(int i)
+    private string OpaCity(int i, TWord w)
     {
         double opacity = 0;
-        if (warmup > (i + 1.0) / (RealSize + 1))
+        if (idx > i)
             opacity = 1;
 
-        if (Show)
+        if (Show || _NewWords)
+            opacity = 1;
+        if (w.IsCorrect)
             opacity = 1;
 
         return $"opacity:{opacity};";
@@ -120,6 +122,7 @@
 
     private int MsWord { get; set; } = 2000;
     private bool Show = false;
+    static bool _NewWords = false;
     void OnBlinkInterval(int ms)
     {
         SetTimerInteval(ms);
@@ -127,9 +130,10 @@
 
     void SetTimerInteval(int msPerWord)
     {
+        _NewWords = false;
         MsWord = msPerWord;
         if (timer != null)
-            timer.Interval = RealSize * msPerWord / slot;
+            timer.Interval = msPerWord;
     }
 
 
@@ -143,7 +147,7 @@
     }
     private void NewWords()
     {
-        warmup = 0;
+        idx = 0;
 
         lstWords = lstSelected;
         lstWords = lstWords.Where(w => w.IsCorrect == false).ToList();
@@ -183,6 +187,7 @@
     static Timer? t2 = null;
     public static void DoAction(Action f, int ms)
     {
+        t2?.Stop();
         t2 = new Timer(ms);
         t2.Elapsed += (x, y) => { f(); t2.Dispose(); t2 = null; };
         t2.Start();
@@ -239,7 +244,7 @@
             StrSuccess = "";
             timer?.Dispose();
 
-            OnBlinking();
+            OnNewRound();
             UpdateStrInfo();
 
             DoAction(StateHasChanged, 10);
@@ -350,10 +355,9 @@
     }
 
     private Timer? timer = null;
-    private double warmup;
-    private double dx = 0.01;
-    private double slot = 100;
-    void OnBlinking()
+    private int idx;
+    private bool NewRound = false;
+    void OnNewRound()
     {
         if (timer != null)
         {
@@ -361,29 +365,32 @@
             timer = null;
         }
 
-
         timer = new Timer();
         SetTimerInteval(this.MsWord);
         timer.Elapsed += new ElapsedEventHandler(OnTimerWord);
         timer.Start();
-        warmup = 0;
 
         lstWords = lstSelected.FindRandomWords(Size);
-
+        NewWords();
+        timer.Interval = 100;
         void OnTimerWord(object sender, ElapsedEventArgs e)
         {
-            if (timer != null && lstWords.Count > 0)
+            if (timer == null)
+                return;
+            timer.Interval = MsWord;
+            if (_NewWords)
+                NewWords();
+            if (lstWords.Count > 0 && _NewWords==false)
             {
-                warmup += dx;
-                if (warmup > 1 || IsAllChecked())
+                if (idx > RealSize || IsAllChecked())
                 {
-                    warmup = 0;
-                    Misc.MyDelay(600);
-                    NewWords();
+                    timer.Interval = 1000;
+                    _NewWords = true;;
                 }
             }
             CheckEmpty();
             StateHasChanged();
+            idx++;
             return;
         }
     }
