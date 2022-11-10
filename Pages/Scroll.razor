@@ -101,7 +101,7 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-                <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+                            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
     }
 </span>
@@ -123,8 +123,10 @@
                 </tr>
             </thead>
             <tr>
-                <td class="wordinfo">
+                <td class="wordinfo" style="text-align:left;vertical-align:top;">
+            
                 </td>
+         
                 <td>
 
                     <p class="fromWord">
@@ -138,6 +140,12 @@
                 </td>
                 <td></td>
                 <td>
+                    <button class=@Csscontrol.BoolStyle(UseEnglish)
+                        style="padding:0.5rem;width:auto"
+                        @onclick="@OnEnglish">
+                        Eng
+                    </button>
+
                 </td>
             </tr>
 
@@ -149,7 +157,7 @@
                 </td>
                 <td></td>
                 <td>
-                    <button class=@Csscontrol.BoolStyle(UseEnglish) style="padding:0.2rem;width:auto" @onclick="@OnEnglish">Eng</button>
+          
                 </td>
             </tr>
             <tr>
@@ -243,8 +251,9 @@
     {
         get
         {
+            int tot = lstWordsSav?.Count ?? 0;
             int rest = lstWords?.Count ?? 0;
-            return $"({rest} ord)";
+            return $"{tot - rest} av {tot}";
         }
     }
     private List<TWord> lstWords = null;
