@@ -28,6 +28,18 @@
         top: 3.5rem;
         z-index: 1;
     }
+
+/*    .toWord, .fromWord {
+        color:white;
+    }
+
+    .current {
+        background-image: var(--GradientBody);
+    }
+
+    .current {
+        background-image: var(--GradientEven);
+    }*/
 </style>
 <div class="topdov">
     <Flags Text="@StrFlag" SwapLang="@SwapWord" OnSwapEv="@OnSwapWord"></Flags>
@@ -41,7 +53,7 @@
             {
                 int n = t.Item1;
                 string label = t.Item2;
-                <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(label)</button>
+                            <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(label)</button>
             }
         }
     </span>
@@ -54,7 +66,7 @@
             {
                 int ms = t.Item1;
                 string label = t.Item2;
-                <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
+                            <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
             }
         }
     </span>
@@ -80,8 +92,9 @@
                 @foreach (var w in lstWords)
                 {
                     counter = (w == lstWords[0]) ? 0 : counter + 1;
-                    <tr @onclick="@(()=>OnOk(w))">
-                        <td>
+                    string classRow = (counter == idx) ? "currentX" : "current";
+                    <tr class=@classRow  @onclick="@(()=>OnOk(w))">
+                        <td class="fromWord">
                             @if (w.IsCorrect)
                             {
                                 <img class="imgCheck" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
@@ -109,10 +122,10 @@
         if (idx > i)
             opacity = 1;
 
-        if (Show || _NewWords)
-            opacity = 1;
-        if (w.IsCorrect)
-            opacity = 1;
+        //if (Show || _NewWords)
+        //    opacity = 1;
+        //if (w.IsCorrect)
+        //    opacity = 1;
 
         return $"opacity:{opacity};";
     }
@@ -292,6 +305,9 @@
         var i = lstWords.FindIndex(w => _w.ID == w.ID);
         if (i == -1)
             return;
+        if (i >= idx)
+            return;
+
         lstWords[i].IsCorrect = !lstWords[i].IsCorrect;
         lstWords[i].Level += lstWords[i].IsCorrect ? 2 : -2;
 
@@ -372,24 +388,28 @@
 
         lstWords = lstSelected.FindRandomWords(Size);
         NewWords();
-        timer.Interval = 100;
+        timer.Interval = 500;
+
         void OnTimerWord(object sender, ElapsedEventArgs e)
         {
             if (timer == null)
                 return;
-            timer.Interval = MsWord;
-            if (_NewWords)
-                NewWords();
+
+            timer.Interval = MsWord;  
+
             if (lstWords.Count > 0 && _NewWords==false)
             {
                 if (idx > RealSize || IsAllChecked())
                 {
-                    timer.Interval = 1000;
-                    _NewWords = true;;
+
+                    NewWords();
                 }
+                if (idx == RealSize)
+                    timer.Interval = MsWord + 1000;
             }
+      
             CheckEmpty();
-            StateHasChanged();
+            StateHasChanged(); 
             idx++;
             return;
         }
