@@ -65,6 +65,10 @@
         padding: 1rem 0rem 0rem 0rem;
     }
 
+    .level {
+        padding: 1rem 1rem 0rem 0rem;
+    }
+
     .imgSmileyButton {
         /*      zoom:133%;*/
     }
@@ -101,7 +105,7 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-                            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+                                    <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
     }
 </span>
@@ -116,9 +120,8 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width:50%"></th>
                     <th style="width:10%"></th>
-                    <th style="width:40%"></th>
+                    <th style="width:80%"></th>
                     <th style="width:10%"></th>
                 </tr>
             </thead>
@@ -160,6 +163,15 @@
           
                 </td>
             </tr>
+
+
+        </table>
+        <table>
+            <tr>
+                <th style="width:33%"></th>
+                <th style="width:33%"></th>
+                <th style="width:30%"></th>
+            </tr>
             <tr>
                 <td class="wordinfo">
                     @(i == 0 ? StrRest : "")
@@ -172,7 +184,6 @@
                     @NewLevel(w)%
                 </td>
             </tr>
-
         </table>
     </div>
 

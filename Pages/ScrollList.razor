@@ -29,17 +29,9 @@
         z-index: 1;
     }
 
-/*    .toWord, .fromWord {
-        color:white;
+    td, .short {
+        padding: 10px;
     }
-
-    .current {
-        background-image: var(--GradientBody);
-    }
-
-    .current {
-        background-image: var(--GradientEven);
-    }*/
 </style>
 <div class="topdov">
     <Flags Text="@StrFlag" SwapLang="@SwapWord" OnSwapEv="@OnSwapWord"></Flags>
@@ -53,7 +45,7 @@
             {
                 int n = t.Item1;
                 string label = t.Item2;
-                            <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(label)</button>
+                <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(label)</button>
             }
         }
     </span>
@@ -66,7 +58,7 @@
             {
                 int ms = t.Item1;
                 string label = t.Item2;
-                            <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
+                <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
             }
         }
     </span>
@@ -93,7 +85,7 @@
                 {
                     counter = (w == lstWords[0]) ? 0 : counter + 1;
                     string classRow = (counter == idx) ? "currentX" : "current";
-                    <tr class=@classRow  @onclick="@(()=>OnOk(w))">
+                    <tr class=@classRow @onclick="@(()=>OnOk(w))">
                         <td class="fromWord">
                             @if (w.IsCorrect)
                             {
@@ -103,8 +95,8 @@
                             @FromWordD(w)
                         </td>
                         <td class="toWord" style="@OpaCity(counter, w)">@ToWordD(w)</td>
-                        <td class="short">
-                            <img class="imgSmileyButton" src=@GetSmiley(w.Level)>@(w.Level)%
+                        <td class="short" style="padding:0.2rem">
+                            <img class="imgSmileySmall" src=@GetSmiley(w.Level)>@(w.Level)%
                         </td>
                     </tr>
                 }
@@ -114,18 +106,13 @@
     <br />
 </div>
 @code {
-    #pragma warning disable 1998, 8622
+#pragma warning disable 1998, 8622
 
     private string OpaCity(int i, TWord w)
     {
         double opacity = 0;
         if (idx > i)
             opacity = 1;
-
-        //if (Show || _NewWords)
-        //    opacity = 1;
-        //if (w.IsCorrect)
-        //    opacity = 1;
 
         return $"opacity:{opacity};";
     }
@@ -226,7 +213,7 @@
     protected async override Task OnInitializedAsync()
     {
         StrInfo =
-                    @"Dersom du kan ordet trykker du ned og får poeng.
+                        @"Dersom du kan ordet trykker du ned og får poeng.
         Trykk på en av sekundknappene for å starte.
         Trykk direkte på ordet for å godkjenne / få poeng.
         Knappen ∞ betyr manuel visning.
@@ -395,9 +382,9 @@
             if (timer == null)
                 return;
 
-            timer.Interval = MsWord;  
+            timer.Interval = MsWord;
 
-            if (lstWords.Count > 0 && _NewWords==false)
+            if (lstWords.Count > 0 && _NewWords == false)
             {
                 if (idx > RealSize || IsAllChecked())
                 {
@@ -407,9 +394,9 @@
                 if (idx == RealSize)
                     timer.Interval = MsWord + 1000;
             }
-      
+
             CheckEmpty();
-            StateHasChanged(); 
+            StateHasChanged();
             idx++;
             return;
         }
