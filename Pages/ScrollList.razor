@@ -106,7 +106,7 @@
     <br />
 </div>
 @code {
-#pragma warning disable 1998, 8622
+    #pragma warning disable 1998, 8622
 
     private string OpaCity(int i, TWord w)
     {
@@ -377,11 +377,13 @@
         lstWords = lstSelected.FindRandomWords(Size);
         NewWords();
         timer.Interval = 500;
+        idx = -1;
 
         void OnTimerWord(object sender, ElapsedEventArgs e)
         {
             if (timer == null)
                 return;
+            idx++;
 
             timer.Interval = MsWord;
 
@@ -398,7 +400,7 @@
 
             CheckEmpty();
             StateHasChanged();
-            idx++;
+        
             return;
         }
     }

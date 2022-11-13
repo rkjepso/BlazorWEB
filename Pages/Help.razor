@@ -1,5 +1,10 @@
 ﻿@page "/Help"
+@using BlazorWEB.Services;
+@using static BlazorWEB.Functions;
 
+@inject IJSRuntime JS
+
+@inject BrowserService Service
 <PageTitle>Index</PageTitle>
 
 <style>
@@ -25,7 +30,7 @@
 
 </style>
 <div class="help">
-<h3>Kort manual - Pugger verjon @Program.GetVersionGloser</h3>
+    <p>Kort manual - Ver @Program.GetVersionGloser - @Program.WidthHeight().ToString()</p>
 
 <img src="Img/Manual_Language1.png" />
 <p>1. Først velger du språk og ordliste</p>

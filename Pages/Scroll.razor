@@ -66,11 +66,13 @@
     }
 
     .level {
-        padding: 1rem 1rem 0rem 0rem;
+        padding: 1rem 1rem 0rem 1rem;
+        text-align:right;
     }
 
-    .imgSmileyButton {
-        /*      zoom:133%;*/
+    .bottomrow td {
+        padding:1.0rem 0.5rem 0.5rem;
+   
     }
 
 
@@ -105,7 +107,7 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-                                    <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+                                                        <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
     }
 </span>
@@ -120,8 +122,8 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width:10%"></th>
-                    <th style="width:80%"></th>
+                    <th style="width:20%"></th>
+                    <th style="width:70%"></th>
                     <th style="width:10%"></th>
                 </tr>
             </thead>
@@ -168,19 +170,20 @@
         </table>
         <table>
             <tr>
-                <th style="width:33%"></th>
-                <th style="width:33%"></th>
+                <th style="width:40%;padding:0.5rem"></th>
+                <th style="width:30%"></th>
                 <th style="width:30%"></th>
             </tr>
-            <tr>
-                <td class="wordinfo">
+    
+            <tr class="bottomrow">
+                <td style="text-align:left">
                     @(i == 0 ? StrRest : "")
                 </td>
-                <div class="smiley">
+                <div style="text-align:center">
                     <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
                 </div>
                 <td></td>
-                <td class="level">
+                <td style="text-align:right">
                     @NewLevel(w)%
                 </td>
             </tr>
@@ -218,7 +221,7 @@
     string StyleStack(int x)
     {
         var ws = stkWords.ToArray()[x];
-        double op = 0.75 - x / 15.0;
+        double op = 0.75 - x / 7.0;
         string ss = $"opacity:{op}";
         return ss;
     }
