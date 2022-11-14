@@ -17,7 +17,7 @@
         width: 100%;
         font-size: 2rem;
         display: inline-block;
-        margin: 3px 0px 10px;
+        margin: 0.1rem 0 0.2rem 0;
         color: var(--TextColor2);
         text-align:center;
     }
@@ -28,6 +28,7 @@
         display: normal;
         animation-name: pugging0;
         align-content: center;
+        margin: 0.1rem 0 .5rem 0;
     }
 
 
@@ -113,8 +114,13 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-                                                                                        <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+                                                                                            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
+            <button class=@Csscontrol.BoolStyle(UseEnglish)
+            style="width:auto"
+                    @onclick="@OnEnglish">
+                Eng
+            </button>
     }
 </span>
 
@@ -148,11 +154,7 @@
                     </p>
                 </td>
                 <td style="text-align:right">
-                    <button class=@Csscontrol.BoolStyle(UseEnglish)
-                        style="padding:0.2rem;width:auto"
-                        @onclick="@OnEnglish">
-                        Eng
-                    </button>
+        
                 </td>
             </tr>
 

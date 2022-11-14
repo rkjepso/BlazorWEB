@@ -256,5 +256,17 @@ namespace BlazorWEB
             SaveSelectedWords(lstS);
             UpdateListStat(lstS);
         }
+        
+        static public string TextColor
+        {
+            get;
+            set;
+        } = "#00FFFF";
+        static public string TextColor2
+        {
+            get;
+            set;
+        } = ConsoleColor.Yellow.ToString();
     }
+
 }

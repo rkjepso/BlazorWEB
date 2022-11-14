@@ -2,16 +2,6 @@
     #pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
 
-    static public string TextColor
-    {
-        get;
-        set;
-    } = ConsoleColor.White.ToString();
-    static public string TextColor2
-    {
-        get;
-        set;
-    } = ConsoleColor.Yellow.ToString();
 }
 <style>
     * {
@@ -19,8 +9,8 @@
         --CI: 15%;
         --BDark: 10%;
         --BLight: 30%;
-        --TextColor: @TextColor;
-        --TextColor2: @TextColor2;
+        --TextColor: @Program.TextColor;
+        --TextColor2: @Program.TextColor2;
         color: var(--TextColor);
         font-family: 'Yu Gothic';/*Rockwell';*/
         
@@ -30,8 +20,9 @@
         font-size: 18px;
     }
     :root {
-        --GradientBody: linear-gradient(to left, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),var(--BLight) ));
-        --GradientEven: linear-gradient(to bottom right, hsl(var(--BC),var(--CI),var(--BDark)), hsl(var(--BC),var(--CI),20%)); 
+        --ColorBody: hsl(var(--BC),var(--CI),var(--BDark));
+        --GradientBody: linear-gradient(to left, var(--ColorBody), hsl(var(--BC),var(--CI),var(--BLight) ));
+        --GradientEven: linear-gradient(to bottom right, var(--ColorBody), hsl(var(--BC),var(--CI),20%)); 
  
     }
     body {
@@ -48,7 +39,8 @@
     }
     .coolButtonX {
         border: 0.1rem solid red; /*var(--ControlColor);*/
-        color:var(--TextColor2);
+        color: var(--ColorBody);
+        background-color:var(--TextColor);
     }
 
     .coolButton:hover, .coolSelect:hover {
@@ -92,6 +84,7 @@
 
     .imgSmileySmall {
         height: 1em;
+        padding: 0rem 0rem 0.1rem;
     }
 
     .btn_ghost {
