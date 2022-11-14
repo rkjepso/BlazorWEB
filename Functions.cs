@@ -21,7 +21,7 @@ public static class Functions
 
     public static readonly string[] Smileys = new string[]
     {
-         "Img/Smiley_Dead.png",
+         "Img/Smiley_Dead3.png",
          "Img/Smiley_SadM.png",
          "Img/Smiley_Orange.png",
          "Img/Smiley_Neutral.png",

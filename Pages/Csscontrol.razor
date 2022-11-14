@@ -1,6 +1,10 @@
 ﻿@code {
-    #pragma warning disable 4014, 1998, 039, CSS041
+#pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
+    static public readonly string TextColor = "#00FFFF";
+    static public readonly string TextColor2= ConsoleColor.Yellow.ToString();
+    static public readonly string GradientBody =
+        $"linear-gradient(to left, RGB(25,25,64), RGB(0,0,0))";
 
 }
 <style>
@@ -9,38 +13,37 @@
         --CI: 15%;
         --BDark: 10%;
         --BLight: 30%;
-        --TextColor: @Program.TextColor;
-        --TextColor2: @Program.TextColor2;
+        --TextColor: @TextColor;
+        --TextColor2: @TextColor2;
         color: var(--TextColor);
-        font-family: 'Yu Gothic';/*Rockwell';*/
-        
+        font-family: 'Yu Gothic'; /*Rockwell';*/
     }
 
     html {
         font-size: 18px;
     }
+
     :root {
         --ColorBody: hsl(var(--BC),var(--CI),var(--BDark));
-        --GradientBody: linear-gradient(to left, var(--ColorBody), hsl(var(--BC),var(--CI),var(--BLight) ));
-        --GradientEven: linear-gradient(to bottom right, var(--ColorBody), hsl(var(--BC),var(--CI),20%)); 
- 
+        --GradientBody: @GradientBody;
+        --GradientEven: linear-gradient(to bottom right, var(--ColorBody), hsl(var(--BC),var(--CI),20%));
     }
+
     body {
         background-image: var(--GradientBody);
-      
-     
     }
+
     .coolButton, .coolSelect, .coolButtonX {
         background-color: transparent;
         border-radius: 0.2rem;
-        border: 0.1rem solid lightgray; /*var(--ControlColor);*/
+        border: 0.1rem solid lightgray; 
         margin: 0.1rem;
-
     }
+
     .coolButtonX {
-        border: 0.1rem solid red; /*var(--ControlColor);*/
+        border: 0.1rem solid red; 
         color: var(--ColorBody);
-        background-color:var(--TextColor);
+        background-color: var(--TextColor);
     }
 
     .coolButton:hover, .coolSelect:hover {
@@ -51,7 +54,7 @@
         width: 1.7rem;
         padding: 0.1rem 0.2rem 0.1rem 0.2rem;
     }
-  
+
 
     option {
         color: black;
@@ -64,7 +67,7 @@
 
     .coolSelect {
         padding: 0.2rem 0.1rem;
-        width:auto;
+        width: auto;
     }
 
     .imgSmileyButton, .imgCheck, .imgSmileSmall {
@@ -79,7 +82,7 @@
 
     .imgSmileyButton:hover {
         border-radius: 100%;
-        cursor:pointer;
+        cursor: pointer;
     }
 
     .imgSmileySmall {
@@ -97,41 +100,35 @@
     }
 
 
-    table.g_blueTable
-    {
-        margin:1rem 0rem;
+    table.g_blueTable {
+        margin: 1rem 0rem;
     }
 
-    table.g_blueTable td, table.g_blueTable th {
-        padding: 1px 1px;
-    
-        overflow: hidden;
-        text-overflow:clip;
-        white-space: nowrap;
-    }
+        table.g_blueTable td, table.g_blueTable th {
+            padding: 1px 1px;
+            overflow: hidden;
+            text-overflow: clip;
+            white-space: nowrap;
+        }
 
-    table.g_blueTable td
-    {
+        table.g_blueTable td {
             width: 40%;
+        }
 
-    }
+            table.g_blueTable td.short {
+                width: none;
+                max-width: 2rem;
+            }
 
-    table.g_blueTable td.short {
-            width:none;
-            max-width: 2rem;
-    }
+        table.g_blueTable tr:nth-child(5n) {
+            background-color: rgba(127, 127, 127, 0.2);
+        }
 
-    table.g_blueTable tr:nth-child(5n) {
-
-        
-        background-color: rgba(127, 127, 127, 0.2);
-    }
-
-    table.g_blueTable thead th {
-        color: var(--TextColor2);
-        font-weight: 700;
-        background-image: var(--GradientEven);
-    }
+        table.g_blueTable thead th {
+            color: var(--TextColor2);
+            font-weight: 700;
+            background-image: var(--GradientEven);
+        }
 
     th, coolSelect, coolButtonX, coolSpan {
         user-select: none;
