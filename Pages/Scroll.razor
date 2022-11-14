@@ -19,6 +19,7 @@
         display: inline-block;
         margin: 3px 0px 10px;
         color: var(--TextColor2);
+        text-align:center;
     }
 
     .toWord {
@@ -70,11 +71,16 @@
         text-align:right;
     }
 
-    .bottomrow td {
-        padding:1.0rem 0.5rem 0.5rem;
-   
+    .bottomrow td, .coolDiv td {
+        padding:0.3rem 0.5rem 0.3rem;
+ /*       border: 1px solid grey;*/
     }
 
+   
+    table {
+        table-layout:fixed;
+        width:100%;
+    }
 
     @@keyframes pugging0 {
         0% {
@@ -107,7 +113,7 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-                                                        <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+                                                                                        <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
     }
 </span>
@@ -119,38 +125,34 @@
     int i = 0;
     TWord w = Word;
     <div class="coolDiv" hidden=@(Tot()==0) @onclick="@(()=>OnRremoveWord())">
-        <table>
+        <table >
             <thead>
                 <tr>
                     <th style="width:20%"></th>
-                    <th style="width:70%"></th>
-                    <th style="width:10%"></th>
+                    <th style="width:60%"></th>
+                    <th style="width:20%"></th>
                 </tr>
             </thead>
-            <tr>
-                <td class="wordinfo" style="text-align:left;vertical-align:top;">
-            
+            <tr >
+                <td>      
                 </td>
          
                 <td>
-
                     <p class="fromWord">
                         @if (w.IsDeleted)
                         {
-                            <img class="imgCheck" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
-                            <button class="btn_ghost"></button>
+                            <img class="imgCheck" style="user-select:unset;margin:0rem; padding:-3px 1rem" src="Img/Ok2.png" />
+                            
                         }
                         @FromWordD(w)
                     </p>
                 </td>
-                <td></td>
-                <td>
+                <td style="text-align:right">
                     <button class=@Csscontrol.BoolStyle(UseEnglish)
-                        style="padding:0.5rem;width:auto"
+                        style="padding:0.2rem;width:auto"
                         @onclick="@OnEnglish">
                         Eng
                     </button>
-
                 </td>
             </tr>
 
@@ -160,9 +162,8 @@
                 <td>
                     <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
                 </td>
-                <td></td>
+      
                 <td>
-          
                 </td>
             </tr>
 
@@ -170,9 +171,9 @@
         </table>
         <table>
             <tr>
-                <th style="width:40%;padding:0.5rem"></th>
-                <th style="width:30%"></th>
-                <th style="width:30%"></th>
+                <th style="width:20%;padding:0.5rem"></th>
+                <th style="width:60%"></th>
+                <th style="width:20%"></th>
             </tr>
     
             <tr class="bottomrow">
@@ -182,7 +183,7 @@
                 <div style="text-align:center">
                     <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
                 </div>
-                <td></td>
+
                 <td style="text-align:right">
                     @NewLevel(w)%
                 </td>
