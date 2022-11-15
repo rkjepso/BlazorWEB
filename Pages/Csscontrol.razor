@@ -10,44 +10,42 @@
 <style>
     * {
         --BC: 180;
-        --TextColor: hsl(var(--BC), 50%, 80%);
+        --TextColor: hsl(var(--BC), 50%, 50%);
         --TextColor2: Yellow;
-        --BackgroundBase:black;
+        --BackgroundBase: black;
         color: var(--TextColor);
         font-family: 'Yu Gothic'; /*Rockwell';*/
-        font-weight:300;
-     
+        font-weight: 300;
     }
 
     html {
         font-size: 18px;
-   
     }
 
     :root {
-        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,13%), var(--BackgroundBase));
+        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,5%), var(--BackgroundBase));
     }
 
     body {
         background-image: var(--GradientBody);
-   
     }
 
     .coolButton, .coolSelect, .coolButtonX {
         background-color: transparent;
         border-radius: 0.2rem;
-        border: 0.1rem solid lightgray; 
+        border: 0.1rem solid lightgray;
         margin: 0.1rem;
+        border: 0.1rem solid var(--TextColor);
     }
 
     .coolButtonX {
-        border: 0.1rem solid red; 
+        border: 0.1rem solid yellow;
         color: black;
         background-color: var(--TextColor);
-        font-weight:900;
+        font-weight: 900;
     }
 
-    .coolButton:hover, .coolSelect:hover {
+    .coolButton:hover, .coolSelect:hover, .coolButtonX:hover {
         border: 0.1rem solid red;
     }
 
@@ -59,7 +57,7 @@
 
     option {
         color: var(--TextColor);
-        background-color:var(--BackgroundBase);
+        background-color: var(--BackgroundBase);
     }
 
     .coolDiv {
@@ -88,7 +86,7 @@
     }
 
     .imgSmileySmall {
-        height: 1em;
+        height: 1.2em;
         padding: 0rem 0rem 0.1rem;
     }
 
@@ -111,6 +109,7 @@
             overflow: hidden;
             text-overflow: clip;
             white-space: nowrap;
+            
         }
 
         table.g_blueTable td {
@@ -122,14 +121,16 @@
                 max-width: 2rem;
             }
 
-/*        table.g_blueTable tr:nth-child(5n) {
-            background-color: rgba(127, 127, 127, 0.2);
-        }*/
+        /*        table.g_blueTable tr:nth-child(5n) {
+                background-color: rgba(127, 127, 127, 0.2);
+            }*/
 
         table.g_blueTable thead th {
             color: var(--TextColor2);
             font-weight: 700;
             background-image: var(--GradientEven);
+            border-bottom: 1px  solid var(--TextColor);
+         
         }
 
     th, coolSelect, coolButtonX, coolSpan {
