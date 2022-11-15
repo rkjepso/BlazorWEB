@@ -10,23 +10,27 @@
 <style>
     * {
         --BC: 180;
-        --TextColor: hsl(var(--BC), 100%, 70%);
+        --TextColor: hsl(var(--BC), 50%, 80%);
         --TextColor2: Yellow;
+        --BackgroundBase:black;
         color: var(--TextColor);
         font-family: 'Yu Gothic'; /*Rockwell';*/
         font-weight:300;
+     
     }
 
     html {
         font-size: 18px;
+   
     }
 
     :root {
-        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,3%), black);
+        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,13%), var(--BackgroundBase));
     }
 
     body {
         background-image: var(--GradientBody);
+   
     }
 
     .coolButton, .coolSelect, .coolButtonX {
@@ -54,7 +58,8 @@
 
 
     option {
-        color: black;
+        color: var(--TextColor);
+        background-color:var(--BackgroundBase);
     }
 
     .coolDiv {

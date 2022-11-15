@@ -231,7 +231,7 @@
     string StyleStack(int x)
     {
         var ws = stkWords.ToArray()[x];
-        double op = 0.75 - x / 7.0;
+        double op = 1 - x / 10.0;
         string ss = $"opacity:{op}";
         return ss;
     }
