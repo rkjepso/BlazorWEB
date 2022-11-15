@@ -1,22 +1,20 @@
 ﻿@code {
 #pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
-    static public readonly string TextColor = "#00FFFF";
-    static public readonly string TextColor2= ConsoleColor.Yellow.ToString();
-    static public readonly string GradientBody =
-        $"linear-gradient(to left, RGB(25,25,64), RGB(0,0,0))";
+    //static public readonly string TextColor = "#00FFFF";
+    //static public readonly string TextColor2= ConsoleColor.Yellow.ToString();
+    //static public readonly string GradientBody =
+    //    $"linear-gradient(to left, RGB(25,25,64), RGB(0,0,0))";
 
 }
 <style>
     * {
-        --BC: 240;
-        --CI: 15%;
-        --BDark: 10%;
-        --BLight: 30%;
-        --TextColor: @TextColor;
-        --TextColor2: @TextColor2;
+        --BC: 180;
+        --TextColor: hsl(var(--BC), 100%, 70%);
+        --TextColor2: Yellow;
         color: var(--TextColor);
         font-family: 'Yu Gothic'; /*Rockwell';*/
+        font-weight:300;
     }
 
     html {
@@ -24,9 +22,7 @@
     }
 
     :root {
-        --ColorBody: hsl(var(--BC),var(--CI),var(--BDark));
-        --GradientBody: @GradientBody;
-        --GradientEven: linear-gradient(to bottom right, var(--ColorBody), hsl(var(--BC),var(--CI),20%));
+        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,3%), black);
     }
 
     body {
@@ -42,8 +38,9 @@
 
     .coolButtonX {
         border: 0.1rem solid red; 
-        color: var(--ColorBody);
+        color: black;
         background-color: var(--TextColor);
+        font-weight:900;
     }
 
     .coolButton:hover, .coolSelect:hover {
@@ -120,9 +117,9 @@
                 max-width: 2rem;
             }
 
-        table.g_blueTable tr:nth-child(5n) {
+/*        table.g_blueTable tr:nth-child(5n) {
             background-color: rgba(127, 127, 127, 0.2);
-        }
+        }*/
 
         table.g_blueTable thead th {
             color: var(--TextColor2);
@@ -137,7 +134,7 @@
     table.g_blueTable td, able.g_blueTable tr {
         white-space: nowrap;
         padding: 0.3rem 0rem;
-        color: aqua;
+        color: var(--TextColor);
     }
 
 </style>
