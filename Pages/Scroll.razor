@@ -34,11 +34,13 @@
 
     .coolDiv {
         user-select: none;
-        line-height: 0.8;
+        line-height: 0.6;
         width: 100%;
-        margin: 6px 2px 10px 0px;
-        border-radius: 0;
+        margin: 1rem 0rem;
         text-align: center;
+        border: none;
+        border-top: 1px solid var(--TextColor);
+        border-bottom: 1px solid var(--TextColor);
     }
 
 
@@ -99,11 +101,7 @@
         }
     }
 
-    .coolDiv {
-        border: 1px solid var(--TextColor);
-        /*    background-color:black;
-            padding: 1rem 0rem 0rem;*/
-    }
+
 </style>
 
 <span class="coolSpan">
@@ -119,13 +117,13 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+                        <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
-        <button class=@Csscontrol.BoolStyle(UseEnglish)
+                    <button class=@Csscontrol.BoolStyle(UseEnglish)
             style="width:auto"
-                @onclick="@OnEnglish">
-            Eng
-        </button>
+                            @onclick="@OnEnglish">
+                        Eng
+                    </button>
     }
 </span>
 
@@ -177,9 +175,9 @@
         </table>
         <table>
             <tr>
-                <th style="width:20%;padding:0.5rem"></th>
-                <th style="width:60%"></th>
-                <th style="width:20%"></th>
+                <th style="width:30%;padding:0.5rem"></th>
+                <th style="width:40%"></th>
+                <th style="width:30%"></th>
             </tr>
 
             <tr class="bottomrow">

@@ -9,8 +9,8 @@
 }
 <style>
     * {
-        --BC: 180;
-        --TextColor: hsl(var(--BC), 50%, 80%);
+        --BC: 190;
+        --TextColor: hsl(var(--BC), 50%, 90%);
         --TextColor2: Yellow;
         --BackgroundBase: black;
         color: var(--TextColor);
@@ -23,7 +23,7 @@
     }
 
     :root {
-        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,5%), var(--BackgroundBase));
+        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,10%), var(--BackgroundBase));
     }
 
     body {
@@ -45,9 +45,9 @@
         font-weight: 900;
     }
 
-    .coolButton:hover, .coolSelect:hover, .coolButtonX:hover {
-        border: 0.1rem solid red;
-    }
+        .coolButton:hover, .coolSelect:hover, .coolButtonX:hover {
+            border: 0.1rem solid red;
+        }
 
     .coolButton, .coolSelect, .coolButtonX {
         width: 1.7rem;
@@ -109,11 +109,11 @@
             overflow: hidden;
             text-overflow: clip;
             white-space: nowrap;
-            
         }
 
         table.g_blueTable td {
             width: 40%;
+            user-select: none;
         }
 
             table.g_blueTable td.short {
@@ -122,15 +122,14 @@
             }
 
         /*        table.g_blueTable tr:nth-child(5n) {
-                background-color: rgba(127, 127, 127, 0.2);
-            }*/
+                    background-color: rgba(127, 127, 127, 0.2);
+                }*/
 
         table.g_blueTable thead th {
             color: var(--TextColor2);
             font-weight: 700;
             background-image: var(--GradientEven);
-            border-bottom: 1px  solid var(--TextColor);
-         
+            border-bottom: 1px solid var(--TextColor);
         }
 
     th, coolSelect, coolButtonX, coolSpan {
