@@ -29,9 +29,9 @@
         z-index: 1;
     }
 
-/*    td, .short {
-        padding: 10px;
-    }*/
+    /*    td, .short {
+            padding: 10px;
+        }*/
 </style>
 <div class="topdov">
     <Flags Text="@StrFlag" SwapLang="@SwapWord" OnSwapEv="@OnSwapWord"></Flags>
@@ -96,7 +96,7 @@
                         </td>
                         <td class="toWord" style="@OpaCity(counter, w)">@ToWordD(w)</td>
                         <td class="short" style="padding:0.2rem">
-                            <img class="imgSmileySmall" src=@GetSmiley(w.Level)> @(w.Level)%
+                            @(FormatLevel(w))<img class="imgSmileySmall" src=@GetSmiley(w.Level)>
                         </td>
                     </tr>
                 }
@@ -106,7 +106,15 @@
     <br />
 </div>
 @code {
-    #pragma warning disable 1998, 8622
+#pragma warning disable 1998, 8622
+
+    private string FormatLevel(TWord w)
+    {
+        if (w.Counter > 0)
+            return $"+{w.Counter} {w.Level}%";
+        else
+            return $"{w.Counter} {w.Level}%";
+    }
 
     private string OpaCity(int i, TWord w)
     {
@@ -123,7 +131,7 @@
 
     private int MsWord { get; set; } = 2000;
     private bool Show = false;
-    static bool _NewWords = false;
+
     void OnBlinkInterval(int ms)
     {
         SetTimerInteval(ms);
@@ -131,7 +139,7 @@
 
     void SetTimerInteval(int msPerWord)
     {
-        _NewWords = false;
+
         MsWord = msPerWord;
         if (timer != null)
             timer.Interval = msPerWord;
@@ -149,13 +157,13 @@
     private void NewWords()
     {
         idx = 0;
-
         lstWords = lstSelected;
-        lstWords = lstWords.Where(w => w.IsCorrect == false).ToList();
+        lstWords = lstWords.Where(w => w.IsCorrect == false && w.Counter >= 0).ToList();
         lstWords = lstWords.FindRandomWords(Size);
+        lstWords.ForEach(w => w.Counter = Math.Max(w.Counter - 1, -1));
+
         SetTimerInteval(MsWord);
         SaveData();
-
         ScrollTop();
 
         // CheckEmpty
@@ -214,7 +222,7 @@
     protected async override Task OnInitializedAsync()
     {
         StrInfo =
-                        @"Dersom du kan ordet trykker du ned og får poeng.
+                            @"Dersom du kan ordet trykker du ned og får poeng.
         Trykk på en av sekundknappene for å starte.
         Trykk direkte på ordet for å godkjenne / få poeng.
         Knappen ∞ betyr manuel visning.
@@ -288,28 +296,7 @@
 
 
 
-    void OnOk(TWord _w)
-    {
-        var i = lstWords.FindIndex(w => _w.ID == w.ID);
-        if (i == -1)
-            return;
-        if (i >= idx)
-            return;
 
-        lstWords[i].IsCorrect = !lstWords[i].IsCorrect;
-        lstWords[i].Level += lstWords[i].IsCorrect ? 2 : -2;
-
-        var ix = lstSelected.FindIndex(w => _w.ID == w.ID);
-        if (ix == -1)
-            return;
-        lstSelected[ix].IsCorrect = lstWords[i].IsCorrect;
-        Program.UpdateSelectedWord(lstWords[i]);
-        if (IsAllChecked())
-        {
-            StateHasChanged();
-        }
-
-    }
 
     bool IsAllChecked()
     {
@@ -368,13 +355,14 @@
             timer.Stop();
             timer = null;
         }
-
         timer = new Timer();
         SetTimerInteval(this.MsWord);
         timer.Elapsed += new ElapsedEventHandler(OnTimerWord);
         timer.Start();
 
+        lstSelected.ForEach(w => w.Counter = 4);
         lstWords = lstSelected.FindRandomWords(Size);
+        
         NewWords();
         timer.Interval = 500;
         idx = -1;
@@ -384,25 +372,49 @@
             if (timer == null)
                 return;
             idx++;
-
             timer.Interval = MsWord;
-
-            if (lstWords.Count > 0 && _NewWords == false)
+            if (lstWords.Count > 0)
             {
                 if (idx > RealSize || IsAllChecked())
                 {
-
                     NewWords();
                 }
                 if (idx == RealSize)
                     timer.Interval = MsWord + 1000;
             }
-
             CheckEmpty();
             StateHasChanged();
-        
+
             return;
         }
+    }
+
+    void OnOk(TWord _w)
+    {
+        var i = lstWords.FindIndex(w => _w.ID == w.ID);
+        if (i == -1)
+            return;
+        if (i >= idx)
+            return;
+
+        if (!lstWords[i].IsCorrect)
+        {
+            lstWords[i].IsCorrect = true;
+            lstWords[i].Level += lstWords[i].Counter;
+        }
+
+
+
+        var ix = lstSelected.FindIndex(w => _w.ID == w.ID);
+        if (ix == -1)
+            return;
+        lstSelected[ix].IsCorrect = lstWords[i].IsCorrect;
+        Program.UpdateSelectedWord(lstWords[i]);
+        if (IsAllChecked())
+        {
+            StateHasChanged();
+        }
+
     }
 
 
