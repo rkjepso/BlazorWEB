@@ -45,7 +45,7 @@
             {
                 int n = t.Item1;
                 string label = t.Item2;
-                <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(label)</button>
+                    <button class=@Csscontrol.BoolStyle(n==Size) @onclick="@(()=>OnSize(n))">@(label)</button>
             }
         }
     </span>
@@ -58,7 +58,7 @@
             {
                 int ms = t.Item1;
                 string label = t.Item2;
-                <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
+                    <button class=@Csscontrol.BoolStyle(ms==MsWord) @onclick="@(()=>OnBlinkInterval(ms))">@(label)</button>
             }
         }
     </span>
@@ -87,16 +87,11 @@
                     string classRow = (counter == idx) ? "currentX" : "current";
                     <tr class=@classRow @onclick="@(()=>OnOk(w))">
                         <td class="fromWord">
-                            @if (w.IsCorrect)
-                            {
-                                <img class="imgCheck" style="user-select:unset;margin:-5px; padding:-3px 5px" src="Img/Ok2.png" />
-                                <button class="btn_ghost"></button>
-                            }
-                            @FromWordD(w)
+                            @(w.IsCorrect ? "✓  " + FromWordD(w) : FromWordD(w))
                         </td>
                         <td class="toWord" style="@OpaCity(counter, w)">@ToWordD(w)</td>
                         <td class="short" style="padding:0.2rem">
-                            @(FormatLevel(w))<img class="imgSmileySmall" src=@GetSmiley(w.Level)>
+                            <img class="imgSmileySmall" src=@GetSmiley(w.Level)>@(FormatLevel(w))
                         </td>
                     </tr>
                 }
@@ -106,16 +101,17 @@
     <br />
 </div>
 @code {
-#pragma warning disable 1998, 8622
+    #pragma warning disable 1998, 8622
 
     private string FormatLevel(TWord w)
     {
-        if (w.Counter > 0)
-            return $"+{w.Counter} {w.Level}%";
+        if (w.IsCorrect)
+            return $" {w.Level}";
+        if (w.Counter >= 0)
+            return $" {w.Level}+{w.Counter}";
         else
-            return $"{w.Counter} {w.Level}%";
+            return $"{w.Level} {w.Counter}";
     }
-
     private string OpaCity(int i, TWord w)
     {
         double opacity = 0;
@@ -125,12 +121,9 @@
 
         return $"opacity:{opacity};";
     }
-
     private bool Random { get; set; } = false;
     private bool IsRunning => timer?.Enabled ?? false;
-
     private int MsWord { get; set; } = 2000;
-    private bool Show = false;
 
     void OnBlinkInterval(int ms)
     {
@@ -139,12 +132,10 @@
 
     void SetTimerInteval(int msPerWord)
     {
-
         MsWord = msPerWord;
         if (timer != null)
             timer.Interval = msPerWord;
     }
-
 
     public int Size { get; set; } = 4;
     private int RealSize => Math.Min(Size, lstWords.Count());
@@ -160,12 +151,11 @@
         lstWords = lstSelected;
         lstWords = lstWords.Where(w => w.IsCorrect == false && w.Counter >= 0).ToList();
         lstWords = lstWords.FindRandomWords(Size);
-        lstWords.ForEach(w => w.Counter = Math.Max(w.Counter - 1, -1));
+        lstWords.ForEach(w => w.Counter = Math.Max(w.Counter - 1, 0));
 
         SetTimerInteval(MsWord);
         SaveData();
         ScrollTop();
-
         // CheckEmpty
         StateHasChanged();
 
@@ -177,12 +167,12 @@
 
     void CheckEmpty()
     {
-        if (lstWords.Count == 0)
-        {
-            timer?.Stop();
-            timer = null;
-            StrSuccess = "Pugging er ferdig. Restart ved å trykke på ⟳-knappen ";
-        }
+        if (lstWords.Count != 0)
+            return;
+        
+        timer?.Stop();
+        timer = null;
+        StrSuccess = "Pugging er ferdig. Restart ved å trykke på ⟳-knappen ";
     }
 
     void OnStopp()
@@ -190,7 +180,6 @@
         timer?.Stop();
         timer ??= null;
     }
-
 
     int counter = 0;
     static Timer? t2 = null;
@@ -207,15 +196,11 @@
     private string StrError { get; set; } = "";
     private string StrWarn { get; set; } = "";
     private string StrSuccess { get; set; } = "";
-
-
     private List<TWord> lstWords = new();
     private List<TWord> lstSelected = new();
 
     static SimpleList? _this = null;
-
     public static SimpleList? Obj { get => _this; }
-
 
     static public List<TWord> LstDict { get; set; } = new();
     static public Dictionary<char, List<TWord>> dictWords { get; set; } = new();
@@ -238,7 +223,6 @@
     {
         try
         {
-
             LstDict = Program.GetDictionary();
             lstWords = new();
             var data = IStorage._GetData();
@@ -248,8 +232,6 @@
             Size = data.NumBatch;
             lstWords = Program.GetSelectedWords();
             lstSelected = lstWords;
-
-
             StrSuccess = "";
             timer?.Dispose();
 
@@ -273,11 +255,9 @@
     void OnSave()
     {
         SaveData();
-
         StrSuccess = $" Lagret ordgruppen : {StrFlag}. ";
         StrSuccess += "Du kan lære deg de valgte ordene under Pugg meny.";
         StateHasChanged();
-
     }
 
     void SaveData()
@@ -293,10 +273,6 @@
 
 
     public string StrInfo { get; set; } = "";
-
-
-
-
 
     bool IsAllChecked()
     {
@@ -334,7 +310,6 @@
     {
         if (lstSelected == null)
             return "";
-
         int corr = lstSelected.Where(w => w.IsCorrect).Count();
         string s = $"({corr}/{lstSelected.Count})";
         return $"{(SwapWord ? StrToLangN : StrFromLangN)} {s}  ";
@@ -347,7 +322,7 @@
 
     private Timer? timer = null;
     private int idx;
-    private bool NewRound = false;
+
     void OnNewRound()
     {
         if (timer != null)
@@ -384,7 +359,6 @@
             }
             CheckEmpty();
             StateHasChanged();
-
             return;
         }
     }
@@ -402,9 +376,6 @@
             lstWords[i].IsCorrect = true;
             lstWords[i].Level += lstWords[i].Counter;
         }
-
-
-
         var ix = lstSelected.FindIndex(w => _w.ID == w.ID);
         if (ix == -1)
             return;
@@ -414,11 +385,7 @@
         {
             StateHasChanged();
         }
-
     }
-
-
-
 
     void IDisposable.Dispose()
     {

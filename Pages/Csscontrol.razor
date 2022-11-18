@@ -1,21 +1,22 @@
 ﻿@code {
-#pragma warning disable 4014, 1998, 039, CSS041
+    #pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
     //static public readonly string TextColor = "#00FFFF";
     //static public readonly string TextColor2= ConsoleColor.Yellow.ToString();
     //static public readonly string GradientBody =
     //    $"linear-gradient(to left, RGB(25,25,64), RGB(0,0,0))";
+    static public string TextColor2 = "#05C3DD";
 
 }
 <style>
     * {
         --BC: 260;
-        --TextColor: hsl(var(--BC), 80%, 80%);
-        --TextColor2: Yellow;
+        --TextColor: hsl(var(--BC), 80%, 100%);
+        --TextColor2: aqua;
         --BackgroundBase: black;
         color: var(--TextColor);
-        font-family: 'Yu Gothic'; /*Rockwell';*/
-        font-weight: 300;
+        font-family:Calibri; /*Yu Gothic';*/ /*Rockwell';*/
+        font-weight: 100;
     }
 
     html {
@@ -33,32 +34,31 @@
     .coolButton, .coolSelect, .coolButtonX {
         background-color: transparent;
         border-radius: 0.2rem;
-        border: 0.1rem solid lightgray;
         margin: 0.1rem;
         border: 0.1rem solid var(--TextColor);
     }
 
     .coolButtonX {
-        border: 0.1rem solid yellow;
+        border: 0.1rem solid var(--TextColor2);
         color: black;
         background-color: var(--TextColor);
-        font-weight: 900;
+        font-weight:bold;
     }
 
-        .coolButton:hover, .coolSelect:hover, .coolButtonX:hover {
-            border: 0.1rem solid red;
-        }
+    .coolButton:hover, .coolSelect:hover, .coolButtonX:hover {
+        border: 0.1rem solid red;
+    }
 
     .coolButton, .coolSelect, .coolButtonX {
         width: 1.7rem;
         padding: 0.1rem 0.2rem 0.1rem 0.2rem;
     }
 
-
     option {
         color: var(--TextColor);
         background-color: var(--BackgroundBase);
     }
+
 
     .coolDiv {
         border: 0.05rem solid gray; /*var(--ControlColor);*/
@@ -127,7 +127,7 @@
 
         table.g_blueTable thead th {
             color: var(--TextColor2);
-            font-weight: 700;
+         
             background-image: var(--GradientEven);
             border-bottom: 1px solid var(--TextColor);
         }
