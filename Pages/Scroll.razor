@@ -101,7 +101,6 @@
         }
     }
 
-
 </style>
 
 <span class="coolSpan">
@@ -117,13 +116,13 @@
         {
             int ms = t.Item1;
             string label = t.Item2;
-                        <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
+            <button class=@Csscontrol.BoolStyle(MsPugg == ms) @onclick="@(()=>OnMsInterval(ms))"> @label </button>
         }
-                    <button class=@Csscontrol.BoolStyle(UseEnglish)
+        <button class=@Csscontrol.BoolStyle(UseEnglish)
             style="width:auto"
-                            @onclick="@OnEnglish">
-                        Eng
-                    </button>
+                @onclick="@OnEnglish">
+            Eng
+        </button>
     }
 </span>
 
@@ -137,9 +136,9 @@
         <table>
             <thead>
                 <tr>
-                
+
                     <th style="width:96%"></th>
-       
+
                 </tr>
             </thead>
             <tr>
@@ -148,23 +147,18 @@
                         @if (w.IsDeleted)
                         {
                             @("✓  ")
- 
+
                         }
                         @FromWordD(w)
                     </p>
-                </td>    
+                </td>
             </tr>
-
             <tr>
-    
+
                 <td>
                     <p class="toWord" id=@StrAni(i)>@ToWordD(w)</p>
                 </td>
-
-
             </tr>
-
-
         </table>
         <table>
             <tr>
@@ -178,11 +172,11 @@
                     @(i == 0 ? StrRest : "")
                 </td>
                 <div style="text-align:center">
-                    <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(NewLevel(w)) />
+                    <img class="imgSmileyButton" style="user-select:unset;" src=@GetSmiley(w.Level) />
                 </div>
 
                 <td style="text-align:right">
-                    @NewLevel(w)%
+                    @NewLevel(w)
                 </td>
             </tr>
         </table>
@@ -194,7 +188,7 @@
             var ws = stkWords.ToArray()[x];
             <p class="stack" style="@StyleStack(x)">
 
-                @FromWord(ws) - @ToWordD(ws) @NewLevel(ws) %
+                @FromWord(ws) - @ToWordD(ws) @ws.Level %
             </p>
         }
     </div>
@@ -314,6 +308,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
 
             lstWords = lstWords.Where(w => GetSmileyIndex(w.Level) <= SmileyIndex).ToList();
             lstWordsSav.AddMany(lstWords);
+            lstWords.ForEach(w => w.Counter = 4);
 
             timerW.Start();
             stkWords.Clear();
@@ -345,7 +340,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
 
         var i = lstWordsSav.FindIndex(ws => ws.ID == Word.ID);
         if (i >= 0 && !Word.IsDeleted)
-            lstWordsSav[i].Counter++;
+            lstWordsSav[i].Counter--;
 
         _ = Task.Run(() => OnResetAnimation());
         StateHasChanged();
@@ -360,7 +355,7 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
         {
             lstWords.Remove(Word);
             Word.IsDeleted = true;
-            Word.Level += Math.Min(100, Math.Max(1, 5 - Word.Counter));
+            Word.Level += Math.Max(0, Word.Counter);
             stkWords.Push(Word);
             Program.UpdateSelectedWord(Word);
             if (lstWords.Count == 0)
@@ -379,7 +374,13 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
             return;
     }
 
-    int NewLevel(TWord w) => w.Level;
+    string NewLevel(TWord w)
+    {
+        if (w.IsDeleted)
+            return $"{w.Level}%";
+        else
+            return $"{w.Level}+{w.Counter}%";
+    }
 
     async void OnRestart()
     {
@@ -423,7 +424,6 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
             timerW.Interval = ms;
 
         _ = Task.Run(() => OnResetAnimation());
-
     }
 
 
@@ -431,7 +431,6 @@ Smileyen ved ⟳ er et filter, slik at du kan velge å pugge bare 'sure' ord.";
     {
         SaveData();
         timerW?.Dispose();        // because you need it here
-
     }
 
     async Task SaveData()

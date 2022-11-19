@@ -62,14 +62,14 @@
 }
 @if (SortOrder == Order.Sequental)
 {
-    <label for="batch">Ord:</label>
+    <label for="batch">Ord</label>
     <select span class="coolSelect" name="batch" id="batch" @bind="@SizeGroup">
         @foreach (var x in new[] { "5", "10", "15", "20", "25", "30", "50" })
         {
             <option value=@x>@x</option>
         }
     </select>
-    <label for="_IMin">Fra:</label>
+    <label for="_IMin">Fra</label>
     <select span class="coolSelect" name="_IMin" id="_IMin" @bind="@_IMin">
         @foreach (var x in _listMins)
         {

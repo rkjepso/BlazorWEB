@@ -5,7 +5,7 @@
     //static public readonly string TextColor2= ConsoleColor.Yellow.ToString();
     //static public readonly string GradientBody =
     //    $"linear-gradient(to left, RGB(25,25,64), RGB(0,0,0))";
-    static public string TextColor2 = "#05C3DD";
+    static public string TextColor = "#00FFFF";
 
 }
 <style>
@@ -46,7 +46,7 @@
     }
 
     .coolButton:hover, .coolSelect:hover, .coolButtonX:hover {
-        border: 0.1rem solid red;
+        border: 0.1rem solid var(--TextColor2);
     }
 
     .coolButton, .coolSelect, .coolButtonX {
@@ -59,6 +59,12 @@
         background-color: var(--BackgroundBase);
     }
 
+    label {
+        margin:0rem;
+        padding:0rem;
+
+    }
+
 
     .coolDiv {
         border: 0.05rem solid gray; /*var(--ControlColor);*/
@@ -66,19 +72,15 @@
     }
 
     .coolSelect {
-        padding: 0.2rem 0.1rem;
-        width: auto;
+        padding: 0.2rem 0.0rem;
+        margin:0rem;
+   /*     width: auto;*/
     }
 
-    .imgSmileyButton, .imgCheck, .imgSmileSmall {
+    .imgSmileyButton,  .imgSmileSmall {
         height: 1.8rem;
         margin: 0rem 0rem 0.2rem 0rem;
     }
-
-    .imgCheck {
-        height: 1.33rem;
-    }
-
 
     .imgSmileyButton:hover {
         border-radius: 100%;
