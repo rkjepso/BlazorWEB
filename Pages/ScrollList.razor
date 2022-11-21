@@ -368,14 +368,21 @@
         var i = lstWords.FindIndex(w => _w.ID == w.ID);
         if (i == -1)
             return;
-        if (i >= idx)
-            return;
+        //if (i >= idx)
+        //    return;
 
         if (!lstWords[i].IsCorrect)
         {
             lstWords[i].IsCorrect = true;
             lstWords[i].Level += lstWords[i].Counter;
         }
+        else
+        {
+            lstWords[i].IsCorrect = false;
+            lstWords[i].Level -= lstWords[i].Counter;
+        }
+
+
         var ix = lstSelected.FindIndex(w => _w.ID == w.ID);
         if (ix == -1)
             return;

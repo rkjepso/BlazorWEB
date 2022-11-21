@@ -1,7 +1,7 @@
 ﻿@code {
     #pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
-    static public string TextColor2 = "RGB(127,255,255)";
+    static public string TextColor2 = ConsoleColor.Yellow.ToString();
 
 }
 <style>
@@ -10,6 +10,8 @@
         --TextColor: hsl(var(--BC), 80%, 100%);
         --TextColor2: @TextColor2;
         --BackgroundBase: black;
+        --BackG1: black;
+        --BackG2: hsl(260,100%,10%);
         color: var(--TextColor);
         font-family:Calibri; /*Yu Gothic';*/ /*Rockwell';*/
         font-weight: 400;
@@ -20,7 +22,7 @@
     }
 
     :root {
-        --GradientBody: linear-gradient(to left, hsl(var(--BC),100%,10%), var(--BackgroundBase));
+        --GradientBody: linear-gradient(to right, var(--BackgroundBase), var(--BackG2));
     }
 
     body {
@@ -35,9 +37,9 @@
     }
 
     .coolButtonX {
-        border: 0.1rem solid var(--TextColor);
-        color: black;
-        background-color: var(--TextColor2);
+        border: 0.10rem solid red;
+        color: var(--TextColor2);
+        background-color:var(--BackG1);
     }
 
     .coolButton:hover, .coolSelect:hover, .coolButtonX:hover {
