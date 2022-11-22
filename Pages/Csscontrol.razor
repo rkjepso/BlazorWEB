@@ -1,18 +1,18 @@
 ﻿@code {
     #pragma warning disable 4014, 1998, 039, CSS041
     static public string BoolStyle(bool b) => b ? "coolButtonX" : "coolButton";
+    static public string TextColor1 = "hsl(var(--BC), 80%, 100%)";
     static public string TextColor2 = ConsoleColor.Yellow.ToString();
-
 }
 <style>
     * {
         --BC: 260;
-        --TextColor: hsl(var(--BC), 80%, 100%);
-        --TextColor2: @TextColor2;
-        --BackgroundBase: black;
+        --TextColor1: hsl(260, 80%, 90%);
+        --TextColor2: hsl(180, 80%, 40%);
+
         --BackG1: black;
         --BackG2: hsl(260,100%,10%);
-        color: var(--TextColor);
+        color: var(--TextColor1);
         font-family:Calibri; /*Yu Gothic';*/ /*Rockwell';*/
         font-weight: 400;
     }
@@ -22,7 +22,7 @@
     }
 
     :root {
-        --GradientBody: linear-gradient(to right, var(--BackgroundBase), var(--BackG2));
+        --GradientBody: linear-gradient(to right, var(--BackG1), var(--BackG2));
     }
 
     body {
@@ -33,7 +33,7 @@
         background-color: transparent;
         border-radius: 0.2rem;
         margin: 0.1rem;
-        border: 0.1rem solid var(--TextColor);
+        border: 0.1rem solid var(--TextColor1);
     }
 
     .coolButtonX {
@@ -52,7 +52,7 @@
     }
 
     option {
-        color: var(--TextColor);
+        color: var(--TextColor1);
         background-color: var(--BackgroundBase);
     }
 
@@ -128,7 +128,7 @@
             color: var(--TextColor2);
          
             background-image: var(--GradientEven);
-            border-bottom: 1px solid var(--TextColor);
+            border-bottom: 1px solid var(--TextColor1);
         }
 
     th, coolSelect, coolButtonX, coolSpan {
@@ -138,7 +138,7 @@
     table.g_blueTable td, able.g_blueTable tr {
         white-space: nowrap;
         padding: 0.3rem 0rem;
-        color: var(--TextColor);
+        color: var(--TextColor1);
     }
 
 </style>
